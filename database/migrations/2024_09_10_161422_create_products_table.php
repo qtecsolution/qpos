@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,14 +12,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pos_carts', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
-            $table->integer('quantity')->default(1);
+            $table->string('image');
+            $table->string('name');
+            $table->text('description');
+            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->double('price')->default(0);
             $table->double('discount')->default(0);
             $table->string('discount_type')->default('fixed');
-            $table->double('total')->default(0);
+            $table->double('purchase_price')->default(0);
+            $table->integer('quantity')->default(0);
+            $table->date('expire_date')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pos_carts');
+        Schema::dropIfExists('products');
     }
 };
