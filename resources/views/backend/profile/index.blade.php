@@ -5,7 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('user.update.profile') }}" method="post" class="accountForm" enctype="multipart/form-data">
+            <form action="{{ route('profile.update') }}" method="post" class="accountForm" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-4">
                     <div class="col-lg-6">

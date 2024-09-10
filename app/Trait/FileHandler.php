@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Trait;
 
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
-class ImageHandlerController extends Controller
+class FileHandler
 {
-
     public function uploader($file, $path, $width, $height)
     {
         $file_name = time() . "_" . uniqid() . "_" . $file->getClientOriginalName();
@@ -52,21 +50,6 @@ class ImageHandlerController extends Controller
         } else {
             return false;
         }
-    }
-
-    function uploadImageAndGetPath($file, $path = "/public/media/others")
-    {
-        return $this->uploader($file, $path, null, 400);
-    }
-
-    function uploadBigImageAndGetPath($file, $path = "/public/media/others")
-    {
-        return $this->uploader($file, $path, 800, null);
-    }
-
-    function uploadIconImageAndGetPath($file, $path = "/public/media/others")
-    {
-        return $this->uploader($file, $path, null, 200);
     }
 
     public function secureUnlink($path)

@@ -6,10 +6,17 @@ use Illuminate\Http\Request;
 use App\Rules\ValidImageType;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\ImageHandlerController;
+use App\Trait\FileHandler;
 
 class WebsiteSettingController extends Controller
 {
+    public $fileHandler;
+
+    public function __construct(FileHandler $fileHandler)
+    {
+        $this->fileHandler = $fileHandler;
+    }
+
     public function websiteGeneral(Request $request)
     {
         return view('backend.settings.website-settings.general');
@@ -61,24 +68,18 @@ class WebsiteSettingController extends Controller
         writeConfig('newsletter_subscribe', $request->newsletter_subscribe);
 
         if ($request->hasFile("site_logo")) {
-            $imageController = new ImageHandlerController();
-
-            $imageController->securePublicUnlink(readConfig('site_logo'));
-            $site_logo = $imageController->uploadToPublic($request->file("site_logo"), "/assets/images/logo");
+            $this->fileHandler->securePublicUnlink(readConfig('site_logo'));
+            $site_logo = $this->fileHandler->uploadToPublic($request->file("site_logo"), "/assets/images/logo");
             writeConfig('site_logo', $site_logo);
         }
         if ($request->hasFile("favicon_icon")) {
-            $imageController = new ImageHandlerController();
-
-            $imageController->securePublicUnlink(readConfig('favicon_icon'));
-            $favicon_icon = $imageController->uploadToPublic($request->file("favicon_icon"), "/assets/images/logo");
+            $this->fileHandler->securePublicUnlink(readConfig('favicon_icon'));
+            $favicon_icon = $this->fileHandler->uploadToPublic($request->file("favicon_icon"), "/assets/images/logo");
             writeConfig('favicon_icon', $favicon_icon);
         }
         if ($request->hasFile("favicon_icon_apple")) {
-            $imageController = new ImageHandlerController();
-
-            $imageController->securePublicUnlink(readConfig('favicon_icon_apple'));
-            $favicon_icon_apple = $imageController->uploadToPublic($request->file("favicon_icon_apple"), "/assets/images/logo");
+            $this->fileHandler->securePublicUnlink(readConfig('favicon_icon_apple'));
+            $favicon_icon_apple = $this->fileHandler->uploadToPublic($request->file("favicon_icon_apple"), "/assets/images/logo");
             writeConfig('favicon_icon_apple', $favicon_icon_apple);
         }
         Artisan::call('config:clear');

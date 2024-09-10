@@ -51,7 +51,6 @@
     <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
 
     @stack('style')
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -164,18 +163,6 @@
     <script src="{{ asset('assets/js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/dataTables.buttons.min.js') }}"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-14PMPDZXRQ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-14PMPDZXRQ');
-    </script>
 
     @stack('script')
 

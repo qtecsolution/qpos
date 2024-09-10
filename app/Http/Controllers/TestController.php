@@ -16,7 +16,7 @@ class TestController extends Controller
 {
     public function test(Request $request)
     {
-        abort(404);
+        abort(403);
         
         return view('welcome');
     }

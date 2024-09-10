@@ -1,7 +1,5 @@
 @php
-    $route = request()
-        ->route()
-        ->getName();
+    $route = request()->route()->getName();
 @endphp
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
@@ -30,66 +28,88 @@
                     </p>
                 </a>
             </li>
-            <li class="nav-header">WORKLOAD</li>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="fab fa-blogger-b nav-icon"></i>
+                    <i class="fas fa-box nav-icon"></i>
                     <p>
-                        Blogs
+                        Product
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chevron-circle-right nav-icon"></i>
-                            <p>
-                                <span class="text-lightblue">Category Base</span>
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Product List</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('backend.admin.create.blog.category') }}"
-                                    class="nav-link {{ $route === 'backend.admin.create.blog.category' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Add New</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('backend.admin.blog.categories') }}"
-                                    class="nav-link {{ $route === 'backend.admin.blog.categories' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Category List</p>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chevron-circle-right nav-icon"></i>
-                            <p>
-                                <span class="text-lightblue">Article Base</span>
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Category List</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('backend.admin.create.blog') }}"
-                                    class="nav-link {{ $route === 'backend.admin.create.blog' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create New Blog</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('backend.admin.blogs') }}"
-                                    class="nav-link {{ $route === 'backend.admin.blogs' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Blog List</p>
-                                </a>
-                            </li>
-                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chevron-circle-up nav-icon"></i>
+                    <p>
+                        Sale
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Sale List</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>POS</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-bar nav-icon"></i>
+                    <p>
+                        Report
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Today Report</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Sale Report</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Stock Report</p>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -114,12 +134,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chevron-circle-right nav-icon"></i>
-                            <p>
-                                <span class="text-lightblue">Users & Permissions</span>
+                        <a href="#" class="nav-link d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fas fa-chevron-circle-right nav-icon"></i>
+                                Roles & Permissions
+                            </span>
+                            <span class="d-flex justify-content-between align-items-center">
                                 <i class="fas fa-angle-left right"></i>
-                            </p>
+                            </span>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -136,20 +158,13 @@
                                     <p>Permissions</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('backend.admin.users') }}"
-                                    class="nav-link {{ $route === 'backend.admin.users' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>User Management</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('backend.admin.pages') }}"
-                            class="nav-link {{ $route === 'backend.admin.pages' ? 'active' : '' }}">
+                        <a href="{{ route('backend.admin.users') }}"
+                            class="nav-link {{ $route === 'backend.admin.users' ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
-                            <p>Page Builder</p>
+                            <p>User Management</p>
                         </a>
                     </li>
                 </ul>

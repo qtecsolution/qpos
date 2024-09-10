@@ -47,21 +47,21 @@ class AuthController extends Controller
             if (Auth::attempt($valid, $credentials['remember'])) {
                 session()->regenerate();
         
-                return $this->userRedirect();
+                return $this->redirectUser();
             } else {
                 return redirect()->route('login')->with('error', 'Incorrect email or password');
             }
 
         } else {
             if (auth()->user()) {
-                return $this->userRedirect();
+                return $this->redirectUser();
             } else {
                 return view('frontend.authentication.login');
             }
         }
     }
 
-    public function signup(Request $request)
+    public function register(Request $request)
     {
         if ($request->isMethod('post')) {
             $request->validate([
@@ -185,7 +185,7 @@ class AuthController extends Controller
         }
     }
 
-    public function passwordReset(Request $request)
+    public function resetPassword(Request $request)
     {
         if ($request->isMethod('post')) {
             $request->validate([
@@ -229,35 +229,7 @@ class AuthController extends Controller
         }
     }
 
-    public function userDash()
-    {
-        if (auth()->user()) {
-                return redirect()->route('backend.admin.dashboard');
-        } else {
-            return redirect()->route('login')->with('error', 'You are not logged in');
-        }
-    }
-
-    public function userRedirect()
-    {
-        if (Auth::check()) {
-            return redirect()->route('backend.admin.dashboard');
-        } else {
-            return redirect()->route('login')->with('error', 'You are not logged in');
-        }
-    }
-    
-
-    public function userAuthCheck()
-    {
-        if (Auth::check()) {
-            return response()->json(['authenticated' => true]);
-        } else {
-            return response()->json(['authenticated' => false]);
-        }
-    }
-
-    public function updateProfile(Request $request)
+    public function update(Request $request)
     {
         $user = User::find(auth()->id());
 
@@ -312,5 +284,14 @@ class AuthController extends Controller
         $user->save();
 
         return back()->with('success', 'Updated Successfully');
+    }
+
+    public function redirectUser()
+    {
+        if (Auth::check()) {
+            return redirect()->route('backend.admin.dashboard');
+        } else {
+            return redirect()->route('login')->with('error', 'You are not logged in');
+        }
     }
 }

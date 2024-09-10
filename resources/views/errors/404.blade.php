@@ -37,7 +37,7 @@
                     <rect id="Rectangle-51" x="0" y="0" width="420" height="60"></rect><text
                         id="headerText.primary" font-family="Source Code Pro" font-size="60" font-weight="900"
                         line-spacing="60" fill="#393737" data-text-alignment="C" font-style="normal">
-                        <tspan x="12.022354125976562" y="52.5">Alum Nation</tspan>
+                        <tspan x="12.022354125976562" y="52.5">QPOS</tspan>
                     </text>
                 </g>
             </g>

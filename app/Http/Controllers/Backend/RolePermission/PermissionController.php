@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\RolePermission;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;

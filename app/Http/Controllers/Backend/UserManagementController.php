@@ -8,10 +8,17 @@ use App\Rules\ValidImageType;
 use Yajra\DataTables\DataTables;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ImageHandlerController;
+use App\Trait\FileHandler;
 
 class UserManagementController extends Controller
 {
+    public $fileHandler;
+
+    public function __construct(FileHandler $fileHandler)
+    {
+        $this->fileHandler = $fileHandler;
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -117,20 +124,17 @@ class UserManagementController extends Controller
             $newUser->name = $request->name;
             $newUser->email = $request->email;
             $newUser->password = bcrypt($request->password);
-            $newUser->type = "Admin";
             $newUser->username = uniqid();
 
             if ($request->hasFile("profile_image")) {
-                $imageController = new ImageHandlerController();
-
-                $newUser->profile_image = $imageController->uploadImageAndGetPath($request->file("profile_image"), "/public/media/users");
+                $newUser->profile_image = $this->fileHandler->fileUploadAndGetPath($request->file("profile_image"), "/public/media/users");
             }
             $newUser->save();
 
             $role = Role::find($request->role);
             $newUser->syncRoles($role);
 
-            return to_route('backend.admin.users')->with('success', 'User created successfully');
+            return to_route('backend.admin.users')->with('success', 'User added successfully');
         } else {
             $roles = Role::all();
             return view('backend.users.create', compact('roles'));
@@ -165,11 +169,9 @@ class UserManagementController extends Controller
             }
 
             if ($request->hasFile("profile_image")) {
-                $imageController = new ImageHandlerController();
+                $this->fileHandler->secureUnlink($user->profile_image);
 
-                $imageController->secureUnlink($user->profile_image);
-
-                $user->profile_image = $imageController->uploadImageAndGetPath($request->file("profile_image"), "/public/media/users");
+                $user->profile_image = $this->fileHandler->fileUploadAndGetPath($request->file("profile_image"), "/public/media/users");
             }
             $user->save();
 
@@ -199,6 +201,6 @@ class UserManagementController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return back()->with('success', 'User deleted');
+        return back()->with('success', 'User deleted successfully');
     }
 }
