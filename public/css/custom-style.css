@@ -1,0 +1,62 @@
+/* ========= theme ========== */
+.sidebar-dark-lightblue .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-lightblue .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #8b9ee9 !important;
+}
+
+.text-lightblue {
+    color: #6982e6 !important;
+}
+
+.bg-gradient-primary {
+    background: #4a6aeb linear-gradient(180deg, #8b9ee9, #778ee9) repeat-x !important;
+}
+
+.bg-gradient-primary.btn:hover {
+    background: #2a3b81 linear-gradient(180deg, #6a78b1, #48568d) repeat-x !important;
+    border-color: #6a78b1 !important;
+}
+
+.bg-primary {
+    background: #8b9ee9 !important;
+}
+
+.btn-lightblue {
+    color: #8b9ee9 !important;
+}
+
+a {
+    color: #162c83;
+}
+
+.btn-lightblue:hover {
+    background: #2a3b81 linear-gradient(180deg, #6a78b1, #48568d) repeat-x !important;
+    border-color: #070808 !important;
+}
+
+.sidebar-light-lightblue {
+    background-color: #e9eaff !important;
+    box-shadow: none !important;
+}
+
+body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper,
+body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer,
+body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+    background-color: aliceblue !important;
+}
+
+.elevation-3 {
+    background: aliceblue !important;
+}
+
+.preloader {
+    background-color: aliceblue !important;
+}
+
+/* ========= theme end ========== */
+
+.site-logo-placeholder {
+    width: auto;
+    max-width: 260px;
+    max-height: 80px;
+}

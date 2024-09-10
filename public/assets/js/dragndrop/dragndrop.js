@@ -1,0 +1,1 @@
+FilePond.parse(document.body);

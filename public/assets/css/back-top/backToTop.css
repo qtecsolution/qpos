@@ -1,0 +1,37 @@
+.up-btn {
+  width: 50px;
+  height: 50px;
+  right: 20px;
+  bottom: 20px;
+  opacity: .7;
+  background: #333;
+  cursor: pointer;
+  position: fixed;
+  z-index: 2000;
+  transition: all .4s ease-in-out;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1);
+}
+
+.up-btn.up-btn__hide {
+  opacity: 0;
+  transform: scale(0);
+  transition: all .4s ease-in-out;
+}
+
+.up-btn:hover {
+  opacity: 1;
+}
+
+.up-btn.up-btn_circle {
+  border-radius: 50%;
+}
+
+.up-btn__img {
+  width: 100%;
+  max-width: 100%;
+}
