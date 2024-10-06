@@ -28,6 +28,15 @@ $route = request()->route()->getName();
                     </p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('backend.admin.cart.index') }}"
+                    class="nav-link {{ $route === 'backend.admin.cart.index' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-cart-plus"></i>
+                    <p>
+                        POS
+                    </p>
+                </a>
+            </li>
             <li class="nav-item {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'active' : '' }}">
 

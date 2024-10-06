@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Pos\CartController;
 use App\Http\Controllers\Backend\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -55,7 +56,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('products', ProductController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('categories', CategoryController::class);
-    // profile
+
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
 

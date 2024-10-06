@@ -60,3 +60,42 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-head
     max-width: 260px;
     max-height: 80px;
 }
+
+.user-cart {
+    .card {
+        height: 400px;
+    }
+
+    .qty {
+        width: 45px;
+        float: left;
+    }
+}
+
+.order-product {
+    .item {
+        float: left;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background: #fff;
+        margin: 0 2px 4px 2px;
+
+        img {
+            width: 100px;
+            height: 100px;
+            max-width: 100%;
+        }
+
+        h5 {
+            font-size: 13px;
+            text-align: center;
+        }
+    }
+}
+
+.product-list {
+    .product-img {
+        max-width: 70px;
+        max-height: 70px;
+    }
+}
