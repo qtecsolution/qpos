@@ -1,5 +1,5 @@
 @php
-    $route = request()->route()->getName();
+$route = request()->route()->getName();
 @endphp
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
@@ -39,7 +39,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#"
+                        <a href="{{route('backend.admin.products.index')}}"
                             class="nav-link">
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Product List</p>

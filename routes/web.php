@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
@@ -49,7 +50,7 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    
+    Route::resource('products', ProductController::class);
     // profile
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
