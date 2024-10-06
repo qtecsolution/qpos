@@ -28,9 +28,9 @@ $route = request()->route()->getName();
                     </p>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'active' : '' }}">
 
-            <li class="nav-item">
-                <a href="#" class="nav-link">
                     <i class="fas fa-box nav-icon"></i>
                     <p>
                         Product
@@ -40,16 +40,30 @@ $route = request()->route()->getName();
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="{{route('backend.admin.products.index')}}"
-                            class="nav-link">
+                            class="nav-link {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.edit']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Product List</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#"
-                            class="nav-link">
+                        <a href="{{route('backend.admin.products.create')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.products.create']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
-                            <p>Category List</p>
+                            <p>Product Create</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.brands.index')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Brand</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.categories.index')}}"
+                            class="nav-link {{ request()->routeIs([ 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Category</p>
                         </a>
                     </li>
                 </ul>
