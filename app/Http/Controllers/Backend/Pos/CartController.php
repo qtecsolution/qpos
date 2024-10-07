@@ -15,7 +15,7 @@ class CartController extends Controller
         if ($request->wantsJson()) {
             $cartItems = PosCart::where('user_id', auth()->id())
                 ->with('product')
-                ->latest('updated_at')
+                ->latest('created_at')
                 ->get()
                 ->map(function ($item) {
                     // Calculate row total for each item
@@ -88,4 +88,55 @@ class CartController extends Controller
             return response()->json(['message' => 'Product added to cart', 'quantity' => 1], 201);
         }
     }
+
+    public function increment(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:pos_carts,id'
+        ]);
+        
+        $cart = PosCart::with('product')->findOrFail($request->id);
+        if ($cart->product->quantity <= 0) {
+            return response()->json(['message' => 'Insufficient stock available'], 400);
+        }
+        if ($cart->quantity == $cart->product->quantity) {
+            return response()->json(['message' => 'Cannot add more, stock limit reached'], 400);
+        }
+        $cart->quantity = $cart->quantity + 1;
+        $cart->save();
+        return response()->json(['message' => 'Cart Updated successfully'], 200);
+    }
+    public function decrement(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:pos_carts,id'
+        ]);
+
+        $cart = PosCart::findOrFail($request->id);
+        $cart->quantity = $cart->quantity - 1;
+        $cart->save();
+        return response()->json(['message' => 'Cart Updated successfully'], 200);
+    }
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:pos_carts,id'
+        ]);
+
+        $cart = PosCart::findOrFail($request->id);
+        $cart->delete();
+
+        return response()->json(['message' => 'Item successfully deleted'], 200);
+    }
+    public function empty()
+    {
+        $deletedCount = PosCart::where('user_id', auth()->id())->delete();
+
+        if ($deletedCount > 0) {
+            return response()->json(['message' => 'Cart successfully cleared'], 200);
+        }
+
+        return response()->json(['message' => 'Cart is already empty'], 204);
+    }
+
 }

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cart from "./Cart";
+import toast, { Toaster } from "react-hot-toast";
 export default function Pos() {
     const [products, setProducts] = useState([]);
     const [carts, setCarts] = useState([]);
@@ -17,24 +18,21 @@ export default function Pos() {
     const fullDomainWithPort = `${protocol}//${hostname}${
         port ? `:${port}` : ""
     }`;
-    const getProducts = useCallback(
-        async (search = "", page = 1) => {
-            setLoading(true);
-            try {
-                const res = await axios.get(`get/products`, {
-                    params: { search, page },
-                });
-                const productsData = res.data;
-                setProducts((prev) => [...prev, ...productsData.data]); // Append new products
-                setTotalPages(productsData.meta.last_page); // Get total pages
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            } finally {
-                setLoading(false); // Set loading to false
-            }
-        },
-        []
-    );
+    const getProducts = useCallback(async (search = "", page = 1) => {
+        setLoading(true);
+        try {
+            const res = await axios.get(`get/products`, {
+                params: { search, page },
+            });
+            const productsData = res.data;
+            setProducts((prev) => [...prev, ...productsData.data]); // Append new products
+            setTotalPages(productsData.meta.last_page); // Get total pages
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        } finally {
+            setLoading(false); // Set loading to false
+        }
+    }, []);
 
     const getCarts = async () => {
         try {
@@ -89,26 +87,56 @@ export default function Pos() {
             .then((res) => {
                 console.log(res);
                 setCartUpdated(!cartUpdated);
-                Swal.fire("Success!", res?.data?.message, "success");
+                toast.success(res?.data?.message);
             })
             .catch((err) => {
-                Swal.fire("Error!", err.response.data.message, "error");
+                toast.error(err.response.data.message);
             });
     }
+    function cartEmpty() {
+        Swal.fire({
+            title: "Are you sure you want to delete Cart?",
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            customClass: {
+                actions: "my-actions",
+                cancelButton: "order-1 right-gap",
+                confirmButton: "order-2",
+                denyButton: "order-3",
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .put("/admin/cart/empty")
+                    .then((res) => {
+                        console.log(res);
+                        setCartUpdated(!cartUpdated);
+                        toast.success(res?.data?.message);
+                    })
+                    .catch((err) => {
+                        toast.error(err.response.data.message);
+                    });
+            } else if (result.isDenied) {
+                return;
+            }
+        });
+    }
     return (
-        <div className="card">
-            <div className="card-body p-2 p-md-4 pt-0">
-                <div className="row">
-                    <div className="col-md-6 col-lg-5">
-                        <div className="row mb-2">
-                            <div className="col-6">
-                                <select className="form-control">
-                                    <option>Walking Customer</option>
-                                    <option>Customer 1</option>
-                                    <option>Customer 2</option>
-                                </select>
-                            </div>
-                            {/* <div className="col-6">
+        <>
+            <div className="card">
+                <div className="card-body p-2 p-md-4 pt-0">
+                    <div className="row">
+                        <div className="col-md-6 col-lg-5">
+                            <div className="row mb-2">
+                                <div className="col-6">
+                                    <select className="form-control">
+                                        <option>Walking Customer</option>
+                                        <option>Customer 1</option>
+                                        <option>Customer 2</option>
+                                    </select>
+                                </div>
+                                {/* <div className="col-6">
                                 <form className="form">
                                     <input
                                         type="text"
@@ -121,92 +149,103 @@ export default function Pos() {
                                     />
                                 </form>
                             </div> */}
-                        </div>
-                        <Cart carts={carts} />
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="row text-bold">
-                                    <div className="col">Total:</div>
-                                    <div className="col text-right mr-2">
-                                        {total.toFixed(2)}
+                            </div>
+                            <Cart
+                                carts={carts}
+                                setCartUpdated={setCartUpdated}
+                                cartUpdated={cartUpdated}
+                            />
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="row text-bold">
+                                        <div className="col">Total:</div>
+                                        <div className="col text-right mr-2">
+                                            {total.toFixed(2)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <button
-                                    type="button"
-                                    className="btn btn-danger btn-block"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                            <div className="col">
-                                <button
-                                    type="button"
-                                    className="btn btn-primary btn-block"
-                                >
-                                    Checkout
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6 col-lg-7">
-                        <div className="mb-2">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Enter Product Name or Barcode"
-                                value={searchBarCode}
-                                onChange={(e) =>
-                                    setSearchBarCode(e.target.value)
-                                } // Update state on change
-                            />
-                        </div>
-                        <div className="row products-card-container">
-                            {products.length > 0 &&
-                                products.map((product) => (
-                                    <div
-                                        onClick={() =>
-                                            addProductToCart(product.id)
-                                        }
-                                        className="col-sm-6 col-md-4 col-lg-3 mb-3"
-                                        key={product.id}
+                            <div className="row">
+                                <div className="col">
+                                    <button
+                                        onClick={() => cartEmpty()}
+                                        type="button"
+                                        className="btn btn-danger btn-block"
                                     >
-                                        <div className="product-item text-center">
-                                            <img
-                                                src={`${fullDomainWithPort}/storage/${product.image}`}
-                                                alt={product.name}
-                                                className="mr-2 img-thumb"
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src = `${fullDomainWithPort}/assets/images/no-image.png`;
-                                                }}
-                                                width={120}
-                                                height={100}
-                                            />
-                                            <div className="product-details">
-                                                <p className="mb-0 text-bold product-name">
-                                                    {product.name} (
-                                                    {product.quantity})
-                                                </p>
-                                                <p>
-                                                    Price:{" "}
-                                                    {product.price.toFixed(2)}
-                                                </p>
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div className="col">
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary btn-block"
+                                    >
+                                        Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 col-lg-7">
+                            <div className="mb-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Product Name or Barcode"
+                                    value={searchBarCode}
+                                    onChange={(e) =>
+                                        setSearchBarCode(e.target.value)
+                                    } // Update state on change
+                                />
+                            </div>
+                            <div className="row products-card-container">
+                                {products.length > 0 &&
+                                    products.map((product) => (
+                                        <div
+                                            onClick={() =>
+                                                addProductToCart(product.id)
+                                            }
+                                            className="col-sm-6 col-md-4 col-lg-3 mb-3"
+                                            key={product.id}
+                                        >
+                                            <div className="product-item text-center">
+                                                <img
+                                                    src={`${fullDomainWithPort}/storage/${product.image}`}
+                                                    alt={product.name}
+                                                    className="mr-2 img-thumb"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = `${fullDomainWithPort}/assets/images/no-image.png`;
+                                                    }}
+                                                    width={120}
+                                                    height={100}
+                                                />
+                                                <div className="product-details">
+                                                    <p className="mb-0 text-bold product-name">
+                                                        {product.name} (
+                                                        {product.quantity})
+                                                    </p>
+                                                    <p>
+                                                        Price:{" "}
+                                                        {product.price.toFixed(
+                                                            2
+                                                        )}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                            </div>
+                            {loading && (
+                                <div className="loading-more">
+                                    Loading more...
+                                </div>
+                            )}
                         </div>
-                        {loading && (
-                            <div className="loading-more">Loading more...</div>
-                        )}
                     </div>
                 </div>
             </div>
-        </div>
+            <Toaster position="top-right" reverseOrder={false} />
+        </>
     );
 }
 const root = document.getElementById("cart");
