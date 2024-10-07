@@ -225,9 +225,7 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {product.price.toFixed(
-                                                            2
-                                                        )}
+                                                        {product.discounted_price}
                                                     </p>
                                                 </div>
                                             </div>

@@ -19,7 +19,7 @@ class CartController extends Controller
                 ->get()
                 ->map(function ($item) {
                     // Calculate row total for each item
-                    $item->row_total = $item->quantity * $item->product->price;
+                    $item->row_total = $item->quantity * $item->product->discounted_price;
                     return $item;
                 });
             $total = $cartItems->sum('row_total');
@@ -39,7 +39,6 @@ class CartController extends Controller
         });
 
         $products = $products->active()->latest('updated_at')->paginate(12);
-
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }

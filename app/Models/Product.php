@@ -26,6 +26,7 @@ class Product extends Model
         'expire_date',
         'status',
     ];
+    protected $appends = ['discounted_price'];
 
     public function setNameAttribute($value)
     {
