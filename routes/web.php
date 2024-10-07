@@ -60,6 +60,13 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
 
     Route::get('/get/products', [CartController::class, 'getProducts'])->name('getProducts');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
+    Route::delete('/cart/delete', [CartController::class, 'delete']);
+    Route::delete('/cart/empty', [CartController::class, 'empty']);
+
+    Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
 
     // user management
     Route::prefix('users')->group(function () {

@@ -29,7 +29,7 @@
         text-overflow: ellipsis;
     }
 
- .product-details p {
+    .product-details p {
         margin: 0;
         max-height: 3.6em;
         overflow: hidden;
@@ -43,6 +43,28 @@
         /* Add some padding */
         font-weight: bold;
         /* Make the text bold */
+    }
+
+    .responsive-table {
+        height: 100%;
+        overflow-y: scroll;
+
+    }
+
+    .qty {
+        /* Hides the default number input spinner */
+        -moz-appearance: textfield;
+        /* Firefox */
+        -webkit-appearance: none;
+        /* Chrome/Safari */
+        appearance: none;
+        /* Standard */
+    }
+
+    .qty::-webkit-inner-spin-button,
+    .qty::-webkit-outer-spin-button {
+        display: none;
+        /* Hides the spin buttons */
     }
 </style>
 @endpush

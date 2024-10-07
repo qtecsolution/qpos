@@ -47,7 +47,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    
     public $appends = ['pro_pic'];
 
     public function getProPicAttribute()

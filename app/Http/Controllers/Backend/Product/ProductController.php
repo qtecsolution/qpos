@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::latest('updated_at')->paginate(10);
         return view('backend.products.index', compact('products'));
     }
 
