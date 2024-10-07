@@ -9,6 +9,7 @@ export default function Pos() {
     const [carts, setCarts] = useState([]);
     const [total, setTotal] = useState(0);
     const [cartUpdated, setCartUpdated] = useState(false);
+    const [productUpdated, setProductUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const { protocol, hostname, port } = window.location;
     const [currentPage, setCurrentPage] = useState(1);
@@ -59,6 +60,9 @@ export default function Pos() {
         }
         getProducts(searchQuery, currentPage);
     }, [getProducts, currentPage, searchQuery]);
+   useEffect(() => {
+       getProducts();
+   }, [ productUpdated]);
 
     // Infinite scroll logic
     useEffect(() => {
@@ -93,6 +97,9 @@ export default function Pos() {
             });
     }
     function cartEmpty() {
+        if (total <= 0) {
+            return;
+        }
         Swal.fire({
             title: "Are you sure you want to delete Cart?",
             showDenyButton: true,
@@ -121,6 +128,41 @@ export default function Pos() {
             }
         });
     }
+    function orderCreate() {
+        if (total <= 0) {
+            return;
+        }
+        Swal.fire({
+            title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(2)}`,
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            customClass: {
+                actions: "my-actions",
+                cancelButton: "order-1 right-gap",
+                confirmButton: "order-2",
+                denyButton: "order-3",
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .get("/admin/order/create", {
+                        customer_id: null,
+                    })
+                    .then((res) => {
+                        console.log(res);
+                        setCartUpdated(!cartUpdated);
+                        setProductUpdated(!productUpdated);
+                        toast.success(res?.data?.message);
+                    })
+                    .catch((err) => {
+                        toast.error(err.response.data.message);
+                    });
+            } else if (result.isDenied) {
+                return;
+            }
+        });
+    }
     return (
         <>
             <div className="card">
@@ -129,10 +171,14 @@ export default function Pos() {
                         <div className="col-md-6 col-lg-5">
                             <div className="row mb-2">
                                 <div className="col-6">
-                                    <select className="form-control">
-                                        <option>Walking Customer</option>
+                                    <select
+                                        className="form-control"
+                                        name="customer_id"
+                                    >
+                                        <option value="null">
+                                            Walking Customer
+                                        </option>
                                         <option>Customer 1</option>
-                                        <option>Customer 2</option>
                                     </select>
                                 </div>
                                 {/* <div className="col-6">
@@ -176,6 +222,9 @@ export default function Pos() {
                                 </div>
                                 <div className="col">
                                     <button
+                                        onClick={() => {
+                                            orderCreate();
+                                        }}
                                         type="button"
                                         className="btn btn-primary btn-block"
                                     >
@@ -225,7 +274,9 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {product.discounted_price}
+                                                        {
+                                                            product.discounted_price
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>

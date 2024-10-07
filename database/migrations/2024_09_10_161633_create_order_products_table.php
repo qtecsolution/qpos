@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->double('price')->default(0);
             $table->double('discount')->default(0);
+            $table->double('sub_total')->default(0);
             $table->double('total')->default(0);
             $table->timestamps();
         });

@@ -110,8 +110,10 @@ class CartController extends Controller
         $request->validate([
             'id' => 'required|integer|exists:pos_carts,id'
         ]);
-
         $cart = PosCart::findOrFail($request->id);
+        if ($cart->quantity <= 1) {
+            return response()->json(['message' => 'Quantity cannot be less than 1.'], 400);
+        }
         $cart->quantity = $cart->quantity - 1;
         $cart->save();
         return response()->json(['message' => 'Cart Updated successfully'], 200);
