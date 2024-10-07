@@ -57,9 +57,9 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('brands', BrandController::class);
     Route::resource('categories', CategoryController::class);
 
+
+    Route::get('/get/products', [CartController::class, 'getProducts'])->name('getProducts');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
-    Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
 
     // user management
     Route::prefix('users')->group(function () {

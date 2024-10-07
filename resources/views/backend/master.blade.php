@@ -49,8 +49,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/datatable/buttons.dataTables.min.css') }}">
     {{-- custom style --}}
     <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
-
     @stack('style')
+    @viteReactRefresh
+    @vite('resources/js/app.jsx')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -60,10 +61,10 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="{{ assetImage(readconfig('site_logo')) }}" alt="Logo" height="60"
                 width="60">
-        </div>
+        </div> -->
 
         <!-- Navbar -->
         @include('backend.layouts.navbar')
