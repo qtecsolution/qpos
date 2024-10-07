@@ -10,7 +10,6 @@ export default function Pos() {
     const [total, setTotal] = useState(0);
     const [cartUpdated, setCartUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [searchBarCode, setSearchBarCode] = useState("");
     const { protocol, hostname, port } = window.location;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -191,10 +190,10 @@ export default function Pos() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Enter Product Name or Barcode"
-                                    value={searchBarCode}
+                                    value={searchQuery}
                                     onChange={(e) =>
-                                        setSearchBarCode(e.target.value)
-                                    } // Update state on change
+                                        setSearchQuery(e.target.value)
+                                    }
                                 />
                             </div>
                             <div className="row products-card-container">
