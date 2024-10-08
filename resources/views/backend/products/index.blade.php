@@ -43,9 +43,12 @@
 
                 </td>
                 <td>{{ $product->name }}</td>
-                <td>{{ $product }}
+                <td>
+                  {{ $product->discounted_price }}
+                  @if ($product->price>$product->discounted_price)
                   <br>
                   <del>{{ $product->price }}</del>
+                  @endif
                 </td>
                 <td>{{ $product->quantity }}</td>
                 <td>{{ $product->created_at->format('Y-m-d H:i:s') }}</td>

@@ -39,7 +39,7 @@
         </div>
         <!-- /.col -->
         <div class="col-sm-3 invoice-col">
-            Info <br>
+          Info <br>
           Sell ID #{{$order->id}}<br>
           Sell Date: {{date('d/m/Y', strtotime($order->created_at))}}<br>
           <!-- <br>
@@ -71,7 +71,7 @@
                 <td>{{$item->quantity}}</td>
                 <td>
                   {{ $item->discounted_price }}
-                  @if ($item->discounted_price != $item->price)
+                  @if ($item->price>$item->discounted_price)
                   <br><del>{{ $item->price }}</del>
                   @endif
                 </td>
