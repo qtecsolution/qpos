@@ -4,10 +4,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Cart from "./Cart";
 import toast, { Toaster } from "react-hot-toast";
+import CustomerSelect from "./CutomerSelect";
 export default function Pos() {
     const [products, setProducts] = useState([]);
     const [carts, setCarts] = useState([]);
     const [total, setTotal] = useState(0);
+    const [customerId, setCustomerId] = useState(null);
     const [cartUpdated, setCartUpdated] = useState(false);
     const [productUpdated, setProductUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -132,54 +134,69 @@ export default function Pos() {
         if (total <= 0) {
             return;
         }
-        Swal.fire({
-            title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(2)}`,
-            showDenyButton: true,
-            confirmButtonText: "Yes",
-            denyButtonText: "No",
-            customClass: {
-                actions: "my-actions",
-                cancelButton: "order-1 right-gap",
-                confirmButton: "order-2",
-                denyButton: "order-3",
-            },
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios
-                    .get("/admin/order/create", {
-                        customer_id: null,
-                    })
-                    .then((res) => {
-                        console.log(res);
-                        setCartUpdated(!cartUpdated);
-                        setProductUpdated(!productUpdated);
-                        toast.success(res?.data?.message);
-                    })
-                    .catch((err) => {
-                        toast.error(err.response.data.message);
-                    });
-            } else if (result.isDenied) {
-                return;
-            }
-        });
+        if (!customerId) {
+            toast.error("Please select customer");
+            return;
+        }
+            Swal.fire({
+                title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(
+                    2
+                )}`,
+                showDenyButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: "No",
+                customClass: {
+                    actions: "my-actions",
+                    cancelButton: "order-1 right-gap",
+                    confirmButton: "order-2",
+                    denyButton: "order-3",
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .put("/admin/order/create", {
+                            customer_id: customerId,
+                        })
+                        .then((res) => {
+                            console.log(res);
+                            setCartUpdated(!cartUpdated);
+                            setProductUpdated(!productUpdated);
+                            toast.success(res?.data?.message);
+                        })
+                        .catch((err) => {
+                            toast.error(err.response.data.message);
+                        });
+                } else if (result.isDenied) {
+                    return;
+                }
+            });
     }
     return (
         <>
             <div className="card">
+                {/* <div class="mt-n5 mb-3 d-flex justify-content-end">
+                    <a
+                        href="/admin"
+                        className="btn bg-gradient-primary mr-2"
+                    >
+                        Dashboard
+                    </a>
+                    <a
+                        href="/admin/ordersma"
+                        className="btn bg-gradient-primary"
+                    >
+                        Orders
+                    </a>
+                </div> */}
+
                 <div className="card-body p-2 p-md-4 pt-0">
                     <div className="row">
                         <div className="col-md-6 col-lg-5">
                             <div className="row mb-2">
-                                <div className="col-6">
-                                    <select
-                                        className="form-control"
-                                        name="customer_id"
-                                    >
-                                        <option value="null">
-                                            Walking Customer
-                                        </option>
-                                        <option>Customer 1</option>
-                                    </select>
+                                <div className="col-12">
+                                    <CustomerSelect
+                                        setCustomerId={setCustomerId}
+                                    />
                                 </div>
                                 {/* <div className="col-6">
                                 <form className="form">

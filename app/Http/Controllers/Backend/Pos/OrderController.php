@@ -31,6 +31,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'customer_id.required' => 'Please select a customer.', 
+            'customer_id.exists' => 'The selected customer does not exist.',
+        ]);
         $carts = PosCart::with('product')->where('user_id', auth()->id())->get();
         $order = Order::create([
             'customer_id' => $request->customer_id,

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\Pos\CartController;
 use App\Http\Controllers\Backend\Product\ProductController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
@@ -66,7 +67,9 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::put('/cart/decrement', [CartController::class, 'decrement']);
     Route::put('/cart/delete', [CartController::class, 'delete']);
     Route::put('/cart/empty', [CartController::class, 'empty']);
-    Route::get('/order/create', [OrderController::class, 'store']);
+    Route::put('/order/create', [OrderController::class, 'store']);
+    Route::get('/customers',[CustomerController::class,'index']);
+    Route::post('/customers', [CustomerController::class, 'store']);
     //end pos
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
