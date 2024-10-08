@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\Pos\CartController;
 use App\Http\Controllers\Backend\Product\ProductController;
+use App\Http\Controllers\Backend\Report\ReportController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -60,7 +61,9 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('orders', OrderController::class);
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
     Route::resource('categories', CategoryController::class);
-
+    //start report
+    Route::get('/sale/report', [ReportController::class, 'saleReport'])->name('sale.report');
+    //end report
    // start pos
     Route::get('/get/products', [CartController::class, 'getProducts'])->name('getProducts');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
