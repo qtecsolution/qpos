@@ -79,7 +79,7 @@ $route = request()->route()->getName();
             </li>
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.orders.index', 'backend.admin.orders.create', 'backend.admin.orders.edit']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chevron-circle-up nav-icon"></i>
                     <p>
                         Sale
@@ -88,17 +88,10 @@ $route = request()->route()->getName();
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#"
-                            class="nav-link">
+                        <a href="{{route('backend.admin.orders.index')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.orders.index']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Sale List</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#"
-                            class="nav-link">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>POS</p>
                         </a>
                     </li>
                 </ul>

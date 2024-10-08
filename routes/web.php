@@ -10,10 +10,10 @@ use App\Http\Controllers\Backend\Product\CategoryController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\PermissionController;
+use App\Http\Controllers\Backend\RolePermission\PermissionController;
 use App\Http\Controllers\Backend\Pos\OrderController;
 use App\Http\Controllers\Backend\Product\BrandController;
-use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\RolePermission\RoleController;
 use App\Http\Controllers\Backend\UserManagementController;
 use App\Http\Controllers\Backend\WebsiteSettingController;
 
@@ -57,6 +57,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', ProductController::class);
     Route::resource('brands', BrandController::class);
+    Route::resource('orders', OrderController::class);
+    Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
     Route::resource('categories', CategoryController::class);
 
    // start pos

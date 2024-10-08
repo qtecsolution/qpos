@@ -32,7 +32,15 @@
               <tr>
                 <td>{{ $index + 1  + ($products->perPage() * ($products->currentPage() - 1))}}</td>
                 <td>
-                  <img src="{{ asset('storage/'.$product->image) }}" loading="lazy" alt="{{ $product->name }}" class="img-thumb img-fluid" height="80" width="60"/>
+                  <img
+                    src="{{ asset('storage/' . $product->image) }}"
+                    loading="lazy"
+                    alt="{{ $product->name }}"
+                    class="img-thumb img-fluid"
+                    onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'"
+                    height="80"
+                    width="60" />
+
                 </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->price }}</td>

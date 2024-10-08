@@ -15,7 +15,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::with('customer')->paginate(10);
+        return view('backend.orders.index', compact('orders'));
     }
 
     /**
@@ -97,5 +98,9 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function invoice($id){
+        $order = Order::with(['customer', 'products.product'])->findOrFail($id);
+        return view('backend.orders.print-invoice', compact('order'));
     }
 }
