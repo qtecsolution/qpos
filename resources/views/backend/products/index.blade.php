@@ -43,7 +43,10 @@
 
                 </td>
                 <td>{{ $product->name }}</td>
-                <td>{{ $product->price }}</td>
+                <td>{{ $product }}
+                  <br>
+                  <del>{{ $product->price }}</del>
+                </td>
                 <td>{{ $product->quantity }}</td>
                 <td>{{ $product->created_at->format('Y-m-d H:i:s') }}</td>
                 <td>

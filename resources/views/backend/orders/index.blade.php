@@ -14,6 +14,8 @@
                 <th data-orderable="false">#</th>
                 <th>SellId</th>
                 <th>Customer</th>
+                <th>Sub Total</th>
+                <th>Discount</th>
                 <th>Total</th>
                 <th data-orderable="false">Action</th>
               </tr>
@@ -24,6 +26,8 @@
                 <td>{{ $index + 1  + ($orders->perPage() * ($orders->currentPage() - 1))}}</td>
                 <td>#{{$order->id}}</td>
                 <td>{{ $order->customer->name ?? '-' }}</td>
+                <td>{{$order->sub_total}}</td>
+                <td>{{$order->discount}}</td>
                 <td>{{$order->total}}</td>
                 <td>
                   <a class="btn btn-success btn-sm" href="{{route('backend.admin.orders.invoice',$order->id)}}">Invoice</a>

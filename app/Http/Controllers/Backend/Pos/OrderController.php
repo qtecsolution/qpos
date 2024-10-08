@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('customer')->paginate(10);
+        $orders = Order::with('customer')->latest()->paginate(10);
         return view('backend.orders.index', compact('orders'));
     }
 
@@ -43,7 +43,7 @@ class OrderController extends Controller
             'user_id' => $request->user()->id,
         ]);
         $totalAmountOrder = 0;
-        $orderDiscount = 0; //if user give discount $request->dicount;
+        $orderDiscount = $request->order_discount;
         foreach ($carts as $cart) {
             $mainTotal = $cart->product->price * $cart->quantity;
             $totalAfterDiscount = $cart->product->discounted_price * $cart->quantity;
@@ -65,7 +65,7 @@ class OrderController extends Controller
         $order->total = $totalAmountOrder - $orderDiscount;
         $order->save();
         $carts = PosCart::where('user_id', auth()->id())->delete();
-        return response()->json(['message' => 'Order completed successfully'], 200);
+        return response()->json(['message' => 'Order completed successfully','order'=>$order], 200);
     }
 
     /**

@@ -74,6 +74,7 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                                         <th>Quantity</th>
                                         <th></th>
                                         <th>Price</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,6 +114,26 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                                                 >
                                                     <i className="fas fa-trash "></i>
                                                 </button>
+                                            </td>
+                                            <td className="text-right">
+                                                {
+                                                    item?.product
+                                                        ?.discounted_price
+                                                }
+                                                {item?.product?.price >
+                                                item?.product
+                                                    ?.discounted_price ? (
+                                                    <>
+                                                        <br />
+                                                        <del>
+                                                            {item.product.price.toFixed(
+                                                                2
+                                                            )}
+                                                        </del>
+                                                    </>
+                                                ) : (
+                                                    ""
+                                                )}
                                             </td>
                                             <td className="text-right">
                                                 {item.row_total.toFixed(2)}

@@ -8,7 +8,9 @@ import CustomerSelect from "./CutomerSelect";
 export default function Pos() {
     const [products, setProducts] = useState([]);
     const [carts, setCarts] = useState([]);
+    const [orderDiscount, setOrderDiscount] = useState(0);
     const [total, setTotal] = useState(0);
+    const [updateTotal, setUpdateTotal] = useState(0);
     const [customerId, setCustomerId] = useState(null);
     const [cartUpdated, setCartUpdated] = useState(false);
     const [productUpdated, setProductUpdated] = useState(false);
@@ -54,6 +56,7 @@ export default function Pos() {
             const res = await axios.get(`cart`);
             const data = res.data;
             setTotal(data?.total);
+            setUpdateTotal(data?.total - orderDiscount);
             setCarts(data?.carts);
         } catch (error) {
             console.error("Error fetching carts:", error);
@@ -68,6 +71,9 @@ export default function Pos() {
         getCarts();
     }, [cartUpdated]);
 
+    useEffect(() => {
+        setUpdateTotal(total - orderDiscount);
+    }, [orderDiscount]);
     useEffect(() => {
         if (searchQuery) {
             setProducts([]);
@@ -99,7 +105,6 @@ export default function Pos() {
         axios
             .post("/admin/cart", { id })
             .then((res) => {
-                console.log(res);
                 setCartUpdated(!cartUpdated);
                 toast.success(res?.data?.message);
             })
@@ -127,7 +132,6 @@ export default function Pos() {
                 axios
                     .put("/admin/cart/empty")
                     .then((res) => {
-                        console.log(res);
                         setCartUpdated(!cartUpdated);
                         toast.success(res?.data?.message);
                     })
@@ -148,7 +152,7 @@ export default function Pos() {
             return;
         }
         Swal.fire({
-            title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(
+            title: `Are you sure you want to complete this order? <br>Total: ${updateTotal.toFixed(
                 2
             )}`,
             showDenyButton: true,
@@ -165,12 +169,13 @@ export default function Pos() {
                 axios
                     .put("/admin/order/create", {
                         customer_id: customerId,
+                        order_discount: orderDiscount,
                     })
                     .then((res) => {
-                        console.log(res);
                         setCartUpdated(!cartUpdated);
                         setProductUpdated(!productUpdated);
                         toast.success(res?.data?.message);
+                        window.location.href = `orders/invoice/${res?.data?.order?.id}`;
                     })
                     .catch((err) => {
                         toast.error(err.response.data.message);
@@ -228,10 +233,34 @@ export default function Pos() {
                             />
                             <div className="card">
                                 <div className="card-body">
+                                    <div className="row text-bold mb-1">
+                                        <div className="col">Sub Total:</div>
+                                        <div className="col text-right mr-2">
+                                            {total.toFixed(2)}
+                                        </div>
+                                    </div>
+                                    <div className="row text-bold mb-1">
+                                        <div className="col">Discount:</div>
+                                        <div className="col text-right mr-2">
+                                            <input
+                                                type="number"
+                                                className="form-control form-control-sm"
+                                                placeholder="Enter discount"
+                                                min={0}
+                                                disabled={total <= 0}
+                                                value={orderDiscount}
+                                                onChange={(e) =>
+                                                    setOrderDiscount(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="row text-bold">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
-                                            {total.toFixed(2)}
+                                            {updateTotal.toFixed(2)}
                                         </div>
                                     </div>
                                 </div>
