@@ -63,6 +63,10 @@ class Product extends Model
     {
         return $query->where('status', 1);
     }
+    public function scopeStocked($query)
+    {
+        return $query->where('quantity','>=',1);
+    }
     public function getDiscountedPriceAttribute()
     {
         if ($this->discount_type == 'fixed') {

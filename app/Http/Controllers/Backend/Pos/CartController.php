@@ -38,7 +38,7 @@ class CartController extends Controller
                 ->orWhere('sku', 'LIKE', "%{$search}%");
         });
 
-        $products = $products->active()->latest('updated_at')->paginate(96);
+        $products = $products->active()->stocked()->latest()->paginate(96);
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }

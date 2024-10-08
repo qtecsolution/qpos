@@ -35,6 +35,19 @@ export default function Pos() {
             setLoading(false); // Set loading to false
         }
     }, []);
+    const getUpdatedProducts = useCallback(async () => {
+        try {
+            const res = await axios.get(`get/products`);
+            const productsData = res.data;
+            setProducts(productsData.data);
+            setTotalPages(productsData.meta.last_page); // Get total pages
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    }, []);
+    useEffect(() => {
+        getUpdatedProducts();
+    }, [productUpdated]);
 
     const getCarts = async () => {
         try {
@@ -62,10 +75,6 @@ export default function Pos() {
         }
         getProducts(searchQuery, currentPage);
     }, [getProducts, currentPage, searchQuery]);
-   useEffect(() => {
-       getProducts();
-   }, [ productUpdated]);
-
     // Infinite scroll logic
     useEffect(() => {
         const handleScroll = () => {
@@ -138,38 +147,38 @@ export default function Pos() {
             toast.error("Please select customer");
             return;
         }
-            Swal.fire({
-                title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(
-                    2
-                )}`,
-                showDenyButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: "No",
-                customClass: {
-                    actions: "my-actions",
-                    cancelButton: "order-1 right-gap",
-                    confirmButton: "order-2",
-                    denyButton: "order-3",
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios
-                        .put("/admin/order/create", {
-                            customer_id: customerId,
-                        })
-                        .then((res) => {
-                            console.log(res);
-                            setCartUpdated(!cartUpdated);
-                            setProductUpdated(!productUpdated);
-                            toast.success(res?.data?.message);
-                        })
-                        .catch((err) => {
-                            toast.error(err.response.data.message);
-                        });
-                } else if (result.isDenied) {
-                    return;
-                }
-            });
+        Swal.fire({
+            title: `Are you sure you want to complete this order? <br>Total: ${total.toFixed(
+                2
+            )}`,
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            customClass: {
+                actions: "my-actions",
+                cancelButton: "order-1 right-gap",
+                confirmButton: "order-2",
+                denyButton: "order-3",
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .put("/admin/order/create", {
+                        customer_id: customerId,
+                    })
+                    .then((res) => {
+                        console.log(res);
+                        setCartUpdated(!cartUpdated);
+                        setProductUpdated(!productUpdated);
+                        toast.success(res?.data?.message);
+                    })
+                    .catch((err) => {
+                        toast.error(err.response.data.message);
+                    });
+            } else if (result.isDenied) {
+                return;
+            }
+        });
     }
     return (
         <>
