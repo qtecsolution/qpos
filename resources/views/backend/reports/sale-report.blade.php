@@ -21,38 +21,37 @@
           <section class="invoice">
             <!-- info row -->
             <div class="row invoice-info">
-              <div class="col-sm-4 invoice-col">
+              <div class="col-sm-4">
               </div>
               <!-- /.col -->
-              <div class="col-sm-5 invoice-col">
+              <div class="col-sm-4">
                 <address>
-                  <strong>Sale Report</strong><br>
+                  <strong>Sale Report ({{$start_date}} - {{$end_date}})</strong><br>
                 </address>
               </div>
               <!-- /.col -->
-              <div class="col-sm-3 invoice-col">
+              <div class="col-sm-2">
               </div>
               <!-- /.col -->
             </div>
             <!-- /.row -->
 
             <!-- Table row -->
-
-            <div class="row">
-              <div class="col-12">
+            <div class="row justify-content-center">
+              <div class="col-10">
                 <div class="table-responsive">
                   <table class="table">
                     <tr>
                       <th style="width:50%">Subtotal:</th>
-                      <td>12000</td>
+                      <td class="text-right">{{number_format($sub_total,2)}}</td>
                     </tr>
                     <tr>
                       <th>Total Discount:</th>
-                      <td>500</td>
+                      <td class="text-right">{{number_format($discount,2)}}</td>
                     </tr>
                     <tr>
                       <th>Total Sale:</th>
-                      <td>11500</td>
+                      <td class="text-right">{{number_format($total,2)}}</td>
                     </tr>
                   </table>
                 </div>
@@ -85,6 +84,7 @@
 @push('script')
 <script>
   $(function() {
+
     //Date range as a button
     $('#daterange-btn').daterangepicker({
         ranges: {
@@ -100,6 +100,7 @@
       },
       function(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+        window.location.href = '{{ route("backend.admin.sale.report") }}?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD');
       }
     )
   })
