@@ -19,6 +19,8 @@ return new class extends Migration
             $table->double('discount')->default(0);
             $table->double('sub_total')->default(0)->comment('sumOf(total) from order_products table');
             $table->double('total')->default(0)->comment('sub_total - discount');
+            $table->double('paid')->default(0)->comment('customer paid amount');
+            $table->double('due')->default(0)->comment('total - paid');
             $table->text('note')->nullable();
             $table->boolean('is_returned')->default(0);
             $table->tinyInteger('status')->default(1);

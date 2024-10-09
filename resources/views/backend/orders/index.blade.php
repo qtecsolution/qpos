@@ -14,6 +14,7 @@
                 <th data-orderable="false">#</th>
                 <th>SellId</th>
                 <th>Customer</th>
+                <th>Item</th>
                 <th>Sub Total</th>
                 <th>Discount</th>
                 <th>Total</th>
@@ -26,6 +27,7 @@
                 <td>{{ $index + 1  + ($orders->perPage() * ($orders->currentPage() - 1))}}</td>
                 <td>#{{$order->id}}</td>
                 <td>{{ $order->customer->name ?? '-' }}</td>
+                <td>{{$order->total_item}}</td>
                 <td>{{$order->sub_total}}</td>
                 <td>{{$order->discount}}</td>
                 <td>{{$order->total}}</td>
