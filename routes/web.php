@@ -62,6 +62,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
     Route::resource('categories', CategoryController::class);
     //start report
+
+    Route::get('/sale/summery', [ReportController::class, 'saleSummery'])->name('sale.summery');
     Route::get('/sale/report', [ReportController::class, 'saleReport'])->name('sale.report');
     //end report
    // start pos

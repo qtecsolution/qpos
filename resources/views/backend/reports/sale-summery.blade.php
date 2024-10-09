@@ -26,7 +26,7 @@
               <!-- /.col -->
               <div class="col-sm-4">
                 <address>
-                  <strong>Sale Report ({{$start_date}} - {{$end_date}})</strong><br>
+                  <strong>Sale Summery ({{$start_date}} - {{$end_date}})</strong><br>
                 </address>
               </div>
               <!-- /.col -->
@@ -38,51 +38,31 @@
 
             <!-- Table row -->
             <div class="row justify-content-center">
-              <div class="col-12">
-                <table id="datatables" class="table table-hover">
-                  <thead>
+              <div class="col-10">
+                <div class="table-responsive">
+                  <table class="table">
                     <tr>
-                      <th data-orderable="false">#</th>
-                      <th>SellId</th>
-                      <th>Customer</th>
-                      <th>Date</th>
-                      <th>Item</th>
-                      <th>Sub Total</th>
-                      <th>Discount</th>
-                      <th>Total</th>
-                      <th>Paid</th>
-                      <th>Due</th>
-                      <th>Status</th>
+                      <th style="width:50%">Subtotal:</th>
+                      <td class="text-right">{{number_format($sub_total,2)}}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    @forelse($orders as $index => $order)
                     <tr>
-                      <td>{{ $index + 1 }}</td>
-                      <td>#{{$order->id}}</td>
-                      <td>{{ $order->customer->name ?? '-' }}</td>
-                      <td>{{ $order->created_at->format('d-m-Y') }}</td>
-                      <td>{{$order->total_item}}</td>
-                      <td>{{number_format($order->sub_total,2,'.',',')}}</td>
-                      <td>{{number_format($order->discount,2,'.',',')}}</td>
-                      <td>{{number_format($order->total,2,'.',',')}}</td>
-                      <td>{{number_format($order->paid,2,'.',',')}}</td>
-                      <td>{{number_format($order->due,2,'.',',')}}</td>
-                      <td>
-                        @if ($order->status)
-                        <span class="badge bg-success">Paid</span>
-                        @else
-                        <span class="badge bg-danger">Due</span>
-                        @endif
-                      </td>
+                      <th>Total Discount:</th>
+                      <td class="text-right">{{number_format($discount,2)}}</td>
                     </tr>
-                    @empty
                     <tr>
-                      <td colspan="7" class="text-center">No sells found.</td>
+                      <th>Total Sold:</th>
+                      <td class="text-right">{{number_format($total,2)}}</td>
                     </tr>
-                    @endforelse
-                  </tbody>
-                </table>
+                    <tr>
+                      <th>Customer Paid:</th>
+                      <td class="text-right">{{number_format($total,2)}}</td>
+                    </tr>
+                    <tr>
+                      <th>Customer Due:</th>
+                      <td class="text-right">{{number_format($total,2)}}</td>
+                    </tr>
+                  </table>
+                </div>
               </div>
               <!-- /.col -->
             </div>
