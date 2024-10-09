@@ -18,6 +18,9 @@
                 <th>Sub Total</th>
                 <th>Discount</th>
                 <th>Total</th>
+                <th>Paid</th>
+                <th>Due</th>
+                <th>Status</th>
                 <th data-orderable="false">Action</th>
               </tr>
             </thead>
@@ -28,9 +31,18 @@
                 <td>#{{$order->id}}</td>
                 <td>{{ $order->customer->name ?? '-' }}</td>
                 <td>{{$order->total_item}}</td>
-                <td>{{$order->sub_total}}</td>
-                <td>{{$order->discount}}</td>
-                <td>{{$order->total}}</td>
+                <td>{{number_format($order->sub_total,2,'.',',')}}</td>
+                <td>{{number_format($order->discount,2,'.',',')}}</td>
+                <td>{{number_format($order->total,2,'.',',')}}</td>
+                <td>{{number_format($order->paid,2,'.',',')}}</td>
+                <td>{{number_format($order->due,2,'.',',')}}</td>
+                <td>
+                  @if ($order->status)
+                  <span class="badge bg-success">Paid</span>
+                  @else
+                  <span class="badge bg-danger">Due</span>
+                  @endif
+                </td>
                 <td>
                   <a class="btn btn-success btn-sm" href="{{route('backend.admin.orders.invoice',$order->id)}}">Invoice</a>
                   <!-- <form action="{{ route('backend.admin.orders.destroy', $order->id) }}" method="POST" style="display:inline;">

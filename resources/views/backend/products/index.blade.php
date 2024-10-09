@@ -44,7 +44,7 @@
                 </td>
                 <td>{{ $product->name }}</td>
                 <td>
-                  {{ $product->discounted_price }}
+                  {{ number_format($product->discounted_price,2,'.',',') }}
                   @if ($product->price>$product->discounted_price)
                   <br>
                   <del>{{ $product->price }}</del>

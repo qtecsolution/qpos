@@ -33,10 +33,28 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'customer_id.required' => 'Please select a customer.', 
+            'customer_id' => [
+                'required',
+                'exists:customers,id',
+                'integer', // Ensure customer_id is an integer
+            ],
+            'order_discount' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'paid' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+        ], [
+            'customer_id.required' => 'Please select a customer.',
             'customer_id.exists' => 'The selected customer does not exist.',
+            'order_discount.numeric' => 'The order discount must be a number.',
+            'paid.numeric' => 'The amount paid must be a number.',
         ]);
+
         $carts = PosCart::with('product')->where('user_id', auth()->id())->get();
         $order = Order::create([
             'customer_id' => $request->customer_id,
@@ -60,12 +78,17 @@ class OrderController extends Controller
             $cart->product->quantity = $cart->product->quantity - $cart->quantity;
             $cart->product->save();
         }
+        $total = $totalAmountOrder - $orderDiscount;
+        $due = $total - $request->paid;
         $order->sub_total = $totalAmountOrder;
         $order->discount = $orderDiscount;
-        $order->total = $totalAmountOrder - $orderDiscount;
+        $order->paid = $request->paid;
+        $order->total = $total;
+        $order->due = $due;
+        $order->status = $due <= 0;
         $order->save();
         $carts = PosCart::where('user_id', auth()->id())->delete();
-        return response()->json(['message' => 'Order completed successfully','order'=>$order], 200);
+        return response()->json(['message' => 'Order completed successfully', 'order' => $order], 200);
     }
 
     /**
@@ -99,7 +122,8 @@ class OrderController extends Controller
     {
         //
     }
-    public function invoice($id){
+    public function invoice($id)
+    {
         $order = Order::with(['customer', 'products.product'])->findOrFail($id);
         return view('backend.orders.print-invoice', compact('order'));
     }

@@ -16,6 +16,8 @@ class ReportController extends Controller
         $order = Order::whereBetween('created_at', [$start_date, $end_date])->get();
         $data['sub_total'] = $order->sum('sub_total');
         $data['discount'] = $order->sum('discount');
+        $data['paid'] = $order->sum('paid');
+        $data['due'] = $order->sum('due');
         $data['total'] = $order->sum('total');
         $data['start_date'] =  $start_date->format('M d,Y');
         $data['end_date'] =  $end_date->format('M d,Y');

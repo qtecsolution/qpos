@@ -9,6 +9,8 @@ export default function Pos() {
     const [products, setProducts] = useState([]);
     const [carts, setCarts] = useState([]);
     const [orderDiscount, setOrderDiscount] = useState(0);
+    const [paid, setPaid] = useState(0);
+    const [due, setDue] = useState(0);
     const [total, setTotal] = useState(0);
     const [updateTotal, setUpdateTotal] = useState(0);
     const [customerId, setCustomerId] = useState(null);
@@ -72,8 +74,19 @@ export default function Pos() {
     }, [cartUpdated]);
 
     useEffect(() => {
-        setUpdateTotal(total - orderDiscount);
-    }, [orderDiscount]);
+        let paid1 = paid;
+        let disc = orderDiscount;
+        if (paid == "") {
+            paid1 = 0;
+        }
+        if (orderDiscount == "") {
+            disc = 0;
+        }
+        const updatedTotalAmount = parseFloat(total) - parseFloat(disc);
+        const dueAmount = updatedTotalAmount - parseFloat(paid1);
+        setUpdateTotal(updatedTotalAmount);
+        setDue(dueAmount.toFixed(2));
+    }, [orderDiscount, paid, total]);
     useEffect(() => {
         if (searchQuery) {
             setProducts([]);
@@ -152,9 +165,7 @@ export default function Pos() {
             return;
         }
         Swal.fire({
-            title: `Are you sure you want to complete this order? <br>Total: ${updateTotal.toFixed(
-                2
-            )}`,
+            title: `Are you sure you want to complete this order? <br>Due: ${due}`,
             showDenyButton: true,
             confirmButtonText: "Yes",
             denyButtonText: "No",
@@ -169,7 +180,8 @@ export default function Pos() {
                 axios
                     .put("/admin/order/create", {
                         customer_id: customerId,
-                        order_discount: orderDiscount,
+                        order_discount: parseFloat(orderDiscount) || 0,
+                        paid: parseFloat(paid) || 0,
                     })
                     .then((res) => {
                         setCartUpdated(!cartUpdated);
@@ -249,11 +261,18 @@ export default function Pos() {
                                                 min={0}
                                                 disabled={total <= 0}
                                                 value={orderDiscount}
-                                                onChange={(e) =>
-                                                    setOrderDiscount(
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={(e) => {
+                                                    const value =
+                                                        e.target.value;
+                                                    if (
+                                                        parseFloat(value) >
+                                                            total.toFixed(2) ||
+                                                        parseFloat(value) < 0
+                                                    ) {
+                                                        return;
+                                                    }
+                                                    setOrderDiscount(value);
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -261,6 +280,39 @@ export default function Pos() {
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
                                             {updateTotal.toFixed(2)}
+                                        </div>
+                                    </div>
+                                    <div className="row text-bold mb-1">
+                                        <div className="col">Paid:</div>
+                                        <div className="col text-right mr-2">
+                                            <input
+                                                type="number"
+                                                className="form-control form-control-sm"
+                                                placeholder="Enter paid"
+                                                min={0}
+                                                disabled={total <= 0}
+                                                value={paid}
+                                                onChange={(e) => {
+                                                    const value =
+                                                        e.target.value;
+                                                    if (
+                                                        parseFloat(value) < 0 ||
+                                                        parseFloat(value) >
+                                                            updateTotal.toFixed(
+                                                                2
+                                                            )
+                                                    ) {
+                                                        return;
+                                                    }
+                                                    setPaid(value);
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row text-bold">
+                                        <div className="col">Due:</div>
+                                        <div className="col text-right mr-2">
+                                            {due}
                                         </div>
                                     </div>
                                 </div>
@@ -329,9 +381,9 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {
-                                                            product.discounted_price
-                                                        }
+                                                        {product?.discounted_price?.toFixed(
+                                                            2
+                                                        )}
                                                     </p>
                                                 </div>
                                             </div>

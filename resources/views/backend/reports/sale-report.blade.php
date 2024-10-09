@@ -50,7 +50,15 @@
                       <td class="text-right">{{number_format($discount,2)}}</td>
                     </tr>
                     <tr>
-                      <th>Total Sale:</th>
+                      <th>Total Sold:</th>
+                      <td class="text-right">{{number_format($total,2)}}</td>
+                    </tr>
+                    <tr>
+                      <th>Customer Paid:</th>
+                      <td class="text-right">{{number_format($total,2)}}</td>
+                    </tr>
+                    <tr>
+                      <th>Customer Due:</th>
                       <td class="text-right">{{number_format($total,2)}}</td>
                     </tr>
                   </table>

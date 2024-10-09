@@ -105,15 +105,23 @@
             <table class="table">
               <tr>
                 <th style="width:50%">Subtotal:</th>
-                <td>{{$order->sub_total}}</td>
+                <td class="text-right">{{number_format($order->sub_total,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Discount:</th>
-                <td>{{$order->discount}}</td>
+                <td class="text-right">{{number_format($order->discount,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td>{{$order->total}}</td>
+                <td class="text-right">{{number_format($order->total,2,'.',',')}}</td>
+              </tr>
+              <tr>
+                <th>Paid:</th>
+                <td class="text-right">{{number_format($order->paid,2,'.',',')}}</td>
+              </tr>
+              <tr>
+                <th>Due:</th>
+                <td class="text-right">{{number_format($order->due,2,'.',',')}}</td>
               </tr>
             </table>
           </div>

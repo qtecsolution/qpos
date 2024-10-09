@@ -70,11 +70,12 @@ class Product extends Model
     public function getDiscountedPriceAttribute()
     {
         if ($this->discount_type == 'fixed') {
-            return number_format($this->price - $this->discount, 2);
+            $discountedPrice = $this->price - $this->discount;
         } elseif ($this->discount_type == 'percentage') {
-            return number_format($this->price - ($this->price * $this->discount / 100), 2);
+            $discountedPrice = $this->price - ($this->price * $this->discount / 100);
         } else {
-            return $this->price;
+            $discountedPrice = $this->price;
         }
+        return $discountedPrice;
     }
 }
