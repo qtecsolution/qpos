@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 
-const CustomerSelect = ({setCustomerId}) => {
+const CustomerSelect = ({ setCustomerId }) => {
     const [customers, setCustomers] = useState([]);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [selectedCustomer, setSelectedCustomer] = useState({value:1,label:"Walking Customer"});
 
     // Fetch existing customers from the backend
     useEffect(() => {
@@ -16,15 +16,6 @@ const CustomerSelect = ({setCustomerId}) => {
             setCustomers(customerOptions);
         });
     }, []);
-    useEffect(() => {
-        const customerToSelect = customers.find(
-            (customer) => customer.value === 1
-        );
-        if (customerToSelect) {
-            setSelectedCustomer(customerToSelect);
-        }
-    }, [customers]);
-    
   useEffect(() => {
     setCustomerId(selectedCustomer?.value);
   }, [selectedCustomer]);

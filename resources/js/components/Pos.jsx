@@ -13,7 +13,7 @@ export default function Pos() {
     const [due, setDue] = useState(0);
     const [total, setTotal] = useState(0);
     const [updateTotal, setUpdateTotal] = useState(0);
-    const [customerId, setCustomerId] = useState(1);
+    const [customerId, setCustomerId] = useState();
     const [cartUpdated, setCartUpdated] = useState(false);
     const [productUpdated, setProductUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
