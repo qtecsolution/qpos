@@ -83,9 +83,9 @@ class OrderController extends Controller
         $order->sub_total = $totalAmountOrder;
         $order->discount = $orderDiscount;
         $order->paid = $request->paid;
-        $order->total = $total;
-        $order->due = $due;
-        $order->status = $due <= 0;
+        $order->total = number_format((float)$total, 2, '.', '');
+        $order->due = number_format((float)$due, 2, '.', '');
+        $order->status = number_format((float)$due, 2, '.', '') <= 0;
         $order->save();
         $carts = PosCart::where('user_id', auth()->id())->delete();
         return response()->json(['message' => 'Order completed successfully', 'order' => $order], 200);
@@ -126,5 +126,26 @@ class OrderController extends Controller
     {
         $order = Order::with(['customer', 'products.product'])->findOrFail($id);
         return view('backend.orders.print-invoice', compact('order'));
+    }
+    public function collection(Request $request, $id)
+    {
+
+        $order = Order::findOrFail($id);
+        if ($request->isMethod('post')) {
+            $data = $request->validate([
+                'amount' => 'required|numeric',
+            ]);
+
+
+            $due = $order->due - $data['amount'];
+            $paid = $order->paid + $data['amount'];
+            $order->due = number_format((float)$due, 2, '.', '');
+            $order->paid = number_format((float)$paid, 2, '.', '');
+            $order->status = number_format((float)$due, 2, '.', '') <= 0;
+            $order->save();
+            $collection_amount = $data['amount'];
+            return view('backend.orders.collection.invoice', compact('order', 'collection_amount'));
+        }
+        return view('backend.orders.collection.create', compact('order'));
     }
 }

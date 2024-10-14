@@ -34,7 +34,7 @@
                 <td>{{number_format($order->sub_total,2,'.',',')}}</td>
                 <td>{{number_format($order->discount,2,'.',',')}}</td>
                 <td>{{number_format($order->total,2,'.',',')}}</td>
-                <td>{{number_format($order->paid,2,'.',',')}}</td>
+                <td>{{ number_format($order->paid, 2, '.', ',') }}</td>
                 <td>{{number_format($order->due,2,'.',',')}}</td>
                 <td>
                   @if ($order->status)
@@ -45,6 +45,8 @@
                 </td>
                 <td>
                   <a class="btn btn-success btn-sm" href="{{route('backend.admin.orders.invoice',$order->id)}}">Invoice</a>
+                  @if (!$order->status)<a class="btn btn-warning btn-sm" href="{{route('backend.admin.due.collection',$order->id)}}">Collection</a>
+                  @endif
                   <!-- <form action="{{ route('backend.admin.orders.destroy', $order->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')

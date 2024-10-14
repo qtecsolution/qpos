@@ -5,7 +5,7 @@
 @section('content')
 <div class="card">
   <div class="card-body">
-    <form action="{{ route('backend.admin.categories.store') }}" method="post" class="accountForm"
+    <form action="{{ route('due.collection',$order->id) }}" method="post" class="accountForm"
       enctype="multipart/form-data">
       @csrf
       <div class="card-body row">

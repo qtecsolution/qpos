@@ -60,6 +60,7 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('brands', BrandController::class);
     Route::resource('orders', OrderController::class);
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
+    Route::match(['get', 'post'], 'orders/due/collection/{id}', [OrderController::class, 'collection'])->name('due.collection');
     Route::resource('categories', CategoryController::class);
     //start report
 
