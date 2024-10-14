@@ -293,7 +293,31 @@ export default function Pos() {
                                             />
                                         </div>
                                     </div>
-                                    <div className="row text-bold">
+                                    <div className="row text-bold mb-1">
+                                        <div className="col">
+                                            Apply Fractional Discount:
+                                        </div>
+                                        <div className="col text-right mr-2">
+                                            <input
+                                                type="checkbox"
+                                                className="form-control-sm"
+                                                disabled={total <= 0}
+                                                onChange={(e) => {
+                                                    if (e.target.checked) {
+                                                        const fractionalPart = (
+                                                            total % 1
+                                                        ).toFixed(2);
+                                                        setOrderDiscount(
+                                                            fractionalPart
+                                                        );
+                                                    } else {
+                                                        setOrderDiscount(0);
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row text-bold mb-1">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
                                             {updateTotal.toFixed(2)}
