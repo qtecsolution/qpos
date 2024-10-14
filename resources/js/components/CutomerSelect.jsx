@@ -8,7 +8,7 @@ const CustomerSelect = ({ setCustomerId }) => {
 
     // Fetch existing customers from the backend
     useEffect(() => {
-      axios.get("/admin/customers").then((response) => {
+      axios.get("/admin/get/customers").then((response) => {
             const customerOptions = response?.data?.map((customer) => ({
                 value: customer.id,
                 label: customer.name,
@@ -22,7 +22,7 @@ const CustomerSelect = ({ setCustomerId }) => {
 
     const handleCreateCustomer = (inputValue) => {
         axios
-            .post("/admin/customers", { name: inputValue })
+            .post("/admin/create/customers", { name: inputValue })
             .then((response) => {
                 const newCustomer = response.data;
                 const newOption = {

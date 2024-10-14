@@ -59,6 +59,7 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('products', ProductController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('customers', CustomerController::class);
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
     Route::match(['get', 'post'], 'orders/due/collection/{id}', [OrderController::class, 'collection'])->name('due.collection');
     Route::resource('categories', CategoryController::class);
@@ -76,8 +77,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::put('/cart/delete', [CartController::class, 'delete']);
     Route::put('/cart/empty', [CartController::class, 'empty']);
     Route::put('/order/create', [OrderController::class, 'store']);
-    Route::get('/customers',[CustomerController::class,'index']);
-    Route::post('/customers', [CustomerController::class, 'store']);
+    Route::get('/get/customers',[CustomerController::class,'getCustomers']);
+    Route::post('/create/customers', [CustomerController::class, 'store']);
     //end pos
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('profile/update', [AuthController::class, 'update'])->name('profile.update');
