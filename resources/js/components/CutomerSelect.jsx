@@ -16,6 +16,15 @@ const CustomerSelect = ({setCustomerId}) => {
             setCustomers(customerOptions);
         });
     }, []);
+    useEffect(() => {
+        const customerToSelect = customers.find(
+            (customer) => customer.value === 1
+        );
+        if (customerToSelect) {
+            setSelectedCustomer(customerToSelect);
+        }
+    }, [customers]);
+    
   useEffect(() => {
     setCustomerId(selectedCustomer?.value);
   }, [selectedCustomer]);

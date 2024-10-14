@@ -13,7 +13,7 @@ export default function Pos() {
     const [due, setDue] = useState(0);
     const [total, setTotal] = useState(0);
     const [updateTotal, setUpdateTotal] = useState(0);
-    const [customerId, setCustomerId] = useState(null);
+    const [customerId, setCustomerId] = useState(1);
     const [cartUpdated, setCartUpdated] = useState(false);
     const [productUpdated, setProductUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -324,7 +324,7 @@ export default function Pos() {
                                         type="button"
                                         className="btn btn-danger btn-block"
                                     >
-                                        Cancel
+                                        Clear Cart
                                     </button>
                                 </div>
                                 <div className="col">
