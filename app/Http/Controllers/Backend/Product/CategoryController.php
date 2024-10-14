@@ -41,7 +41,7 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|boolean',
         ]);
         $category = Category::create($request->except('category_image'));

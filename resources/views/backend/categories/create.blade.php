@@ -5,7 +5,7 @@
 @section('content')
 <div class="card">
   <div class="card-body">
-    <form action="{{ route('due.collection',$order->id) }}" method="post" class="accountForm"
+    <form action="{{ route('backend.admin.categories.store') }}" method="post" class="accountForm"
       enctype="multipart/form-data">
       @csrf
       <div class="card-body row">
@@ -20,9 +20,8 @@
         <div class="mb-3">
           <label for="thumbnailInput" class="form-label">
             Image
-            <span class="text-danger">*</span>
           </label>
-          <input type="file" class="form-control" name="category_image" required id="thumbnailInput">
+          <input type="file" class="form-control" name="category_image" id="thumbnailInput">
           <div class="thumb-preview">
             <img src="{{ asset('backend/assets/images/blank.png') }}" alt="Thumbnail Preview"
               class="img-thumbnail d-none" id="thumbnailPreview">
@@ -43,9 +42,8 @@
         <div class="mb-3 col-md-12">
           <label for="description" class="form-label">
             Description
-            <span class="text-danger">*</span>
           </label>
-          <textarea class="form-control" placeholder="Enter description" name="description" required>{{ old('description') }}</textarea>
+          <textarea class="form-control" placeholder="Enter description" name="description">{{ old('description') }}</textarea>
         </div>
         <div class="mb-3 col-md-12">
           <div class="form-switch">

@@ -29,7 +29,9 @@
               <tr>
                 <td>{{ $index + 1  + ($categories->perPage() * ($categories->currentPage() - 1))}}</td>
                 <td>
-                  <img src="{{ asset('storage/'.$category->image) }}" loading="lazy" alt="{{ $category->name }}" class="img-thumb img-fluid" height="80" width="60"/>
+                  <img src="{{ asset('storage/'.$category->image) }}" loading="lazy" alt="{{ $category->name }}" class="img-thumb img-fluid" onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'"
+                    height="80"
+                    width="60" />
                 </td>
                 <td>{{ $category->name }}</td>
                 <td>

@@ -29,7 +29,9 @@
               <tr>
                 <td>{{ $index + 1  + ($brands->perPage() * ($brands->currentPage() - 1))}}</td>
                 <td>
-                  <img src="{{ asset('storage/'.$brand->image) }}" loading="lazy" alt="{{ $brand->name }}" class="img-thumb img-fluid" height="80" width="60"/>
+                  <img src="{{ asset('storage/'.$brand->image) }}" loading="lazy" alt="{{ $brand->name }}" class="img-thumb img-fluid" onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'"
+                    height="80"
+                    width="60" />
                 </td>
                 <td>{{ $brand->name }}</td>
                 <td>

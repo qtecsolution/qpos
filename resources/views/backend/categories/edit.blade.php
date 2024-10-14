@@ -43,9 +43,8 @@
         <div class="mb-3 col-md-12">
           <label for="description" class="form-label">
             Description
-            <span class="text-danger">*</span>
           </label>
-          <textarea class="form-control" placeholder="Enter description" name="description" required>{{ old('description',$category->description) }}</textarea>
+          <textarea class="form-control" placeholder="Enter description" name="description">{{ old('description',$category->description) }}</textarea>
         </div>
         <div class="mb-3 col-md-12">
           <div class="form-switch">

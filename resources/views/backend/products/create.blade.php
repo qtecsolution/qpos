@@ -104,9 +104,8 @@
         <div class="mb-3">
           <label for="thumbnailInput" class="form-label">
             Image
-            <span class="text-danger">*</span>
           </label>
-          <input type="file" class="form-control" name="product_image" required id="thumbnailInput">
+          <input type="file" class="form-control" name="product_image" id="thumbnailInput">
           <div class="thumb-preview">
             <img src="{{ asset('backend/assets/images/blank.png') }}" alt="Thumbnail Preview"
               class="img-thumbnail d-none" id="thumbnailPreview">
@@ -127,9 +126,8 @@
         <div class="mb-3 col-md-12">
           <label for="description" class="form-label">
             Description
-            <span class="text-danger">*</span>
           </label>
-          <textarea class="form-control" placeholder="Enter description" name="description" required>{{ old('description') }}</textarea>
+          <textarea class="form-control" placeholder="Enter description" name="description">{{ old('description') }}</textarea>
         </div>
 
         <div class="mb-3 col-md-6">
