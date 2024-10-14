@@ -17,6 +17,7 @@ export default function Pos() {
     const [cartUpdated, setCartUpdated] = useState(false);
     const [productUpdated, setProductUpdated] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [searchBarcode, setSearchBarcode] = useState("");
     const { protocol, hostname, port } = window.location;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -24,21 +25,28 @@ export default function Pos() {
     const fullDomainWithPort = `${protocol}//${hostname}${
         port ? `:${port}` : ""
     }`;
-    const getProducts = useCallback(async (search = "", page = 1) => {
-        setLoading(true);
-        try {
-            const res = await axios.get(`get/products`, {
-                params: { search, page },
-            });
-            const productsData = res.data;
-            setProducts((prev) => [...prev, ...productsData.data]); // Append new products
-            setTotalPages(productsData.meta.last_page); // Get total pages
-        } catch (error) {
-            console.error("Error fetching products:", error);
-        } finally {
-            setLoading(false); // Set loading to false
-        }
-    }, []);
+    const getProducts = useCallback(
+        async (search = "", page = 1, barcode = "") => {
+            setLoading(true);
+            try {
+                const res = await axios.get(`get/products`, {
+                    params: { search, page, barcode },
+                });
+                const productsData = res.data;
+                setProducts((prev) => [...prev, ...productsData.data]); // Append new products
+                if (productsData.data.length === 1 && barcode != "") {
+                    addProductToCart(productsData.data[0].id);
+                    getCarts();
+                }
+                setTotalPages(productsData.meta.last_page); // Get total pages
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false); // Set loading to false
+            }
+        },
+        []
+    );
     const getUpdatedProducts = useCallback(async () => {
         try {
             const res = await axios.get(`get/products`);
@@ -92,8 +100,17 @@ export default function Pos() {
             setProducts([]);
             setCurrentPage(1);
         }
-        getProducts(searchQuery, currentPage);
+        getProducts(searchQuery, currentPage, "");
+        setSearchBarcode("");
     }, [getProducts, currentPage, searchQuery]);
+
+    useEffect(() => {
+        if (searchBarcode) {
+            setProducts([]);
+        }
+        getProducts("", currentPage, searchBarcode);
+    }, [searchBarcode]);
+
     // Infinite scroll logic
     useEffect(() => {
         const handleScroll = () => {
@@ -341,16 +358,30 @@ export default function Pos() {
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-7">
-                            <div className="mb-2">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Product Name or Barcode"
-                                    value={searchQuery}
-                                    onChange={(e) =>
-                                        setSearchQuery(e.target.value)
-                                    }
-                                />
+                            <div className="row">
+                                <div className="mb-2 col-md-6">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Enter Product Barcode"
+                                        value={searchBarcode}
+                                        autoFocus
+                                        onChange={(e) =>
+                                            setSearchBarcode(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-2 col-md-6">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Enter Product Name"
+                                        value={searchQuery}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
+                                    />
+                                </div>
                             </div>
                             <div className="row products-card-container">
                                 {products.length > 0 &&

@@ -32,13 +32,18 @@ class CartController extends Controller
     }
     public function getProducts(Request $request)
     {
-        $products = Product::query();
+        $products = Product::query()->active()->stocked();
+
+        // Search by name if provided
         $products->when($request->search, function ($query, $search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('sku', 'LIKE', "%{$search}%");
+            $query->where('name', 'LIKE', "%{$search}%");
         });
 
-        $products = $products->active()->stocked()->latest()->paginate(96);
+        // Search by barcode if provided
+        $products->when($request->barcode, function ($query, $barcode) {
+            $query->where('sku', $barcode);
+        });
+        $products = $products->latest()->paginate(96);
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }
@@ -93,7 +98,7 @@ class CartController extends Controller
         $request->validate([
             'id' => 'required|integer|exists:pos_carts,id'
         ]);
-        
+
         $cart = PosCart::with('product')->findOrFail($request->id);
         if ($cart->product->quantity <= 0) {
             return response()->json(['message' => 'Insufficient stock available'], 400);
@@ -139,5 +144,4 @@ class CartController extends Controller
 
         return response()->json(['message' => 'Cart is already empty'], 204);
     }
-
 }
