@@ -32,8 +32,8 @@ class CartController extends Controller
     }
     public function getProducts(Request $request)
     {
-        $products = Product::query()->active()->stocked();
 
+        $products = Product::query()->active()->stocked();
         // Search by name if provided
         $products->when($request->search, function ($query, $search) {
             $query->where('name', 'LIKE', "%{$search}%");
