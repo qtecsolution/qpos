@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
 use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
@@ -25,5 +26,9 @@ class StartUpSeeder extends Seeder
 
         $role = Role::create(['name' => 'Admin']);
         $user->syncRoles($role);
+        Customer::create([
+            'name' => "Walking Customer",
+            'phone' => "012345678",
+        ]);
     }
 }

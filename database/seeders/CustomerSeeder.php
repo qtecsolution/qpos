@@ -16,11 +16,6 @@ class CustomerSeeder extends Seeder
     {
 
         $faker = Faker::create();
-        Customer::create([
-            'name' => "Walking Customer",
-            'phone' => "012345678",
-            'address' => $faker->address(),
-        ]);
         for ($i = 0; $i < 10; $i++) {
             Customer::create([
                 'name' => $faker->name(),
