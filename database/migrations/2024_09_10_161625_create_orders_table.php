@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->string('customer_id')->nullable();
+            $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->double('discount')->default(0);
             $table->double('sub_total')->default(0)->comment('sumOf(total) from order_products table');
             $table->double('total')->default(0)->comment('sub_total - discount');
