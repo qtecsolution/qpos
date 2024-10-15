@@ -22,7 +22,7 @@
         <!-- /.col -->
       </div>
       <!-- info row -->
-      <div class="row invoice-info">
+      <div class="row invoice-info mb-2">
         <div class="col-sm-4 invoice-col">
           From
           <address>
@@ -43,8 +43,10 @@
         <!-- /.col -->
         <div class="col-sm-3 invoice-col">
           Info <br>
-          Sell ID #{{$order->id}}<br>
-          Sell Date: {{date('d/m/Y', strtotime($order->created_at))}}<br>
+          Invoice ID #{{$transaction->id}}<br>
+          Sale ID #{{$order->id}}<br>
+          Sale Date: {{date('d/m/Y', strtotime($order->created_at))}}<br>
+          Collection Date: {{date('d/m/Y', strtotime($transaction->created_at))}}<br>
           <!-- <br>
           <b>Payment Due:</b> 2/22/2014<br>
           <b>Account:</b> 968-34567 -->
@@ -78,7 +80,7 @@
                   <br><del>{{ $item->price }}</del>
                   @endif
                 </td>
-                <td>{{$item->total}}</td>
+                <td>{{number_format($item->total,2,'.',',')}}</td>
               </tr>
               @endforeach
             </tbody>
@@ -116,8 +118,8 @@
                 <td class="text-right">{{number_format($order->total,2,'.',',')}}</td>
               </tr>
               <tr>
-                <th>Paid:</th>
-                <td class="text-right">{{number_format($order->paid,2,'.',',')}}</td>
+                <th>Previously Paid:</th>
+                <td class="text-right">{{number_format($order->paid - $collection_amount,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Collection Amount:</th>

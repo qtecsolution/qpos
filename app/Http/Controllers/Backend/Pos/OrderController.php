@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Pos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderTransaction;
 use App\Models\PosCart;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -87,6 +88,16 @@ class OrderController extends Controller
         $order->due = number_format((float)$due, 2, '.', '');
         $order->status = number_format((float)$due, 2, '.', '') <= 0;
         $order->save();
+        //create order transaction
+        if ($request->paid > 0) {
+            $orderTransaction = $order->transactions()->create([
+                'amount' => $request->paid,
+                'customer_id' => $order->customer_id,
+                'user_id' => auth()->id(),
+                'paid_by' => 'cash',
+            ]);
+        }
+
         $carts = PosCart::where('user_id', auth()->id())->delete();
         return response()->json(['message' => 'Order completed successfully', 'order' => $order], 200);
     }
@@ -133,7 +144,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         if ($request->isMethod('post')) {
             $data = $request->validate([
-                'amount' => 'required|numeric',
+                'amount' => 'required|numeric|min:1',
             ]);
 
 
@@ -144,8 +155,24 @@ class OrderController extends Controller
             $order->status = number_format((float)$due, 2, '.', '') <= 0;
             $order->save();
             $collection_amount = $data['amount'];
-            return view('backend.orders.collection.invoice', compact('order', 'collection_amount'));
+            //create order transaction
+
+            $orderTransaction = $order->transactions()->create([
+                'amount' => $data['amount'],
+                'customer_id' => $order->customer_id,
+                'user_id' => auth()->id(),
+                'paid_by' => 'cash',
+            ]);
+            return to_route('backend.admin.collectionInvoice', $orderTransaction->id);
         }
         return view('backend.orders.collection.create', compact('order'));
+    }
+
+    //collection invoice by order_transaction id
+    public function collectionInvoice($id){
+        $transaction = OrderTransaction::findOrFail($id);
+        $collection_amount = $transaction->amount;
+        $order = $transaction->order;
+        return view('backend.orders.collection.invoice', compact('order', 'collection_amount', 'transaction'));
     }
 }
