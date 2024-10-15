@@ -28,6 +28,8 @@ class CartController extends Controller
                 'total' => $total
             ]);
         }
+        // clear cart
+        PosCart::where('user_id', auth()->id())->delete();
         return view('backend.cart.index');
     }
     public function getProducts(Request $request)
