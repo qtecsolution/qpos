@@ -43,7 +43,7 @@
                   <thead>
                     <tr>
                       <th data-orderable="false">#</th>
-                      <th>SellId</th>
+                      <th>SaleId</th>
                       <th>Customer</th>
                       <th>Date</th>
                       <th>Item</th>

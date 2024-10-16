@@ -1,6 +1,6 @@
 @extends('backend.master')
 
-@section('title', 'Sell')
+@section('title', 'Sale')
 
 @section('content')
 <div class="card">
@@ -12,7 +12,7 @@
             <thead>
               <tr>
                 <th data-orderable="false">#</th>
-                <th>SellId</th>
+                <th>SaleId</th>
                 <th>Customer</th>
                 <th>Item</th>
                 <th>Sub Total</th>

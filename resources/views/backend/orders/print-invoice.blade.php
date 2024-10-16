@@ -43,8 +43,8 @@
         <!-- /.col -->
         <div class="col-sm-3 invoice-col">
           Info <br>
-          Sell ID #{{$order->id}}<br>
-          Sell Date: {{date('d/m/Y', strtotime($order->created_at))}}<br>
+          Sale ID #{{$order->id}}<br>
+          Sale Date: {{date('d/m/Y', strtotime($order->created_at))}}<br>
           <!-- <br>
           <b>Payment Due:</b> 2/22/2014<br>
           <b>Account:</b> 968-34567 -->

@@ -61,7 +61,7 @@
                                                 <i class="fas fa-cog"></i>
                                             </a>
                                             @if ($role->id != 1)
-                                                <button title="Edit Role" type="button" class="btn btn-info btn-xs"
+                                                <button title="Edit Role" type="button" class="btn bg-gradient-primary btn-xs"
                                                     data-toggle="modal" data-target="#editRole-{{ $role->id }}">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </button>

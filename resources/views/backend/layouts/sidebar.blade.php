@@ -54,6 +54,15 @@ $route = request()->route()->getName();
                         </a>
                     </li>
                 </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.suppliers.index')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.suppliers.index']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Supplier</p>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'active' : '' }}">
@@ -115,6 +124,50 @@ $route = request()->route()->getName();
                 </ul>
             </li>
 
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.purchase.index', 'backend.admin.purchase.create', 'backend.admin.purchase.edit']) ? 'menu-open' : '' }}">
+                    <i class="fas fa-chevron-circle-up nav-icon"></i>
+                    <p>
+                        Purchase
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.purchase.index')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.purchase.index']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Purchase List</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.sale.report','backend.admin.sale.summery']) ? 'menu-open' : '' }}">
+                    <i class="fas fa-chart-bar nav-icon"></i>
+                    <p>
+                        Reports
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.sale.summery')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.sale.summery']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Summery</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.sale.report')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.sale.report']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Sale</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.sale.report','backend.admin.sale.summery']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chart-bar nav-icon"></i>

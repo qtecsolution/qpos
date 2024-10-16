@@ -68,7 +68,7 @@
                                         <td>
                                             <div class="text-center">
                                                 <!-- Button trigger modal -->
-                                                <button title="Edit permission" type="button" class="btn btn-info btn-xs"
+                                                <button title="Edit permission" type="button" class="btn bg-gradient-primary btn-xs"
                                                     data-toggle="modal" data-target="#editpermission-{{ $data->id }}">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </button>

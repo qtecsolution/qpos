@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Models\Customer;
+use App\Http\Controllers\Controller;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $customers = Customer::latest()->get();
-            return DataTables::of($customers)
+            $suppliers = Supplier::latest()->get();
+            return DataTables::of($suppliers)
                 ->addIndexColumn()
                 ->addColumn('name', fn($data) => $data->name)
                 ->addColumn('phone', fn($data) => $data->phone)
@@ -28,18 +29,14 @@ class CustomerController extends Controller
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" role="menu">
-                      <a class="dropdown-item" href="' . route('backend.admin.customers.edit', $data->id) . '" ' . ($data->id == 1 ? 'onclick="event.preventDefault();"' : '') . ' >
+                      <a class="dropdown-item" href="' . route('backend.admin.suppliers.edit', $data->id) . '" ' . ($data->id == 1 ? 'onclick="event.preventDefault();"' : '') . ' >
                     <i class="fas fa-edit"></i> Edit
                 </a> <div class="dropdown-divider"></div>
-<form action="' . route('backend.admin.customers.destroy', $data->id) . '"method="POST" style="display:inline;">
+<form action="' . route('backend.admin.suppliers.destroy', $data->id) . '"method="POST" style="display:inline;">
                    ' . csrf_field() . '
                     ' . method_field("DELETE") . '
 <button type="submit" ' . ($data->id == 1 ? 'disabled' : '') . ' class="dropdown-item" onclick="return confirm(\'Are you sure ?\')"><i class="fas fa-trash"></i> Delete</button>
                   </form>
-<div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="' . route('backend.admin.customers.orders', $data->id) . '">
-                <i class="fas fa-cart-plus"></i> Sales
-            </a>
                     </div>
                   </div>';
                 })
@@ -48,7 +45,7 @@ class CustomerController extends Controller
         }
 
 
-        return view('backend.customers.index');
+        return view('backend.suppliers.index');
     }
 
     /**
@@ -56,7 +53,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('backend.customers.create');
+        return view('backend.suppliers.create');
     }
 
     /**
@@ -70,28 +67,28 @@ class CustomerController extends Controller
                 'name' => 'required|string',
             ]);
 
-            $customer = Customer::create([
+            $supplier = Supplier::create([
                 'name' => $request->name,
             ]);
 
-            return response()->json($customer);
+            return response()->json($supplier);
         }
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20|unique:customers,phone',
+            'phone' => 'required|string|max:20|unique:suppliers,phone',
             'address' => 'nullable|string|max:255',
         ]);
 
-        $customer = Customer::create($request->only(['name', 'phone', 'address']));
+        $supplier = Supplier::create($request->only(['name', 'phone', 'address']));
 
-        session()->flash('success', 'Customer created successfully.');
-        return to_route('backend.admin.customers.index');
+        session()->flash('success', 'Supplier created successfully.');
+        return to_route('backend.admin.suppliers.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(Supplier $supplier)
     {
         //
     }
@@ -101,8 +98,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::findOrFail($id);
-        return view('backend.customers.edit', compact('customer'));
+        $supplier = Supplier::findOrFail($id);
+        return view('backend.suppliers.edit', compact('supplier'));
     }
 
     /**
@@ -110,18 +107,18 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $customer = Customer::findOrFail($id);
+        $supplier = Supplier::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20|unique:customers,phone,' . $customer->id, // Corrected syntax
+            'phone' => 'required|string|max:20|unique:suppliers,phone,' . $supplier->id, // Corrected syntax
             'address' => 'nullable|string|max:255',
         ]);
 
-        $customer->update($request->only(['name', 'phone', 'address']));
+        $supplier->update($request->only(['name', 'phone', 'address']));
 
-        session()->flash('success', 'Customer updated successfully.');
-        return to_route('backend.admin.customers.index');
+        session()->flash('success', 'Supplier updated successfully.');
+        return to_route('backend.admin.suppliers.index');
     }
 
 
@@ -130,22 +127,22 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $customer = Customer::findOrFail($id);
-        $customer->delete();
-        session()->flash('success', 'Customer deleted successfully.');
-        return to_route('backend.admin.customers.index');
+        $supplier = Supplier::findOrFail($id);
+        $supplier->delete();
+        session()->flash('success', 'Supplier deleted successfully.');
+        return to_route('backend.admin.suppliers.index');
     }
     public function getCustomers(Request $request)
     {
         if ($request->wantsJson()) {
-            return response()->json(Customer::latest()->get());
+            return response()->json(Supplier::latest()->get());
         }
     }
-    //get orders by customer id
+    //get orders by supplier id
     public function orders($id)
     {
-        $customer = Customer::findOrFail($id);
-        $orders = $customer->orders()->paginate(100);
+        $supplier = Supplier::findOrFail($id);
+        $orders = $supplier->orders()->paginate(100);
         return view('backend.orders.index', compact('orders'));
     }
 }

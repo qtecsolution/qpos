@@ -15,7 +15,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a class="nav-link btn btn-primary text-white" href="{{route('backend.admin.cart.index')}}">
+            <a class="nav-link btn bg-gradient-primary text-white" href="{{route('backend.admin.cart.index')}}">
                 <i class="fas fa-cart-plus"> POS</i>
             </a>
         </li>
