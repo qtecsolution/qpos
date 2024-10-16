@@ -49,6 +49,61 @@
     <link rel="stylesheet" href="{{ asset('assets/css/datatable/buttons.dataTables.min.css') }}">
     {{-- custom style --}}
     <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
+
+    <style>
+        .image-upload-container {
+            border: 2px dashed #8b9ee9;
+            /* Dashed border color */
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            /* Light background color */
+            display: flex;
+            justify-content: center;
+            /* Center the content */
+            align-items: center;
+            /* Center the content vertically */
+            width: 100%;
+            /* Make the container full width of its parent */
+            height: 200px;
+            /* Fixed height */
+            cursor: pointer;
+            /* Indicate clickability */
+        }
+
+        .thumb-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Prevents overflow */
+        }
+
+        #thumbnailPreview {
+            max-width: 100%;
+            max-height: 100%;
+            /* Ensure it fits within the container */
+            object-fit: cover;
+            /* Maintain aspect ratio while covering the box */
+        }
+
+        .upload-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8b9ee9;
+            /* Text color */
+            text-align: center;
+        }
+
+        .upload-text i {
+            font-size: 24px;
+            /* Icon size */
+            margin-bottom: 5px;
+            /* Space between icon and text */
+        }
+    </style>
     @stack('style')
     @viteReactRefresh
     @vite('resources/js/app.jsx')
@@ -167,6 +222,27 @@
 
     @stack('script')
 
+    <script>
+        const inputFile = document.getElementById('thumbnailInput');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const uploadText = document.querySelector('.upload-text');
+
+        document.getElementById('imageUploadContainer').addEventListener('click', function() {
+            inputFile.click(); // Trigger the file input when the container is clicked
+        });
+
+        inputFile.addEventListener('change', function() {
+            const reader = new FileReader();
+            reader.addEventListener('load', function() {
+                thumbnailPreview.src = reader.result;
+                thumbnailPreview.classList.remove('d-none'); // Show the preview
+                uploadText.classList.add('d-none'); // Hide the upload text
+            });
+            if (this.files[0]) {
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -18,26 +18,21 @@
           <input type="text" class="form-control" placeholder="Enter title" name="name"
             value="{{ old('name', $category->name) }}" required>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 col-md-6">
           <label for="thumbnailInput" class="form-label">
             Image
           </label>
-          <input type="file" class="form-control" name="category_image" id="thumbnailInput">
-          <div class="thumb-preview">
-            <img src="{{ asset('backend/assets/images/blank.png') }}" alt="Thumbnail Preview"
-              class="img-thumbnail d-none" id="thumbnailPreview">
+          <div class="image-upload-container" id="imageUploadContainer">
+            <input type="file" class="form-control" name="category_image" id="thumbnailInput" accept="image/*" style="display: none;">
+            <div class="thumb-preview" id="thumbPreviewContainer">
+              <img src="{{ asset('storage/' . $category->image) }}" alt="Thumbnail Preview"
+                class="img-thumbnail" id="thumbnailPreview" onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'">
+              <div class="upload-text d-none">
+                <i class="fas fa-plus-circle"></i>
+                <span>Upload Image</span>
+              </div>
+            </div>
           </div>
-          <script>
-            document.getElementById('thumbnailInput').addEventListener('change', function() {
-              const reader = new FileReader();
-              reader.addEventListener('load', function() {
-                const img = document.getElementById('thumbnailPreview');
-                img.src = reader.result;
-                img.classList.remove('d-none');
-              });
-              reader.readAsDataURL(this.files[0]);
-            });
-          </script>
         </div>
 
         <div class="mb-3 col-md-12">

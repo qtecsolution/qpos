@@ -101,26 +101,21 @@
           <input type="number" step="0.01" min="0" class="form-control"
             placeholder="Enter discount" name="discount" value="{{ old('discount') }}">
         </div>
-        <div class="mb-3">
+        <div class="mb-3 col-md-6">
           <label for="thumbnailInput" class="form-label">
             Image
           </label>
-          <input type="file" class="form-control" name="product_image" id="thumbnailInput">
-          <div class="thumb-preview">
-            <img src="{{ asset('backend/assets/images/blank.png') }}" alt="Thumbnail Preview"
-              class="img-thumbnail d-none" id="thumbnailPreview">
+          <div class="image-upload-container" id="imageUploadContainer">
+            <input type="file" class="form-control" name="product_image" id="thumbnailInput" accept="image/*" style="display: none;">
+            <div class="thumb-preview" id="thumbPreviewContainer">
+              <img src="{{ asset('backend/assets/images/blank.png') }}" alt="Thumbnail Preview"
+                class="img-thumbnail d-none" id="thumbnailPreview">
+              <div class="upload-text">
+                <i class="fas fa-plus-circle"></i>
+                <span>Upload Image</span>
+              </div>
+            </div>
           </div>
-          <script>
-            document.getElementById('thumbnailInput').addEventListener('change', function() {
-              const reader = new FileReader();
-              reader.addEventListener('load', function() {
-                const img = document.getElementById('thumbnailPreview');
-                img.src = reader.result;
-                img.classList.remove('d-none');
-              });
-              reader.readAsDataURL(this.files[0]);
-            });
-          </script>
         </div>
 
         <div class="mb-3 col-md-12">
@@ -154,7 +149,10 @@
   </div>
 </div>
 @endsection
+
+@push('style')
+
+
+@endpush
 @push('script')
-<script>
-</script>
 @endpush
