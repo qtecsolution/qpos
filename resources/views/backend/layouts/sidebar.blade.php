@@ -142,32 +142,6 @@ $route = request()->route()->getName();
                     </li>
                 </ul>
             </li>
-
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.sale.report','backend.admin.sale.summery']) ? 'menu-open' : '' }}">
-                    <i class="fas fa-chart-bar nav-icon"></i>
-                    <p>
-                        Reports
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{route('backend.admin.sale.summery')}}"
-                            class="nav-link {{ request()->routeIs(['backend.admin.sale.summery']) ? 'active' : '' }}">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>Summery</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('backend.admin.sale.report')}}"
-                            class="nav-link {{ request()->routeIs(['backend.admin.sale.report']) ? 'active' : '' }}">
-                            <i class="fas fa-circle nav-icon"></i>
-                            <p>Sale</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.sale.report','backend.admin.sale.summery']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chart-bar nav-icon"></i>
