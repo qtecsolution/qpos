@@ -58,6 +58,5 @@
 </div>
 @endsection
 @push('script')
-<script>
-</script>
+<script src="{{ asset('js/image-field.js') }}"></script>
 @endpush

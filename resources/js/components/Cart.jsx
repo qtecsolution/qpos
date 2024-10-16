@@ -136,7 +136,7 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                                                     <>
                                                         <br />
                                                         <del>
-                                                            {item.product.price.toFixed(
+                                                            {item?.product?.price?.toFixed(
                                                                 2
                                                             )}
                                                         </del>
@@ -146,7 +146,7 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                                                 )}
                                             </td>
                                             <td className="text-right">
-                                                {item.row_total.toFixed(2)}
+                                                {item?.row_total?.toFixed(2)}
                                             </td>
                                         </tr>
                                     ))}

@@ -155,4 +155,5 @@
 
 @endpush
 @push('script')
+<script src="{{ asset('js/image-field.js') }}"></script>
 @endpush

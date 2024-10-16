@@ -418,13 +418,13 @@ export default function Pos() {
                             </div>
                             <div className="row products-card-container">
                                 {products.length > 0 &&
-                                    products.map((product) => (
+                                    products.map((product, index) => (
                                         <div
                                             onClick={() =>
                                                 addProductToCart(product.id)
                                             }
                                             className="col-sm-6 col-md-4 col-lg-3 mb-3"
-                                            key={product.id}
+                                            key={index}
                                         >
                                             <div className="product-item text-center">
                                                 <img
