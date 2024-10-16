@@ -47,6 +47,7 @@
                   <a class="btn btn-success btn-sm" href="{{route('backend.admin.orders.invoice',$order->id)}}">Invoice</a>
                   @if (!$order->status)<a class="btn btn-warning btn-sm" href="{{route('backend.admin.due.collection',$order->id)}}">Collection</a>
                   @endif
+                  <a class="btn btn-primary btn-sm" href="{{route('backend.admin.orders.transactions',$order->id)}}">Transactions</a>
                   <!-- <form action="{{ route('backend.admin.orders.destroy', $order->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')

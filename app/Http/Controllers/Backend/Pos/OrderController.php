@@ -175,4 +175,10 @@ class OrderController extends Controller
         $order = $transaction->order;
         return view('backend.orders.collection.invoice', compact('order', 'collection_amount', 'transaction'));
     }
+    //transactions by order id
+    public function transactions($id)
+    {
+        $order = Order::with('transactions')->findOrFail($id);
+        return view('backend.orders.collection.index', compact('order',));
+    }
 }

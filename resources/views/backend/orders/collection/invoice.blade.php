@@ -1,5 +1,5 @@
 @extends('backend.master')
-@section('title', 'Collection_Invoice_'.$order->id)
+@section('title', 'Collection_Invoice_'.$transaction->id)
 @section('content')
 <div class="card">
   <div class="card-body">
