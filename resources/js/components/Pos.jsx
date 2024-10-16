@@ -5,6 +5,11 @@ import Swal from "sweetalert2";
 import Cart from "./Cart";
 import toast, { Toaster } from "react-hot-toast";
 import CustomerSelect from "./CutomerSelect";
+
+import SuccessSound from "../sounds/beep-07a.mp3";
+import WarningSound from "../sounds/beep-02.mp3";
+import playSound from "../utils/playSound";
+
 export default function Pos() {
     const [products, setProducts] = useState([]);
     const [carts, setCarts] = useState([]);
@@ -136,9 +141,11 @@ export default function Pos() {
             .post("/admin/cart", { id })
             .then((res) => {
                 setCartUpdated(!cartUpdated);
+                playSound(SuccessSound);
                 toast.success(res?.data?.message);
             })
             .catch((err) => {
+                playSound(WarningSound);
                 toast.error(err.response.data.message);
             });
     }
@@ -163,9 +170,11 @@ export default function Pos() {
                     .put("/admin/cart/empty")
                     .then((res) => {
                         setCartUpdated(!cartUpdated);
+                        playSound(SuccessSound);
                         toast.success(res?.data?.message);
                     })
                     .catch((err) => {
+                        playSound(WarningSound);
                         toast.error(err.response.data.message);
                     });
             } else if (result.isDenied) {

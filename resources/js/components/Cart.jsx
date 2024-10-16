@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import SuccessSound from "../sounds/beep-07a.mp3";
+import WarningSound from "../sounds/beep-02.mp3";
+import playSound from "../utils/playSound";
 
 export default function Cart({ carts, setCartUpdated, cartUpdated }) {
     function increment(id) {
@@ -11,9 +14,11 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
             })
             .then((res) => {
                 setCartUpdated(!cartUpdated);
+                playSound(SuccessSound);
                 toast.success(res?.data?.message);
             })
             .catch((err) => {
+                playSound(WarningSound);
                 toast.error(err.response.data.message);
             });
     }
@@ -24,9 +29,11 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
             })
             .then((res) => {
                 setCartUpdated(!cartUpdated);
+                playSound(SuccessSound);
                 toast.success(res?.data?.message);
             })
             .catch((err) => {
+                playSound(WarningSound);
                 toast.error(err.response.data.message);
             });
     }
@@ -51,6 +58,7 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                     .then((res) => {
                         console.log(res);
                         setCartUpdated(!cartUpdated);
+                        playSound(SuccessSound);
                         toast.success(res?.data?.message);
                     })
                     .catch((err) => {
