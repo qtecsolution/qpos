@@ -34,7 +34,7 @@ export default function Pos() {
         async (search = "", page = 1, barcode = "") => {
             setLoading(true);
             try {
-                const res = await axios.get(`get/products`, {
+                const res = await axios.get('/admin/get/products', {
                     params: { search, page, barcode },
                 });
                 const productsData = res.data;
@@ -54,7 +54,7 @@ export default function Pos() {
     );
     const getUpdatedProducts = useCallback(async () => {
         try {
-            const res = await axios.get(`get/products`);
+            const res = await axios.get('/admin/get/products');
             const productsData = res.data;
             setProducts(productsData.data);
             setTotalPages(productsData.meta.last_page); // Get total pages
@@ -68,7 +68,7 @@ export default function Pos() {
 
     const getCarts = async () => {
         try {
-            const res = await axios.get(`cart`);
+            const res = await axios.get('/admin/cart');
             const data = res.data;
             setTotal(data?.total);
             setUpdateTotal(data?.total - orderDiscount);
@@ -98,7 +98,7 @@ export default function Pos() {
         const updatedTotalAmount = parseFloat(total) - parseFloat(disc);
         const dueAmount = updatedTotalAmount - parseFloat(paid1);
         setUpdateTotal(updatedTotalAmount);
-        setDue(dueAmount.toFixed(2));
+        setDue(dueAmount?.toFixed(2));
     }, [orderDiscount, paid, total]);
     useEffect(() => {
         if (searchQuery) {
@@ -274,7 +274,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Sub Total:</div>
                                         <div className="col text-right mr-2">
-                                            {total.toFixed(2)}
+                                            {total?.toFixed(2)}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -292,7 +292,7 @@ export default function Pos() {
                                                         e.target.value;
                                                     if (
                                                         parseFloat(value) >
-                                                            total.toFixed(2) ||
+                                                            total?.toFixed(2) ||
                                                         parseFloat(value) < 0
                                                     ) {
                                                         return;
@@ -315,7 +315,7 @@ export default function Pos() {
                                                     if (e.target.checked) {
                                                         const fractionalPart = (
                                                             total % 1
-                                                        ).toFixed(2);
+                                                        )?.toFixed(2);
                                                         setOrderDiscount(
                                                             fractionalPart
                                                         );
@@ -329,7 +329,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
-                                            {updateTotal.toFixed(2)}
+                                            {updateTotal?.toFixed(2)}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -348,7 +348,7 @@ export default function Pos() {
                                                     if (
                                                         parseFloat(value) < 0 ||
                                                         parseFloat(value) >
-                                                            updateTotal.toFixed(
+                                                            updateTotal?.toFixed(
                                                                 2
                                                             )
                                                     ) {

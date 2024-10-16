@@ -124,12 +124,9 @@ export default function Cart({ carts, setCartUpdated, cartUpdated }) {
                                                 </button>
                                             </td>
                                             <td className="text-right">
-                                                {
-                                                    item?.product
-                                                        ?.discounted_price?.toFixed(
-                                                            2
-                                                        )
-                                                }
+                                                {item?.product?.discounted_price?.toFixed(
+                                                    2
+                                                )}
                                                 {item?.product?.price >
                                                 item?.product
                                                     ?.discounted_price ? (
