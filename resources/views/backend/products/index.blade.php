@@ -60,13 +60,27 @@
                   @endif
                 </td>
                 <td>
-                  <!-- Add your action buttons here, e.g., edit, delete -->
-                  <a class="btn btn-warning btn-sm" href="{{ route('backend.admin.products.edit', $product->id) }}">Edit</a>
-                  <form action="{{ route('backend.admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                  </form>
+                  <div class="btn-group">
+                    <button type="button" class="btn bg-gradient-primary btn-flat">Action</button>
+                    <button type="button" class="btn bg-gradient-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                      <a class="dropdown-item" href="{{ route('backend.admin.products.edit', $product->id) }}">
+                        <i class="fas fa-edit"></i> Edit
+                      </a>
+                      <div class="dropdown-divider"></div>
+                      <form action="{{ route('backend.admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"  class="dropdown-item" onclick="return confirm('Are you sure ?')"><i class="fas fa-trash"></i> Delete</button>
+                      </form>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="">
+                        <i class="fas fa-cart-plus"></i> Purchase
+                      </a>
+                    </div>
+                  </div>
                 </td>
               </tr>
               @empty
