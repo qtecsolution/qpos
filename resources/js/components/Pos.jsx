@@ -1,5 +1,4 @@
-import React, { Component, useEffect, useState, useCallback } from "react";
-import { createRoot } from "react-dom";
+import React, {useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cart from "./Cart";
@@ -388,7 +387,12 @@ export default function Pos() {
                         </div>
                         <div className="col-md-6 col-lg-7">
                             <div className="row">
-                                <div className="mb-2 col-md-6">
+                                <div className="input-group mb-2 col-md-6">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-barcode"></i>
+                                        </span>
+                                    </div>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -460,9 +464,4 @@ export default function Pos() {
             <Toaster position="top-right" reverseOrder={false} />
         </>
     );
-}
-const root = document.getElementById("cart");
-if (root) {
-    const rootInstance = createRoot(root);
-    rootInstance.render(<Pos />);
 }
