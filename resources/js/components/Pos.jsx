@@ -97,7 +97,7 @@ export default function Pos() {
         }
         const updatedTotalAmount = parseFloat(total) - parseFloat(disc);
         const dueAmount = updatedTotalAmount - parseFloat(paid1);
-        setUpdateTotal(updatedTotalAmount?.toFixed(2));
+        setUpdateTotal(updatedTotalAmount);
         setDue(dueAmount?.toFixed(2));
     }, [orderDiscount, paid, total]);
     useEffect(() => {
@@ -313,12 +313,9 @@ export default function Pos() {
                                                 disabled={total <= 0}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        const fractionalPart =
-                                                            total % 1;
+                                                        const fractionalPart =total % 1;
                                                         setOrderDiscount(
-                                                            fractionalPart?.toFixed(
-                                                                2
-                                                            )
+                                                            fractionalPart
                                                         );
                                                     } else {
                                                         setOrderDiscount(0);
@@ -330,7 +327,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
-                                            {updateTotal}
+                                            {updateTotal?.toFixed(2)}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -349,7 +346,9 @@ export default function Pos() {
                                                     if (
                                                         parseFloat(value) < 0 ||
                                                         parseFloat(value) >
-                                                            updateTotal
+                                                            updateTotal?.toFixed(
+                                                                2
+                                                            )
                                                     ) {
                                                         return;
                                                     }
@@ -391,12 +390,7 @@ export default function Pos() {
                         </div>
                         <div className="col-md-6 col-lg-7">
                             <div className="row">
-                                <div className="input-group mb-2 col-md-6">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-barcode"></i>
-                                        </span>
-                                    </div>
+                                <div className="mb-2 col-md-6">
                                     <input
                                         type="text"
                                         className="form-control"
@@ -449,9 +443,7 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {
-                                                            product?.discounted_price
-                                                        }
+                                                        {product?.discounted_price}
                                                     </p>
                                                 </div>
                                             </div>

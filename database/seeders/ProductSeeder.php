@@ -31,7 +31,7 @@ class ProductSeeder extends Seeder
         // Create random products
         for ($i = 0; $i < 50; $i++) {
             Product::create([
-                'image' => 'media/products/1729145573_no-image.png',
+                'image' => '',
                 'name' => $faker->name(),
                 'slug' => $faker->slug(),
                 'sku' => $faker->unique()->uuid(),

@@ -140,6 +140,13 @@ $route = request()->route()->getName();
                             <p>Purchase List</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.purchase.create')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.purchase.create']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Purchase Create</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item">
