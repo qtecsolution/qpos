@@ -76,6 +76,6 @@ class Product extends Model
         } else {
             $discountedPrice = $this->price;
         }
-        return $discountedPrice;
+        return round($discountedPrice, 2);
     }
 }

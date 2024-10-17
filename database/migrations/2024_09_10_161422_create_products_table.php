@@ -22,10 +22,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Brand::class)->constrained()->cascadeOnDelete();
-            $table->double('price')->default(0);
-            $table->double('discount')->default(0);
+            $table->double('price',10,2)->default(0);
+            $table->double('discount',10,2)->default(0);
             $table->string('discount_type')->default('fixed');
-            $table->double('purchase_price')->default(0);
+            $table->double('purchase_price', 10, 2)->default(0);
             $table->integer('quantity')->default(0);
             $table->date('expire_date')->nullable();
             $table->tinyInteger('status')->default(1);

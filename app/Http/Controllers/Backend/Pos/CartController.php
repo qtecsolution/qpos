@@ -19,13 +19,13 @@ class CartController extends Controller
                 ->get()
                 ->map(function ($item) {
                     // Calculate row total for each item
-                    $item->row_total = $item->quantity * $item->product->discounted_price;
+                    $item->row_total = round(($item->quantity * $item->product->discounted_price),2);
                     return $item;
                 });
             $total = $cartItems->sum('row_total');
             return response()->json([
                 'carts' => $cartItems,
-                'total' => $total
+                'total' => round($total, 2)
             ]);
         }
         // clear cart

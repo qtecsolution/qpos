@@ -84,9 +84,9 @@ class OrderController extends Controller
         $order->sub_total = $totalAmountOrder;
         $order->discount = $orderDiscount;
         $order->paid = $request->paid;
-        $order->total = number_format((float)$total, 2, '.', '');
-        $order->due = number_format((float)$due, 2, '.', '');
-        $order->status = number_format((float)$due, 2, '.', '') <= 0;
+        $order->total = round((float)$total, 2);
+        $order->due = round((float)$due, 2);
+        $order->status = round((float)$due, 2) <= 0;
         $order->save();
         //create order transaction
         if ($request->paid > 0) {
@@ -150,9 +150,9 @@ class OrderController extends Controller
 
             $due = $order->due - $data['amount'];
             $paid = $order->paid + $data['amount'];
-            $order->due = number_format((float)$due, 2, '.', '');
-            $order->paid = number_format((float)$paid, 2, '.', '');
-            $order->status = number_format((float)$due, 2, '.', '') <= 0;
+            $order->due = round((float)$due, 2);
+            $order->paid = round((float)$paid, 2);
+            $order->status = round((float)$due, 2) <= 0;
             $order->save();
             $collection_amount = $data['amount'];
             //create order transaction

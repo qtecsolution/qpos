@@ -97,7 +97,7 @@ export default function Pos() {
         }
         const updatedTotalAmount = parseFloat(total) - parseFloat(disc);
         const dueAmount = updatedTotalAmount - parseFloat(paid1);
-        setUpdateTotal(updatedTotalAmount);
+        setUpdateTotal(updatedTotalAmount?.toFixed(2));
         setDue(dueAmount?.toFixed(2));
     }, [orderDiscount, paid, total]);
     useEffect(() => {
@@ -274,7 +274,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Sub Total:</div>
                                         <div className="col text-right mr-2">
-                                            {total?.toFixed(2)}
+                                            {total}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -292,7 +292,7 @@ export default function Pos() {
                                                         e.target.value;
                                                     if (
                                                         parseFloat(value) >
-                                                            total?.toFixed(2) ||
+                                                            total ||
                                                         parseFloat(value) < 0
                                                     ) {
                                                         return;
@@ -313,11 +313,9 @@ export default function Pos() {
                                                 disabled={total <= 0}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        const fractionalPart = (
-                                                            total % 1
-                                                        )?.toFixed(2);
+                                                        const fractionalPart = total % 1;
                                                         setOrderDiscount(
-                                                            fractionalPart
+                                                            fractionalPart?.toFixed(2)
                                                         );
                                                     } else {
                                                         setOrderDiscount(0);
@@ -329,7 +327,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
-                                            {updateTotal?.toFixed(2)}
+                                            {updateTotal}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -347,10 +345,7 @@ export default function Pos() {
                                                         e.target.value;
                                                     if (
                                                         parseFloat(value) < 0 ||
-                                                        parseFloat(value) >
-                                                            updateTotal?.toFixed(
-                                                                2
-                                                            )
+                                                        parseFloat(value) > updateTotal
                                                     ) {
                                                         return;
                                                     }
@@ -445,9 +440,7 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {product?.discounted_price?.toFixed(
-                                                            2
-                                                        )}
+                                                        {product?.discounted_price}
                                                     </p>
                                                 </div>
                                             </div>
