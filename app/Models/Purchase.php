@@ -21,7 +21,7 @@ class Purchase extends Model
         'status',
         'date',
     ];
-
+    protected $table = 'purchases';
     public function items()
     {
         return $this->hasMany(PurchaseItem::class);

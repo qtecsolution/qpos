@@ -15,12 +15,10 @@ return new class extends Migration
     {
         Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Purchase::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Purchase::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
             $table->double('purchase_price', 10, 2)->default(0);
             $table->double('price', 10, 2)->default(0);
-            $table->double('discount', 10, 2)->default(0);
-            $table->string('discount_type')->default('fixed');
             $table->integer('quantity')->default(1);
             $table->timestamps();
         });

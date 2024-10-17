@@ -313,9 +313,12 @@ export default function Pos() {
                                                 disabled={total <= 0}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        const fractionalPart = total % 1;
+                                                        const fractionalPart =
+                                                            total % 1;
                                                         setOrderDiscount(
-                                                            fractionalPart?.toFixed(2)
+                                                            fractionalPart?.toFixed(
+                                                                2
+                                                            )
                                                         );
                                                     } else {
                                                         setOrderDiscount(0);
@@ -345,7 +348,8 @@ export default function Pos() {
                                                         e.target.value;
                                                     if (
                                                         parseFloat(value) < 0 ||
-                                                        parseFloat(value) > updateTotal
+                                                        parseFloat(value) >
+                                                            updateTotal
                                                     ) {
                                                         return;
                                                     }
@@ -387,7 +391,12 @@ export default function Pos() {
                         </div>
                         <div className="col-md-6 col-lg-7">
                             <div className="row">
-                                <div className="mb-2 col-md-6">
+                                <div className="input-group mb-2 col-md-6">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-barcode"></i>
+                                        </span>
+                                    </div>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -440,7 +449,9 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {product?.discounted_price}
+                                                        {
+                                                            product?.discounted_price
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
