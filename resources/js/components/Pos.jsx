@@ -97,7 +97,7 @@ export default function Pos() {
         }
         const updatedTotalAmount = parseFloat(total) - parseFloat(disc);
         const dueAmount = updatedTotalAmount - parseFloat(paid1);
-        setUpdateTotal(updatedTotalAmount);
+        setUpdateTotal(updatedTotalAmount?.toFixed(2));
         setDue(dueAmount?.toFixed(2));
     }, [orderDiscount, paid, total]);
     useEffect(() => {
@@ -315,7 +315,7 @@ export default function Pos() {
                                                     if (e.target.checked) {
                                                         const fractionalPart =total % 1;
                                                         setOrderDiscount(
-                                                            fractionalPart
+                                                            fractionalPart?.toFixed(2)
                                                         );
                                                     } else {
                                                         setOrderDiscount(0);
@@ -327,7 +327,7 @@ export default function Pos() {
                                     <div className="row text-bold mb-1">
                                         <div className="col">Total:</div>
                                         <div className="col text-right mr-2">
-                                            {updateTotal?.toFixed(2)}
+                                            {updateTotal}
                                         </div>
                                     </div>
                                     <div className="row text-bold mb-1">
@@ -346,9 +346,7 @@ export default function Pos() {
                                                     if (
                                                         parseFloat(value) < 0 ||
                                                         parseFloat(value) >
-                                                            updateTotal?.toFixed(
-                                                                2
-                                                            )
+                                                            updateTotal
                                                     ) {
                                                         return;
                                                     }
