@@ -43,6 +43,9 @@ class SupplierController extends Controller
                 ->rawColumns(['name', 'phone', 'address', 'created_at', 'action'])
                 ->toJson();
         }
+        if ($request->wantsJson()) {
+            return response()->json(Supplier::latest()->get());
+        }
 
 
         return view('backend.suppliers.index');

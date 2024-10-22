@@ -1,12 +1,115 @@
-import React from "react";
+import React, { useState } from "react";
+import Suppliers from "./Suppliers";
+
 export default function Purchase() {
+    const [supplierId, setSupplierId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [tax, setTax] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [shipping, setShipping] = useState(0);
+    const [products, setProducts] = useState([
+        {
+            id: 1,
+            name: "Mac Mini",
+            purchasePrice: 1200,
+            stock: 12,
+            qty: 1,
+            subTotal: 1200,
+        },
+    ]);
+
+    // Handle deletion of a product
+    const handleDelete = (id) => {
+        setProducts(products.filter((product) => product.id !== id));
+    };
+
+    // Update quantity and recalculate subtotal
+    const handleQtyChange = (id, value) => {
+        const updatedProducts = products.map((product) => {
+            if (product.id === id) {
+                const newQty = parseInt(value) || 0;
+                return {
+                    ...product,
+                    qty: newQty,
+                    subTotal: parseFloat(
+                        (product.purchasePrice * newQty).toFixed(2)
+                    ),
+                };
+            }
+            return product;
+        });
+        setProducts(updatedProducts);
+    };
+
+    // Update purchase price and recalculate subtotal
+    const handlePriceChange = (id, value) => {
+        const updatedProducts = products.map((product) => {
+            if (product.id === id) {
+                const newPrice = parseFloat(value) || 0;
+                return {
+                    ...product,
+                    purchasePrice: newPrice,
+                    subTotal: parseFloat((product.qty * newPrice).toFixed(2)),
+                };
+            }
+            return product;
+        });
+        setProducts(updatedProducts);
+    };
+
+    // Add a new product by searching
+    const handleSearchAdd = () => {
+        if (searchTerm) {
+            const newProduct = {
+                id: products.length + 1,
+                name: searchTerm,
+                purchasePrice: 0,
+                stock: 0,
+                qty: 1,
+                subTotal: 0,
+            };
+            setProducts([...products, newProduct]);
+            setSearchTerm(""); // clear the search field
+        }
+    };
+
+    // Calculate totals with two decimal places
+    const calculateTotals = () => {
+        const subTotal = products.reduce(
+            (sum, product) => sum + product.subTotal,
+            0
+        );
+        const formattedSubTotal = parseFloat(subTotal.toFixed(2));
+        const formattedTax = parseFloat(tax.toFixed(2));
+        const formattedDiscount = parseFloat(discount.toFixed(2));
+        const formattedShipping = parseFloat(shipping.toFixed(2));
+        const grandTotal = parseFloat(
+            (
+                formattedSubTotal +
+                formattedTax -
+                formattedDiscount +
+                formattedShipping
+            ).toFixed(2)
+        );
+
+        return {
+            subTotal: formattedSubTotal,
+            tax: formattedTax,
+            discount: formattedDiscount,
+            shipping: formattedShipping,
+            grandTotal,
+        };
+    };
+
+    const totals = calculateTotals();
+
     return (
         <div className="container-fluid">
             <div className="card">
                 <div className="card-body">
                     <div className="row">
                         <div className="mb-3 col-md-6">
-                            <label htmlFor="title" className="form-label">
+                            <label htmlFor="date" className="form-label">
                                 Purchase Date
                                 <span className="text-danger">*</span>
                             </label>
@@ -19,17 +122,11 @@ export default function Purchase() {
                             />
                         </div>
                         <div className="mb-3 col-md-6">
-                            <label htmlFor="sku" className="form-label">
+                            <label htmlFor="supplier" className="form-label">
                                 Supplier
                                 <span className="text-danger">*</span>
                             </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Enter discount"
-                                name="discount"
-                                required
-                            />
+                            <Suppliers setSupplierId={setSupplierId} />
                         </div>
                     </div>
                 </div>
@@ -46,10 +143,16 @@ export default function Purchase() {
                             <input
                                 type="search"
                                 className="form-control form-control-lg"
-                                name="search"
-                                id="search"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Search Product Barcode/Name"
                             />
+                            <button
+                                className="btn btn-primary ml-2"
+                                onClick={handleSearchAdd}
+                            >
+                                Add Product
+                            </button>
                         </div>
                     </div>
                     <div className="row">
@@ -67,38 +170,57 @@ export default function Purchase() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mac Mini</td>
-                                        <td className="d-flex align-items-center justify-content-center">
-                                            <input className="form-control form-control-sm w-25" />
-                                        </td>
-                                        <td>12</td>
-                                        <td className="d-flex align-items-center justify-content-center">
-                                            <input
-                                                min="0"
-                                                className="form-control form-control-sm w-25"
-                                            />
-                                        </td>
-                                        <td>1200</td>
-                                        <td>Action</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mac Mini</td>
-                                        <td className="d-flex align-items-center justify-content-center">
-                                            <input className="form-control form-control-sm w-25" />
-                                        </td>
-                                        <td>12</td>
-                                        <td className="d-flex align-item-center justify-content-center">
-                                            <input
-                                                min="0"
-                                                className="form-control form-control-sm w-25"
-                                            />
-                                        </td>
-                                        <td>1200</td>
-                                        <td>Action</td>
-                                    </tr>
+                                    {products.map((product, index) => (
+                                        <tr key={product.id}>
+                                            <td>{index + 1}</td>
+                                            <td>{product.name}</td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    min="0"
+                                                    className="form-control form-control-sm"
+                                                    value={
+                                                        product.purchasePrice
+                                                    }
+                                                    onChange={(e) =>
+                                                        handlePriceChange(
+                                                            product.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>{product.stock}</td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    min="0"
+                                                    className="form-control form-control-sm"
+                                                    value={product.qty}
+                                                    onChange={(e) =>
+                                                        handleQtyChange(
+                                                            product.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                {product.subTotal.toFixed(2)}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() =>
+                                                        handleDelete(product.id)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -111,23 +233,33 @@ export default function Purchase() {
                                     <tbody>
                                         <tr>
                                             <th>Subtotal:</th>
-                                            <td className="text-right">500</td>
+                                            <td className="text-right">
+                                                {totals.subTotal.toFixed(2)}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Tax:</th>
-                                            <td className="text-right">50</td>
+                                            <td className="text-right">
+                                                {totals.tax.toFixed(2)}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Discount:</th>
-                                            <td className="text-right">100</td>
+                                            <td className="text-right">
+                                                {totals.discount.toFixed(2)}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Shipping:</th>
-                                            <td className="text-right">100</td>
+                                            <td className="text-right">
+                                                {totals.shipping.toFixed(2)}
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Grand Total:</th>
-                                            <td className="text-right">450</td>
+                                            <td className="text-right">
+                                                {totals.grandTotal.toFixed(2)}
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -140,39 +272,57 @@ export default function Purchase() {
                 <div className="card-body">
                     <div className="row">
                         <div className="mb-3 col-md-4">
-                            <label htmlFor="title" className="form-label">
+                            <label htmlFor="tax" className="form-label">
                                 Tax
                                 <span className="text-danger">*</span>
                             </label>
                             <input
-                                type="text"
+                                type="number"
+                                step="0.01"
+                                min="0"
                                 className="form-control"
+                                value={tax}
+                                onChange={(e) =>
+                                    setTax(parseFloat(e.target.value) || 0)
+                                }
                                 placeholder="Enter tax"
                                 name="tax"
                                 required
                             />
                         </div>
                         <div className="mb-3 col-md-4">
-                            <label htmlFor="sku" className="form-label">
+                            <label htmlFor="discount" className="form-label">
                                 Discount
                                 <span className="text-danger">*</span>
                             </label>
                             <input
-                                type="text"
+                                type="number"
+                                step="0.01"
+                                min="0"
                                 className="form-control"
+                                value={discount}
+                                onChange={(e) =>
+                                    setDiscount(parseFloat(e.target.value) || 0)
+                                }
                                 placeholder="Enter discount"
                                 name="discount"
                                 required
                             />
                         </div>
                         <div className="mb-3 col-md-4">
-                            <label htmlFor="sku" className="form-label">
+                            <label htmlFor="shipping" className="form-label">
                                 Shipping Charge
                                 <span className="text-danger">*</span>
                             </label>
                             <input
-                                type="text"
+                                type="number"
+                                step="0.01"
+                                min="0"
                                 className="form-control"
+                                value={shipping}
+                                onChange={(e) =>
+                                    setShipping(parseFloat(e.target.value) || 0)
+                                }
                                 placeholder="Enter shipping"
                                 name="shipping"
                                 required
