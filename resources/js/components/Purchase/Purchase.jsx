@@ -1,22 +1,77 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Suppliers from "./Suppliers";
+import axios from "axios";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 export default function Purchase() {
-    const [supplierId, setSupplierId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [supplierId, setSupplierId] = useState(null);
     const [tax, setTax] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [shipping, setShipping] = useState(0);
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: "Mac Mini",
-            purchasePrice: 1200,
-            stock: 12,
-            qty: 1,
-            subTotal: 1200,
-        },
-    ]);
+    const [products, setProducts] = useState([]);
+
+    const getProducts = useCallback(async () => {
+        if (!searchTerm.trim()) {
+            console.log("Search term is empty");
+            return;
+        }
+
+        // Optional: Uncomment if you want to show loading state
+        // setLoading(true);
+
+        try {
+            const res = await axios.get("/admin/products", {
+                params: { search: searchTerm },
+            });
+
+            const productsData = res.data;
+
+            // Ensure productsData and productsData.data exist
+            if (productsData?.data && productsData.data.length) {
+                productsData.data.forEach((product) => {
+                    const existingProductIndex = products.findIndex(
+                        (p) => p.id === product.id
+                    );
+                    if (existingProductIndex !== -1) {
+                        // Product exists, increment qty
+                        setProducts((prevProducts) => {
+                            const updatedProducts = [...prevProducts];
+                            updatedProducts[existingProductIndex].qty += 1; // Increment qty
+                            updatedProducts[existingProductIndex].subTotal =
+                                updatedProducts[existingProductIndex]
+                                    .purchasePrice *
+                                updatedProducts[existingProductIndex].qty; // Update subTotal
+                            return updatedProducts;
+                        });
+                    } else {
+                        // New product, add to the list
+                        const newProduct = {
+                            id: product.id,
+                            name: product.name,
+                            purchasePrice: product.purchase_price,
+                            stock: product.quantity,
+                            qty: 1,
+                            subTotal: product.purchase_price,
+                        };
+                        setProducts((prevProducts) => [
+                            ...prevProducts,
+                            newProduct,
+                        ]);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        } finally {
+            // Optional: Uncomment if you want to hide loading state
+            // setLoading(false);
+
+            // Clear searchTerm if needed
+            setSearchTerm("");
+        }
+    }, [searchTerm]); // Don't forget to add searchTerm as a dependency
 
     // Handle deletion of a product
     const handleDelete = (id) => {
@@ -56,21 +111,9 @@ export default function Purchase() {
         });
         setProducts(updatedProducts);
     };
-
     // Add a new product by searching
     const handleSearchAdd = () => {
-        if (searchTerm) {
-            const newProduct = {
-                id: products.length + 1,
-                name: searchTerm,
-                purchasePrice: 0,
-                stock: 0,
-                qty: 1,
-                subTotal: 0,
-            };
-            setProducts([...products, newProduct]);
-            setSearchTerm(""); // clear the search field
-        }
+        getProducts();
     };
 
     // Calculate totals with two decimal places
@@ -102,7 +145,50 @@ export default function Purchase() {
     };
 
     const totals = calculateTotals();
+   const handleSubmit = async () => {
+       if (totals.grandTotal <= 0) {
+           toast.error("Total must be greater than zero.");
+           return;
+       }
+       if (!supplierId) {
+           toast.error("Please select a supplier.");
+           return;
+       }
 
+       // Show confirmation dialog
+       Swal.fire({
+           title: `Are you sure you want to create this purchase?`,
+           showDenyButton: true,
+           confirmButtonText: "Yes",
+           denyButtonText: "No",
+           customClass: {
+               actions: "my-actions",
+               cancelButton: "order-1 right-gap",
+               confirmButton: "order-2",
+               denyButton: "order-3",
+           },
+       }).then(async (result) => {
+           if (result.isConfirmed) {
+               try {
+                   const res = await axios.post("/admin/purchase/create", {
+                       products,
+                       supplierId,
+                       tax,
+                       discount,
+                       shipping,
+                       totals,
+                   });
+                   setProducts([]);
+                   toast.success(res?.data?.message);
+                   window.location.href = "/admin/purchase";
+               } catch (err) {
+                   toast.error(
+                       err.response?.data?.message || "An error occurred"
+                   );
+               }
+           }
+       });
+   };
     return (
         <div className="container-fluid">
             <div className="card">
@@ -145,10 +231,10 @@ export default function Purchase() {
                                 className="form-control form-control-lg"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Search Product Barcode/Name"
+                                placeholder="Enter product barcode/name"
                             />
                             <button
-                                className="btn btn-primary ml-2"
+                                className="btn bg-gradient-primary ml-2"
                                 onClick={handleSearchAdd}
                             >
                                 Add Product
@@ -279,7 +365,6 @@ export default function Purchase() {
                             <input
                                 type="number"
                                 step="0.01"
-                                min="0"
                                 className="form-control"
                                 value={tax}
                                 onChange={(e) =>
@@ -331,7 +416,11 @@ export default function Purchase() {
                     </div>
                 </div>
             </div>
-            <button type="submit" className="btn btn-md bg-gradient-primary">
+            <button
+                type="submit"
+                className="btn btn-md bg-gradient-primary"
+                onClick={handleSubmit}
+            >
                 Create
             </button>
         </div>
