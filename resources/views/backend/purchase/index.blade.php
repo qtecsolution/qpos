@@ -18,9 +18,7 @@
             <thead>
               <tr>
                 <th data-orderable="false">#</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
+                <th>Supplier</th>
                 <th>Created</th>
                 <th data-orderable="false">
                   Action
@@ -47,7 +45,7 @@
         [1, 'asc']
       ],
       ajax: {
-        url: "{{ route('backend.admin.customers.index') }}"
+        url: "{{ route('backend.admin.purchase.index') }}"
       },
 
       columns: [{
@@ -55,16 +53,8 @@
           name: 'DT_RowIndex'
         },
         {
-          data: 'name',
-          name: 'name'
-        },
-        {
-          data: 'phone',
-          name: 'phone'
-        },
-        {
-          data: 'address',
-          name: 'address'
+          data: 'supplier',
+          name: 'supplier'
         },
         {
           data: 'created_at',
