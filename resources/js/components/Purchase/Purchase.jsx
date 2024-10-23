@@ -41,7 +41,7 @@ export default function Purchase() {
                             updatedProducts[existingProductIndex].qty += 1; // Increment qty
                             updatedProducts[existingProductIndex].subTotal =
                                 updatedProducts[existingProductIndex]
-                                    .purchasePrice *
+                                    .purchase_price *
                                 updatedProducts[existingProductIndex].qty; // Update subTotal
                             return updatedProducts;
                         });
@@ -88,7 +88,7 @@ export default function Purchase() {
                     ...product,
                     qty: newQty,
                     subTotal: parseFloat(
-                        (product.purchasePrice * newQty).toFixed(2)
+                        (product.purchase_price * newQty).toFixed(2)
                     ),
                 };
             }
@@ -104,7 +104,7 @@ export default function Purchase() {
                 const newPrice = parseFloat(value) || 0;
                 return {
                     ...product,
-                    purchasePrice: newPrice,
+                    purchase_price: newPrice,
                     subTotal: parseFloat((product.qty * newPrice).toFixed(2)),
                 };
             }
@@ -269,14 +269,14 @@ export default function Purchase() {
                                             <tr key={product.id}>
                                                 <td>{index + 1}</td>
                                                 <td>{product.name}</td>
-                                                <td>
+                                                <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
                                                         step="0.01"
                                                         min="0"
-                                                        className="form-control form-control-sm"
+                                                        className="form-control w-50"
                                                         value={
-                                                            product.purchasePrice
+                                                            product.purchase_price
                                                         }
                                                         onChange={(e) =>
                                                             handlePriceChange(
@@ -287,11 +287,12 @@ export default function Purchase() {
                                                     />
                                                 </td>
                                                 <td>{product.stock}</td>
-                                                <td>
+                                                <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
+                                                        step="0.01"
                                                         min="0"
-                                                        className="form-control form-control-sm"
+                                                        className="form-control w-50"
                                                         value={product.qty}
                                                         onChange={(e) =>
                                                             handleQtyChange(
