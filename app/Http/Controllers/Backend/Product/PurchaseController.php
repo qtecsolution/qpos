@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -70,6 +71,7 @@ class PurchaseController extends Controller
             // Step 1: Validate the request data
             $validatedData = $request->validate([
                 'products' => 'required|array',
+                'date' => 'nullable|date',
                 'supplierId' => 'required|exists:suppliers,id',
                 'totals' => 'required|array',
                 'totals.subTotal' => 'required|numeric',
@@ -88,6 +90,7 @@ class PurchaseController extends Controller
                 'discount_value' => $validatedData['totals']['discount'],
                 'shipping' => $validatedData['totals']['shipping'],
                 'grand_total' => $validatedData['totals']['grandTotal'],
+                'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
                 'status' => 1,
             ]);
 

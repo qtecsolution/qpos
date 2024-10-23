@@ -61,7 +61,7 @@ class ProductController extends Controller
 <button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure ?\')"><i class="fas fa-trash"></i> Delete</button>
                   </form>
 <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="' . route('backend.admin.purchase.create', $data->id) . '">
+  <a class="dropdown-item" href="' . route( 'backend.admin.purchase.create', ['barcode' => $data->sku]) . '">
                 <i class="fas fa-cart-plus"></i> Purchase
             </a>
                     </div>

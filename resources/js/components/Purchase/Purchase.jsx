@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Suppliers from "./Suppliers";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -6,11 +6,26 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Purchase() {
     const [searchTerm, setSearchTerm] = useState("");
+    const [barcode, setBarcode] = useState("");
+    const [date, setDate] = useState(null);
     const [supplierId, setSupplierId] = useState(null);
     const [tax, setTax] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [shipping, setShipping] = useState(0);
     const [products, setProducts] = useState([]);
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const barcodeParam = searchParams.get("barcode");
+        if (barcodeParam) {
+            setSearchTerm(barcodeParam);
+            setBarcode(barcodeParam);
+        }
+    }, []);
+    useEffect(() => {
+        if (barcode) {
+            getProducts();
+        }
+    }, [barcode]);
 
     const getProducts = useCallback(async () => {
         if (!searchTerm.trim()) {
@@ -147,51 +162,56 @@ export default function Purchase() {
 
     const totals = calculateTotals();
     const handleSubmit = async () => {
-       if (totals.grandTotal <= 0) {
-        //    toast.error("Total must be greater than zero.");
-           return;
-       }
-       if (!supplierId) {
-           toast.error("Please select a supplier.");
-           return;
-       }
+        if (totals.grandTotal <= 0) {
+            //    toast.error("Total must be greater than zero.");
+            return;
+        }
+         if (!date) {
+             toast.error("Please select purchase date.");
+             return;
+         }
+        if (!supplierId) {
+            toast.error("Please select a supplier.");
+            return;
+        }
 
-       // Show confirmation dialog
-       Swal.fire({
-           title: `Are you sure you want to create this purchase?`,
-           showDenyButton: true,
-           confirmButtonText: "Yes",
-           denyButtonText: "No",
-           customClass: {
-               actions: "my-actions",
-               cancelButton: "order-1 right-gap",
-               confirmButton: "order-2",
-               denyButton: "order-3",
-           },
-       }).then(async (result) => {
-           if (result.isConfirmed) {
-            //    console.log("data:", {
-            //        products,
-            //        supplierId,
-            //        totals,
-            //    }); return;
-               try {
-                   const res = await axios.post("/admin/purchase", {
-                       products,
-                       supplierId,
-                       totals,
-                   });
-                   setProducts([]);
-                   toast.success(res?.data?.message);
-                   window.location.href = "/admin/purchase";
-               } catch (err) {
-                   toast.error(
-                       err.response?.data?.message || "An error occurred"
-                   );
-               }
-           }
-       });
-   };
+        // Show confirmation dialog
+        Swal.fire({
+            title: `Are you sure you want to create this purchase?`,
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            customClass: {
+                actions: "my-actions",
+                cancelButton: "order-1 right-gap",
+                confirmButton: "order-2",
+                denyButton: "order-3",
+            },
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                //    console.log("data:", {
+                //        products,
+                //        supplierId,
+                //        totals,
+                //    }); return;
+                try {
+                    const res = await axios.post("/admin/purchase", {
+                        date,
+                        products,
+                        supplierId,
+                        totals,
+                    });
+                    setProducts([]);
+                    toast.success(res?.data?.message);
+                    window.location.href = "/admin/purchase";
+                } catch (err) {
+                    toast.error(
+                        err.response?.data?.message || "An error occurred"
+                    );
+                }
+            }
+        });
+    };
     return (
         <>
             <div className="container-fluid">
@@ -209,6 +229,10 @@ export default function Purchase() {
                                     placeholder="Enter date"
                                     name="date"
                                     required
+                                    value={date}
+                                    onChange={(e) =>
+                                        setDate(e.target.value)
+                                    }
                                 />
                             </div>
                             <div className="mb-3 col-md-6">
@@ -272,7 +296,6 @@ export default function Purchase() {
                                                 <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
-                                                        step="0.01"
                                                         min="0"
                                                         className="form-control w-50"
                                                         value={
@@ -290,7 +313,6 @@ export default function Purchase() {
                                                 <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
-                                                        step="0.01"
                                                         min="0"
                                                         className="form-control w-50"
                                                         value={product.qty}
@@ -380,7 +402,6 @@ export default function Purchase() {
                                 </label>
                                 <input
                                     type="number"
-                                    step="0.01"
                                     className="form-control"
                                     value={tax}
                                     onChange={(e) =>
@@ -401,7 +422,6 @@ export default function Purchase() {
                                 </label>
                                 <input
                                     type="number"
-                                    step="0.01"
                                     min="0"
                                     className="form-control"
                                     value={discount}
@@ -425,7 +445,6 @@ export default function Purchase() {
                                 </label>
                                 <input
                                     type="number"
-                                    step="0.01"
                                     min="0"
                                     className="form-control"
                                     value={shipping}
