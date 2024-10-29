@@ -36,7 +36,7 @@
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $item->product->name }}</td>
                 <td>{{ number_format($item->purchase_price, 2) }}</td>
-                <td>{{ $item->quantity }} {{($item->product->unit->short_name)}}</td>
+                <td>{{ $item->quantity }} {{optional($item->product->unit)->short_name}}</td>
                 <td>{{ number_format(($item->purchase_price * $item->quantity), 2) }}</td>
               </tr>
               @endforeach

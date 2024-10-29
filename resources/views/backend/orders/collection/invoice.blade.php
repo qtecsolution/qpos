@@ -73,7 +73,7 @@
               <tr>
                 <td>{{$loop->index + 1}}</td>
                 <td>{{$item->product->name}}</td>
-                <td>{{$item->quantity}} {{($item->product->unit->short_name)}}</td>
+                <td>{{$item->quantity}} {{optional($item->product->unit)->short_name}}</td>
                 <td>
                   {{ $item->discounted_price }}
                   @if ($item->price>$item->discounted_price)

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('sku')->unique();
             $table->text('description')->nullable();
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Brand::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Category::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Brand::class)->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(Unit::class)->nullable()->constrained()->nullOnDelete();
             $table->double('price',10,2)->default(0);
             $table->double('discount',10,2)->default(0);

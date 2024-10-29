@@ -41,7 +41,7 @@ class ProductController extends Controller
                             ? '<br><del>' . $data->price . '</del>'
                             : '')
                 )
-                ->addColumn('quantity', fn($data) => $data->quantity .' '. $data->unit->short_name)
+                ->addColumn('quantity', fn($data) => $data->quantity .' '. optional($data->unit)->short_name)
                 ->addColumn('created_at', fn($data) => $data->created_at->format('d M, Y'))
                 ->addColumn('status', fn($data) => $data->status
                     ? '<span class="badge bg-primary">Active</span>'
