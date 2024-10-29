@@ -102,17 +102,16 @@ export default function Pos() {
     useEffect(() => {
         if (searchQuery) {
             setProducts([]);
-            setCurrentPage(1);
+            getProducts(searchQuery, currentPage, "");
         }
-        getProducts(searchQuery, currentPage, "");
         setSearchBarcode("");
-    }, [getProducts, currentPage, searchQuery]);
+    }, [currentPage, searchQuery]);
 
     useEffect(() => {
         if (searchBarcode) {
             setProducts([]);
+           getProducts("", currentPage, searchBarcode);
         }
-        getProducts("", currentPage, searchBarcode);
     }, [searchBarcode]);
 
     // Infinite scroll logic
