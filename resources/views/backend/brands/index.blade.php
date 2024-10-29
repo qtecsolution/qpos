@@ -24,44 +24,7 @@
                 <th data-orderable="false">Action</th>
               </tr>
             </thead>
-            <tbody>
-              @forelse($brands as $index => $brand)
-              <tr>
-                <td>{{ $index + 1  + ($brands->perPage() * ($brands->currentPage() - 1))}}</td>
-                <td>
-                  <img src="{{ asset('storage/'.$brand->image) }}" loading="lazy" alt="{{ $brand->name }}" class="img-thumb img-fluid" onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'"
-                    height="80"
-                    width="60" />
-                </td>
-                <td>{{ $brand->name }}</td>
-                <td>
-                  @if($brand->status)
-                  <span class="badge bg-primary">Active</span>
-                  @else
-                  <span class="badge bg-danger">Inactive</span>
-                  @endif
-                </td>
-                <td>
-                  <!-- Add your action buttons here, e.g., edit, delete -->
-                  <a class="btn btn-warning btn-sm" href="{{ route('backend.admin.brands.edit', $brand->id) }}">Edit</a>
-                  <form action="{{ route('backend.admin.brands.destroy', $brand->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                  </form>
-                </td>
-              </tr>
-              @empty
-              <tr>
-                <td colspan="7" class="text-center">No brands found.</td>
-              </tr>
-              @endforelse
-            </tbody>
           </table>
-          <!-- Pagination Links -->
-          <div class="d-flex justify-content-center mt-3">
-            {{ $brands->links() }}
-          </div>
         </div>
       </div>
     </div>
@@ -69,5 +32,44 @@
 </div>
 @endsection
 
+
 @push('script')
+
+<script type="text/javascript">
+  $(function() {
+    let table = $('#datatables').DataTable({
+      processing: true,
+      serverSide: true,
+      ordering: true,
+      order: [
+        [1, 'asc']
+      ],
+      ajax: {
+        url: "{{ route('backend.admin.brands.index') }}"
+      },
+
+      columns: [{
+          data: 'DT_RowIndex',
+          name: 'DT_RowIndex'
+        },
+        {
+          data: 'image',
+          name: 'image'
+        },
+        {
+          data: 'name',
+          name: 'name'
+        },
+        {
+          data: 'status',
+          name: 'status'
+        },
+        {
+          data: 'action',
+          name: 'action'
+        },
+      ]
+    });
+  });
+</script>
 @endpush
