@@ -166,7 +166,11 @@
 @endsection
 
 @push('style')
-
+<style>
+  .select2-container--default .select2-selection--single {
+    height: calc(1.5em + 0.75rem + 2px) !important;
+  }
+</style>
 
 @endpush
 @push('script')

@@ -99,3 +99,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-head
         max-height: 70px;
     }
 }
+/* for fixing select2 input field desgine issue */
+ .select2-container--default .select2-selection--single {
+     height: calc(1.5em + 0.75rem + 2px) !important;
+ }
