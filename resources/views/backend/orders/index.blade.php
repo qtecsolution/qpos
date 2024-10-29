@@ -24,48 +24,7 @@
                 <th data-orderable="false">Action</th>
               </tr>
             </thead>
-            <tbody>
-              @forelse($orders as $index => $order)
-              <tr>
-                <td>{{ $index + 1  + ($orders->perPage() * ($orders->currentPage() - 1))}}</td>
-                <td>#{{$order->id}}</td>
-                <td>{{ $order->customer->name ?? '-' }}</td>
-                <td>{{$order->total_item}}</td>
-                <td>{{number_format($order->sub_total,2,'.',',')}}</td>
-                <td>{{number_format($order->discount,2,'.',',')}}</td>
-                <td>{{number_format($order->total,2,'.',',')}}</td>
-                <td>{{ number_format($order->paid, 2, '.', ',') }}</td>
-                <td>{{number_format($order->due,2,'.',',')}}</td>
-                <td>
-                  @if ($order->status)
-                  <span class="badge bg-success">Paid</span>
-                  @else
-                  <span class="badge bg-danger">Due</span>
-                  @endif
-                </td>
-                <td>
-                  <a class="btn btn-success btn-sm" href="{{route('backend.admin.orders.invoice',$order->id)}}">Invoice</a>
-                  @if (!$order->status)<a class="btn btn-warning btn-sm" href="{{route('backend.admin.due.collection',$order->id)}}">Collection</a>
-                  @endif
-                  <a class="btn btn-primary btn-sm" href="{{route('backend.admin.orders.transactions',$order->id)}}">Transactions</a>
-                  <!-- <form action="{{ route('backend.admin.orders.destroy', $order->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                  </form> -->
-                </td>
-              </tr>
-              @empty
-              <tr>
-                <td colspan="7" class="text-center">No sells found.</td>
-              </tr>
-              @endforelse
-            </tbody>
           </table>
-          <!-- Pagination Links -->
-          <div class="d-flex justify-content-center mt-3">
-            {{ $orders->links() }}
-          </div>
         </div>
       </div>
     </div>
@@ -74,4 +33,66 @@
 @endsection
 
 @push('script')
+
+<script type="text/javascript">
+  $(function() {
+    let table = $('#datatables').DataTable({
+      processing: true,
+      serverSide: true,
+      ordering: true,
+      order: [
+        [1, 'desc']
+      ],
+      ajax: {
+        url: "{{ route('backend.admin.orders.index') }}"
+      },
+
+      columns: [{
+          data: 'DT_RowIndex',
+          name: 'DT_RowIndex'
+        },
+        {
+          data: 'saleId',
+          name: 'saleId'
+        },
+        {
+          data: 'customer',
+          name: 'customer'
+        },
+        {
+          data: 'item',
+          name: 'item'
+        },
+        {
+          data: 'sub_total',
+          name: 'sub_total'
+        },
+        {
+          data: 'discount',
+          name: 'discount'
+        },
+        {
+          data: 'total',
+          name: 'total'
+        }, 
+         {
+          data: 'paid',
+          name: 'paid'
+        },
+         {
+          data: 'due',
+          name: 'due'
+        },
+        {
+          data: 'status',
+          name: 'status'
+        },
+        {
+          data: 'action',
+          name: 'action'
+        },
+      ]
+    });
+  });
+</script>
 @endpush

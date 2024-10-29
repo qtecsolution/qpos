@@ -8,16 +8,45 @@ use App\Models\OrderTransaction;
 use App\Models\PosCart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $orders = Order::with('customer')->latest()->paginate(10);
-        return view('backend.orders.index', compact('orders'));
+        if ($request->ajax()) {
+            $orders = Order::with('customer')->get();
+            return DataTables::of($orders)
+                ->addIndexColumn()
+                ->addColumn('saleId', fn($data) => "#" . $data->id)
+                ->addColumn('customer', fn($data) => $data->customer->name ?? '-')
+                ->addColumn('item', fn($data) => $data->total_item)
+                ->addColumn('sub_total', fn($data) => number_format($data->sub_total, 2, '.', ','))
+                ->addColumn('discount', fn($data) => number_format($data->discount, 2, '.', ','))
+                ->addColumn('total', fn($data) => number_format($data->total, 2, '.', ','))
+                ->addColumn('paid', fn($data) => number_format($data->paid, 2, '.', ','))
+                ->addColumn('due', fn($data) => number_format($data->due, 2, '.', ','))
+                ->addColumn('status', fn($data) => $data->status
+                    ? '<span class="badge bg-primary">Paid</span>'
+                    : '<span class="badge bg-danger">Due</span>')
+                ->addColumn('action', function ($data) {
+                    $buttons = '';
+
+                    $buttons .= '<a class="btn btn-success btn-sm" href="' . route('backend.admin.orders.invoice', $data->id) . '"><i class="fas fa-file-invoice"></i> Invoice</a>';
+                    if (!$data->status) {
+                        $buttons .= '<a class="btn btn-warning btn-sm" href="' . route('backend.admin.due.collection', $data->id) . '"><i class="fas fa-receipt"></i> Collection</a>';
+                    }
+                    $buttons .= '<a class="btn btn-primary btn-sm" href="' . route('backend.admin.orders.transactions', $data->id) . '"><i class="fas fa-exchange-alt"></i> Transactions</a>';
+                    return $buttons;
+                })
+                ->rawColumns(['saleId', 'customer', 'item', 'sub_total', 'discount', 'total', 'paid', 'due', 'status', 'action'])
+                ->toJson();
+        }
+        return view('backend.orders.index');
     }
 
     /**
@@ -55,7 +84,6 @@ class OrderController extends Controller
             'order_discount.numeric' => 'The order discount must be a number.',
             'paid.numeric' => 'The amount paid must be a number.',
         ]);
-
         $carts = PosCart::with('product')->where('user_id', auth()->id())->get();
         $order = Order::create([
             'customer_id' => $request->customer_id,
@@ -169,7 +197,8 @@ class OrderController extends Controller
     }
 
     //collection invoice by order_transaction id
-    public function collectionInvoice($id){
+    public function collectionInvoice($id)
+    {
         $transaction = OrderTransaction::findOrFail($id);
         $collection_amount = $transaction->amount;
         $order = $transaction->order;
