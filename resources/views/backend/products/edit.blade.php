@@ -65,13 +65,28 @@
             placeholder="Enter price" name="price" value="{{ old('price',$product->price) }}" required>
         </div>
         <div class="mb-3 col-md-6">
+          <label for="unit_id" class="form-label">
+            Unit
+            <span class="text-danger">*</span>
+          </label>
+          <select class="form-control" style="width: 100%;" name="unit_id" required>
+            <option value="">Select Unit</option>
+            @foreach ($units as $item)
+            <option value={{ $item->id }}
+              {{ $product->unit_id == $item->id ? 'selected' : '' }}>
+              {{ $item->title . ' (' . $item->short_name . ')' }}
+            </option>
+            @endforeach
+          </select>
+        </div>
+        <!-- <div class="mb-3 col-md-6">
           <label for="quantity" class="form-label">
             Initial Stock
             <span class="text-danger">*</span>
           </label>
           <input type="number" class="form-control" placeholder="Enter quantity" name="quantity"
             value="{{ old('quantity',$product->quantity) }}" required>
-        </div>
+        </div> -->
         <div class="mb-3 col-md-6">
           <label for="discount_type" class="form-label">
             Discount Type

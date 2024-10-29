@@ -102,6 +102,13 @@ $route = request()->route()->getName();
                             <p>Category</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.units.index')}}"
+                            class="nav-link {{ request()->routeIs([ 'backend.admin.units.index', 'backend.admin.units.create', 'backend.admin.units.edit']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Unit</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

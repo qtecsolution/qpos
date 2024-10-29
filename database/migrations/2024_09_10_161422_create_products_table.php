@@ -2,6 +2,7 @@
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Unit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Brand::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Unit::class)->nullable()->constrained()->nullOnDelete();
             $table->double('price',10,2)->default(0);
             $table->double('discount',10,2)->default(0);
             $table->string('discount_type')->default('fixed');

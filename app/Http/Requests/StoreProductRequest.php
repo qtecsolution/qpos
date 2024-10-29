@@ -29,6 +29,7 @@ class StoreProductRequest extends FormRequest
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
+            'unit_id' => 'required|exists:units,id',
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|required_with:discount_type',
             'discount_type' => 'nullable|required_with:discount',

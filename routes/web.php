@@ -17,6 +17,7 @@ use App\Http\Controllers\Backend\Pos\OrderController;
 use App\Http\Controllers\Backend\Product\BrandController;
 use App\Http\Controllers\Backend\Product\PurchaseController;
 use App\Http\Controllers\Backend\RolePermission\RoleController;
+use App\Http\Controllers\Backend\Product\UnitController;
 use App\Http\Controllers\Backend\UserManagementController;
 use App\Http\Controllers\Backend\WebsiteSettingController;
 use App\Models\Supplier;
@@ -65,6 +66,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('purchase', PurchaseController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('customers', CustomerController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('units', UnitController::class);
     Route::get('customers/orders/{id}', [CustomerController::class,'orders'])->name('customers.orders');
     Route::get('purchase/products/{id}', [PurchaseController::class, 'purchaseProducts'])->name('purchase.products');
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');

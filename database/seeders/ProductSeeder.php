@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Unit;
 use Faker\Factory as Faker;
 
 class ProductSeeder extends Seeder
@@ -38,11 +39,12 @@ class ProductSeeder extends Seeder
                 'description' => $faker->paragraph(),
                 'category_id' => Category::inRandomOrder()->first()->id,
                 'brand_id' => Brand::inRandomOrder()->first()->id,
+                'unit_id' => Unit::inRandomOrder()->first()->id,
                 'price' => $faker->randomFloat(2, 1, 1000),
                 'discount' => $faker->randomFloat(2, 0, 100),
                 'discount_type' => $faker->randomElement(['fixed', 'percentage']),
                 'purchase_price' => $faker->randomFloat(2, 1, 1000),
-                'quantity' => $faker->numberBetween(1, 100),
+                'quantity' => 0,
                 'expire_date' => $faker->dateTimeBetween('now', '+1 year'),
                 'status' => $faker->boolean() ? 1 : 0,
             ]);

@@ -1,11 +1,11 @@
 @extends('backend.master')
 
-@section('title', 'Products')
+@section('title', 'Units')
 
 @section('content')
 <div class="card">
   <div class="mt-n5 mb-3 d-flex justify-content-end">
-    <a href="{{ route('backend.admin.products.create') }}" class="btn bg-gradient-primary">
+    <a href="{{ route('backend.admin.units.create') }}" class="btn bg-gradient-primary">
       <i class="fas fa-plus-circle"></i>
       Add New
     </a>
@@ -13,17 +13,13 @@
   <div class="card-body p-2 p-md-4 pt-0">
     <div class="row g-4">
       <div class="col-md-12">
-        <div class="card-body table-responsive p-0" id="table_data">
+        <div class="card-body p-0" id="table_data">
           <table id="datatables" class="table table-hover">
             <thead>
               <tr>
                 <th data-orderable="false">#</th>
-                <th></th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Created</th>
-                <th>Status</th>
+                <th>Title</th>
+                <th>Short Name</th>
                 <th data-orderable="false">Action</th>
               </tr>
             </thead>
@@ -45,10 +41,10 @@
       serverSide: true,
       ordering: true,
       order: [
-        [1, 'desc']
+        [1, 'asc']
       ],
       ajax: {
-        url: "{{ route('backend.admin.products.index') }}"
+        url: "{{ route('backend.admin.units.index') }}"
       },
 
       columns: [{
@@ -56,28 +52,12 @@
           name: 'DT_RowIndex'
         },
         {
-          data: 'image',
-          name: 'image'
+          data: 'title',
+          name: 'title'
         },
         {
-          data: 'name',
-          name: 'name'
-        },
-        {
-          data: 'price',
-          name: 'price'
-        },
-        {
-          data: 'quantity',
-          name: 'quantity'
-        },
-        {
-          data: 'created_at',
-          name: 'created_at'
-        },
-        {
-          data: 'status',
-          name: 'status'
+          data: 'short_name',
+          name: 'short_name'
         },
         {
           data: 'action',

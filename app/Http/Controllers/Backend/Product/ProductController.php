@@ -9,6 +9,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Unit;
 use App\Trait\FileHandler;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -40,11 +41,11 @@ class ProductController extends Controller
                             ? '<br><del>' . $data->price . '</del>'
                             : '')
                 )
-                ->addColumn('quantity', fn($data) => $data->quantity)
+                ->addColumn('quantity', fn($data) => $data->quantity .' '. $data->unit->short_name)
+                ->addColumn('created_at', fn($data) => $data->created_at->format('d M, Y'))
                 ->addColumn('status', fn($data) => $data->status
                     ? '<span class="badge bg-primary">Active</span>'
                     : '<span class="badge bg-danger">Inactive</span>')
-                ->addColumn('created_at', fn($data) => $data->created_at->format('d M, Y')) // Using Carbon for formatting
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group">
                     <button type="button" class="btn bg-gradient-primary btn-flat">Action</button>
@@ -98,7 +99,8 @@ class ProductController extends Controller
     {
         $brands = Brand::all();
         $categories = Category::all();
-        return view('backend.products.create', compact('brands', 'categories'));
+        $units = Unit::all();
+        return view('backend.products.create', compact('brands', 'categories', 'units'));
     }
 
     /**
@@ -133,7 +135,8 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $brands = Brand::all();
         $categories = Category::all();
-        return view('backend.products.edit', compact('brands', 'categories', 'product'));
+        $units = Unit::all();
+        return view('backend.products.edit', compact('brands', 'categories', 'units','product'));
     }
 
     /**
