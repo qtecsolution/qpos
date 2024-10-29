@@ -41,8 +41,8 @@ export default function Purchase() {
         
         try {
             const res = await axios.get(`/admin/purchase/${purchaseId}`);
-            const productsData = res.data;
-            const purchaseData = productsData?.items?.map((item) => ({
+            const purchaseData = res.data;
+            const purchaseProducts = purchaseData?.items?.map((item) => ({
                 item_id: item.id,
                 id: item.product_id,
                 name: item.name,
@@ -52,12 +52,15 @@ export default function Purchase() {
                 qty: item.quantity,
                 subTotal: item.purchase_price * item.quantity,
             }));
-            setProducts(purchaseData);
-            setDate(productsData?.date ? productsData.date.split(' ')[0] : '');
+            setProducts(purchaseProducts);
+            setDate(purchaseData?.date ? purchaseData.date.split(" ")[0] : "");
             setSelectedSupplier({
-                value: productsData?.supplier_id,
-                label: productsData?.supplier?.name,
+                value: purchaseData?.supplier_id,
+                label: purchaseData?.supplier?.name,
             });
+            setTax(purchaseData?.tax);
+            setDiscount(purchaseData?.discount_value);
+            setShipping(purchaseData?.shipping);
         } catch (error) {
             console.error("Error fetching products:", error);
         } finally {

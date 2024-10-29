@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backend\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PurchaseController extends Controller
@@ -77,57 +79,76 @@ class PurchaseController extends Controller
             ]);
 
             if ($validatedData['purchase_id'] == null) {
+                DB::beginTransaction();
                 // Step 2: Create a new purchase record
-                $purchase = Purchase::create([
-                    'supplier_id' => $validatedData['supplierId'],
-                    'user_id' => auth()->id(),
-                    'sub_total' => $validatedData['totals']['subTotal'],
-                    'tax' => $validatedData['totals']['tax'],
-                    'discount_value' => $validatedData['totals']['discount'],
-                    'shipping' => $validatedData['totals']['shipping'],
-                    'grand_total' => $validatedData['totals']['grandTotal'],
-                    'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
-                    'status' => 1,
-                ]);
-
-                // Step 3: Create purchase items
-                foreach ($validatedData['products'] as $product) {
-                    PurchaseItem::create([
-                        'purchase_id' => $purchase->id,
-                        'product_id' => $product['id'],
-                        'purchase_price' => $product['purchase_price'],
-                        'price' => $product['price'],
-                        'quantity' => $product['qty'],
+                try {
+                    $purchase = Purchase::create([
+                        'supplier_id' => $validatedData['supplierId'],
+                        'user_id' => auth()->id(),
+                        'sub_total' => $validatedData['totals']['subTotal'],
+                        'tax' => $validatedData['totals']['tax'],
+                        'discount_value' => $validatedData['totals']['discount'],
+                        'shipping' => $validatedData['totals']['shipping'],
+                        'grand_total' => $validatedData['totals']['grandTotal'],
+                        'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
+                        'status' => 1,
                     ]);
-                }
-            } else {
-                $purchase = Purchase::findOrFail($validatedData['purchase_id']);
-                $purchase->update([
-                    'supplier_id' => $validatedData['supplierId'],
-                    'user_id' => auth()->id(),
-                    'sub_total' => $validatedData['totals']['subTotal'],
-                    'tax' => $validatedData['totals']['tax'],
-                    'discount_value' => $validatedData['totals']['discount'],
-                    'shipping' => $validatedData['totals']['shipping'],
-                    'grand_total' => $validatedData['totals']['grandTotal'],
-                    'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
-                    'status' => 1,
-                ]);
 
-                // Step 3: Create purchase items
-                foreach ($validatedData['products'] as $product) {
-                    PurchaseItem::updateOrCreate(
-                        [
-                            'id' => $product['item_id'] ?? null
-                        ],
-                        [
+                    // Step 3: Create purchase items
+                    foreach ($validatedData['products'] as $product) {
+                        $existingProduct = Product::findOrFail($product['id']);
+                        PurchaseItem::create([
                             'purchase_id' => $purchase->id,
                             'product_id' => $product['id'],
                             'purchase_price' => $product['purchase_price'],
                             'price' => $product['price'],
                             'quantity' => $product['qty'],
-                        ]
-                    );
+                        ]);
+
+                        $existingProduct->increment('quantity', $product['qty']);
+                    }
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return response()->json(['error' => $e->getMessage()], 400);
+                }
+            } else {
+                DB::beginTransaction();
+                try {
+                    $purchase = Purchase::findOrFail($validatedData['purchase_id']);
+                    $purchase->update([
+                        'supplier_id' => $validatedData['supplierId'],
+                        'user_id' => auth()->id(),
+                        'sub_total' => $validatedData['totals']['subTotal'],
+                        'tax' => $validatedData['totals']['tax'],
+                        'discount_value' => $validatedData['totals']['discount'],
+                        'shipping' => $validatedData['totals']['shipping'],
+                        'grand_total' => $validatedData['totals']['grandTotal'],
+                        'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
+                        'status' => 1,
+                    ]);
+                    // Step 3: Create purchase items
+                    foreach ($validatedData['products'] as $product) {
+                        $existingProduct = Product::findOrFail($product['id']);
+                        PurchaseItem::updateOrCreate(
+                            [
+                                'id' => $product['item_id'] ?? null
+                            ],
+                            [
+                                'purchase_id' => $purchase->id,
+                                'product_id' => $product['id'],
+                                'purchase_price' => $product['purchase_price'],
+                                'price' => $product['price'],
+                                'quantity' => $product['qty'],
+                            ]
+                        );
+
+                        $existingProduct->increment('quantity', $product['qty']);
+                    }
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return response()->json(['error' => $e->getMessage()], 400);
                 }
             }
             // Step 4: Return a response
