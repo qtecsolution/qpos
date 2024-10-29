@@ -92,6 +92,9 @@
 @push('script')
 <script>
   $(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const startDate = urlParams.get('start_date') || moment().subtract(29, 'days').format('YYYY-MM-DD'); // Default to last 30 days if not present
+    const endDate = urlParams.get('end_date') || moment().format('YYYY-MM-DD'); // Default to today if not present
 
     //Date range as a button
     $('#daterange-btn').daterangepicker({
@@ -103,12 +106,12 @@
           'This Month': [moment().startOf('month'), moment().endOf('month')],
           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment()
+        startDate: moment(startDate, "YYYY-MM-DD"),
+        endDate: moment(endDate, "YYYY-MM-DD")
       },
       function(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-        window.location.href = '{{ route("backend.admin.sale.report") }}?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD');
+        window.location.href = '{{ route("backend.admin.sale.summery") }}?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD');
       }
     )
   })

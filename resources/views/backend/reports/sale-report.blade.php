@@ -112,8 +112,12 @@
 @push('script')
 <script>
   $(function() {
+    // Extract start and end dates from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const startDate = urlParams.get('start_date') || moment().subtract(29, 'days').format('YYYY-MM-DD'); // Default to last 30 days if not present
+    const endDate = urlParams.get('end_date') || moment().format('YYYY-MM-DD'); // Default to today if not present
 
-    //Date range as a button
+    // Initialize the date range picker
     $('#daterange-btn').daterangepicker({
         ranges: {
           'Today': [moment(), moment()],
@@ -123,14 +127,20 @@
           'This Month': [moment().startOf('month'), moment().endOf('month')],
           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment()
+        startDate: moment(startDate, "YYYY-MM-DD"),
+        endDate: moment(endDate, "YYYY-MM-DD")
       },
       function(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+        // Update the button text with the selected range
+        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+        // Redirect with selected start and end dates
         window.location.href = '{{ route("backend.admin.sale.report") }}?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD');
       }
-    )
-  })
+    );
+
+    // Set the initial display text for the date range button
+    $('#daterange-btn span').html(moment(startDate, "YYYY-MM-DD").format('MMMM D, YYYY') + ' - ' + moment(endDate, "YYYY-MM-DD").format('MMMM D, YYYY'));
+  });
 </script>
 @endpush
