@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 
-const Suppliers = ({ setSupplierId }) => {
+const Suppliers = ({ setSupplierId,oldSupplier }) => {
     const [suppliers, setSuppliers] = useState([]);
     const [selectedSupplier, setSelectedSupplier] = useState(null);
     const [newSupplier, setNewSupplier] = useState({
@@ -11,7 +11,6 @@ const Suppliers = ({ setSupplierId }) => {
         address: "",
     });
     const [errors, setErrors] = useState({});
-
     useEffect(() => {
         axios.get("/admin/suppliers").then((response) => {
             const supplierOptions = response?.data?.map((supplier) => ({
@@ -25,6 +24,10 @@ const Suppliers = ({ setSupplierId }) => {
     useEffect(() => {
         setSupplierId(selectedSupplier?.value);
     }, [selectedSupplier]);
+    
+    useEffect(() => {
+        setSelectedSupplier(oldSupplier);
+    }, [oldSupplier]);
     // Show the modal using Bootstrap's JavaScript
     const handleShow = () => {
         const modal = new window.bootstrap.Modal(

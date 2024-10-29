@@ -18,7 +18,7 @@ class PurchaseItem extends Model
         'discount_type',
         'quantity',
     ];
-
+    protected $appends = ['name', 'stock'];
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);
@@ -26,5 +26,16 @@ class PurchaseItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    // Accessor for Product Name
+    public function getNameAttribute()
+    {
+        return $this->product ? $this->product->name : null;
+    }
+
+    // Accessor for Current Stock Quantity
+    public function getStockAttribute()
+    {
+        return $this->product ? $this->product->quantity : null;
     }
 }

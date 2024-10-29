@@ -29,22 +29,16 @@ class PurchaseController extends Controller
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" role="menu">
-                      <a class="dropdown-item" href="' . route('backend.admin.customers.edit', $data->id) . '" ' . ($data->id == 1 ? 'onclick="event.preventDefault();"' : '') . ' >
+                      <a class="dropdown-item" href="' . route('backend.admin.purchase.create', ['purchase_id' => $data->id]) . '">
                     <i class="fas fa-edit"></i> Edit
-                </a> <div class="dropdown-divider"></div>
-<form action="' . route('backend.admin.customers.destroy', $data->id) . '"method="POST" style="display:inline;">
-                   ' . csrf_field() . '
-                    ' . method_field("DELETE") . '
-<button type="submit" ' . ($data->id == 1 ? 'disabled' : '') . ' class="dropdown-item" onclick="return confirm(\'Are you sure ?\')"><i class="fas fa-trash"></i> Delete</button>
-                  </form>
-<div class="dropdown-divider"></div>
+                </a> 
   <a class="dropdown-item" href="' . route('backend.admin.purchase.products', $data->id) . '">
-                <i class="fas fa-view"></i> View
+                <i class="fas fa-eye"></i> View
             </a>
                     </div>
                   </div>';
                 })
-                ->rawColumns(['supplier','created_at', 'action'])
+                ->rawColumns(['supplier', 'created_at', 'action'])
                 ->toJson();
         }
 
@@ -71,6 +65,7 @@ class PurchaseController extends Controller
             // Step 1: Validate the request data
             $validatedData = $request->validate([
                 'products' => 'required|array',
+                'purchase_id' => 'nullable|integer',
                 'date' => 'nullable|date',
                 'supplierId' => 'required|exists:suppliers,id',
                 'totals' => 'required|array',
@@ -81,33 +76,63 @@ class PurchaseController extends Controller
                 'totals.grandTotal' => 'required|numeric',
             ]);
 
-            // Step 2: Create a new purchase record
-            $purchase = Purchase::create([
-                'supplier_id' => $validatedData['supplierId'],
-                'user_id' => auth()->id(),
-                'sub_total' => $validatedData['totals']['subTotal'],
-                'tax' => $validatedData['totals']['tax'],
-                'discount_value' => $validatedData['totals']['discount'],
-                'shipping' => $validatedData['totals']['shipping'],
-                'grand_total' => $validatedData['totals']['grandTotal'],
-                'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
-                'status' => 1,
-            ]);
-
-            // Step 3: Create purchase items
-            foreach ($validatedData['products'] as $product) {
-                PurchaseItem::create([
-                    'purchase_id' => $purchase->id,
-                    'product_id' => $product['id'], 
-                    'purchase_price' => $product['purchase_price'],
-                    'price' => $product['price'],
-                    'quantity' => $product['qty'],
+            if ($validatedData['purchase_id'] == null) {
+                // Step 2: Create a new purchase record
+                $purchase = Purchase::create([
+                    'supplier_id' => $validatedData['supplierId'],
+                    'user_id' => auth()->id(),
+                    'sub_total' => $validatedData['totals']['subTotal'],
+                    'tax' => $validatedData['totals']['tax'],
+                    'discount_value' => $validatedData['totals']['discount'],
+                    'shipping' => $validatedData['totals']['shipping'],
+                    'grand_total' => $validatedData['totals']['grandTotal'],
+                    'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
+                    'status' => 1,
                 ]);
-            }
 
+                // Step 3: Create purchase items
+                foreach ($validatedData['products'] as $product) {
+                    PurchaseItem::create([
+                        'purchase_id' => $purchase->id,
+                        'product_id' => $product['id'],
+                        'purchase_price' => $product['purchase_price'],
+                        'price' => $product['price'],
+                        'quantity' => $product['qty'],
+                    ]);
+                }
+            } else {
+                $purchase = Purchase::findOrFail($validatedData['purchase_id']);
+                $purchase->update([
+                    'supplier_id' => $validatedData['supplierId'],
+                    'user_id' => auth()->id(),
+                    'sub_total' => $validatedData['totals']['subTotal'],
+                    'tax' => $validatedData['totals']['tax'],
+                    'discount_value' => $validatedData['totals']['discount'],
+                    'shipping' => $validatedData['totals']['shipping'],
+                    'grand_total' => $validatedData['totals']['grandTotal'],
+                    'date' => $validatedData['date'] ?? Carbon::now()->toDateString(),
+                    'status' => 1,
+                ]);
+
+                // Step 3: Create purchase items
+                foreach ($validatedData['products'] as $product) {
+                    PurchaseItem::updateOrCreate(
+                        [
+                            'id' => $product['item_id'] ?? null
+                        ],
+                        [
+                            'purchase_id' => $purchase->id,
+                            'product_id' => $product['id'],
+                            'purchase_price' => $product['purchase_price'],
+                            'price' => $product['price'],
+                            'quantity' => $product['qty'],
+                        ]
+                    );
+                }
+            }
             // Step 4: Return a response
             return response()->json([
-                'message' => 'Purchase created successfully.',
+                'message' => 'Purchase saved successfully.',
                 'purchase' => $purchase,
             ], 201);
         }
@@ -116,18 +141,19 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Purchase $purchase)
+    public function show(Request $request, $id)
     {
-        //
+
+        if ($request->wantsJson()) {
+            $purchase = Purchase::with('items', 'supplier')->findOrFail($id);
+            return $purchase;
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Purchase $purchase)
-    {
-        //
-    }
+    public function edit($id) {}
 
     /**
      * Update the specified resource in storage.
@@ -145,10 +171,9 @@ class PurchaseController extends Controller
         //
     }
     // purchaseProducts list by Purchase id
-    public function purchaseProducts(Request $request,$id)
+    public function purchaseProducts(Request $request, $id)
     {
         $purchase = Purchase::with('items.product')->findOrFail($id);
-        return view('backend.purchase.products',compact('id','purchase'));
+        return view('backend.purchase.products', compact('id', 'purchase'));
     }
-    
 }

@@ -7,6 +7,8 @@ import toast, { Toaster } from "react-hot-toast";
 export default function Purchase() {
     const [searchTerm, setSearchTerm] = useState("");
     const [barcode, setBarcode] = useState("");
+    const [selectedSupplier, setSelectedSupplier] = useState(null);
+    const [purchaseId, setPurchaseId] = useState(null);
     const [date, setDate] = useState(null);
     const [supplierId, setSupplierId] = useState(null);
     const [tax, setTax] = useState(0);
@@ -16,9 +18,13 @@ export default function Purchase() {
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const barcodeParam = searchParams.get("barcode");
+        const purchase_id = searchParams.get("purchase_id");
         if (barcodeParam) {
             setSearchTerm(barcodeParam);
             setBarcode(barcodeParam);
+        }
+        if (purchase_id) {
+            setPurchaseId(purchase_id);
         }
     }, []);
     useEffect(() => {
@@ -26,6 +32,37 @@ export default function Purchase() {
             getProducts();
         }
     }, [barcode]);
+    useEffect(() => {
+        if (purchaseId) {
+            getPurchaseProducts();
+        }
+    }, [purchaseId]);
+    const getPurchaseProducts = useCallback(async () => {
+        
+        try {
+            const res = await axios.get(`/admin/purchase/${purchaseId}`);
+            const productsData = res.data;
+            const purchaseData = productsData?.items?.map((item) => ({
+                item_id: item.id,
+                id: item.product_id,
+                name: item.name,
+                price: item.price,
+                purchase_price: item.purchase_price,
+                stock: item.stock,
+                qty: item.quantity,
+                subTotal: item.purchase_price * item.quantity,
+            }));
+            setProducts(purchaseData);
+            setDate(productsData?.date ? productsData.date.split(' ')[0] : '');
+            setSelectedSupplier({
+                value: productsData?.supplier_id,
+                label: productsData?.supplier?.name,
+            });
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        } finally {
+        }
+    }, [purchaseId]);
 
     const getProducts = useCallback(async () => {
         if (!searchTerm.trim()) {
@@ -166,10 +203,10 @@ export default function Purchase() {
             //    toast.error("Total must be greater than zero.");
             return;
         }
-         if (!date) {
-             toast.error("Please select purchase date.");
-             return;
-         }
+        if (!date) {
+            toast.error("Please select purchase date.");
+            return;
+        }
         if (!supplierId) {
             toast.error("Please select a supplier.");
             return;
@@ -177,7 +214,7 @@ export default function Purchase() {
 
         // Show confirmation dialog
         Swal.fire({
-            title: `Are you sure you want to create this purchase?`,
+            title: `Are you sure you want to save this purchase?`,
             showDenyButton: true,
             confirmButtonText: "Yes",
             denyButtonText: "No",
@@ -196,6 +233,7 @@ export default function Purchase() {
                 //    }); return;
                 try {
                     const res = await axios.post("/admin/purchase", {
+                        purchase_id: purchaseId,
                         date,
                         products,
                         supplierId,
@@ -230,9 +268,7 @@ export default function Purchase() {
                                     name="date"
                                     required
                                     value={date}
-                                    onChange={(e) =>
-                                        setDate(e.target.value)
-                                    }
+                                    onChange={(e) => setDate(e.target.value)}
                                 />
                             </div>
                             <div className="mb-3 col-md-6">
@@ -243,7 +279,10 @@ export default function Purchase() {
                                     Supplier
                                     <span className="text-danger">*</span>
                                 </label>
-                                <Suppliers setSupplierId={setSupplierId} />
+                                <Suppliers
+                                    setSupplierId={setSupplierId}
+                                    oldSupplier = {selectedSupplier}
+                                />
                             </div>
                         </div>
                     </div>
@@ -296,7 +335,7 @@ export default function Purchase() {
                                                 <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
-                                                        min="0"
+                                                        min="1"
                                                         className="form-control w-50"
                                                         value={
                                                             product.purchase_price
@@ -313,7 +352,7 @@ export default function Purchase() {
                                                 <td className="d-flex align-items-center justify-content-center">
                                                     <input
                                                         type="number"
-                                                        min="0"
+                                                        min="1"
                                                         className="form-control w-50"
                                                         value={product.qty}
                                                         onChange={(e) =>
