@@ -26,15 +26,6 @@
       </div>
       <!-- info row -->
       <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
-          From
-          <address>
-            @if(readConfig('is_show_site_invoice'))<strong>Name:{{ readConfig('site_name') }}</strong><br> @endif
-            @if(readConfig('is_show_address_invoice'))Address: {{ readConfig('contact_address') }}<br>@endif
-            @if(readConfig('is_show_phone_invoice'))Phone: {{ readConfig('contact_phone') }}<br>@endif
-            @if(readConfig('is_show_email_invoice'))Email: {{ readConfig('contact_email') }}<br>@endif
-          </address>
-        </div>
         <!-- /.col -->
         <div class="col-sm-5 invoice-col">
           @if(readConfig('is_show_customer_invoice'))
@@ -45,6 +36,15 @@
             Phone: {{$order->customer->phone??"N/A"}}<br>
           </address>
           @endif
+        </div>
+        <div class="col-sm-4 invoice-col">
+          From
+          <address>
+            @if(readConfig('is_show_site_invoice'))<strong>Name:{{ readConfig('site_name') }}</strong><br> @endif
+            @if(readConfig('is_show_address_invoice'))Address: {{ readConfig('contact_address') }}<br>@endif
+            @if(readConfig('is_show_phone_invoice'))Phone: {{ readConfig('contact_phone') }}<br>@endif
+            @if(readConfig('is_show_email_invoice'))Email: {{ readConfig('contact_email') }}<br>@endif
+          </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-3 invoice-col">

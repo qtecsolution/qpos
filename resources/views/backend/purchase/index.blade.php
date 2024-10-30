@@ -1,11 +1,11 @@
 @extends('backend.master')
 
-@section('title', 'Customers')
+@section('title', 'Purchase')
 
 @section('content')
 <div class="card">
   <div class="mt-n5 mb-3 d-flex justify-content-end">
-    <a href="{{ route('backend.admin.customers.create') }}" class="btn bg-gradient-primary">
+    <a href="{{ route('backend.admin.purchase.create') }}" class="btn bg-gradient-primary">
       <i class="fas fa-plus-circle"></i>
       Add New
     </a>
@@ -19,7 +19,8 @@
               <tr>
                 <th data-orderable="false">#</th>
                 <th>Supplier</th>
-                <th>Created</th>
+                <th>Total</th>
+                <th>Date</th>
                 <th data-orderable="false">
                   Action
                 </th>
@@ -55,6 +56,10 @@
         {
           data: 'supplier',
           name: 'supplier'
+        },
+        {
+          data: 'total',
+          name: 'total',
         },
         {
           data: 'created_at',

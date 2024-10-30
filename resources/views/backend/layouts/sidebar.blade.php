@@ -169,14 +169,14 @@ $route = request()->route()->getName();
                         <a href="{{route('backend.admin.sale.summery')}}"
                             class="nav-link {{ request()->routeIs(['backend.admin.sale.summery']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
-                            <p>Summery</p>
+                            <p>Sales Summary</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('backend.admin.sale.report')}}"
                             class="nav-link {{ request()->routeIs(['backend.admin.sale.report']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
-                            <p>Sale</p>
+                            <p>Sales</p>
                         </a>
                     </li>
                 </ul>
