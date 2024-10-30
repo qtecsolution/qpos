@@ -26,19 +26,22 @@
         <div class="col-sm-4 invoice-col">
           From
           <address>
-            <strong>Name:{{ readConfig('site_name') }}</strong><br>
-            Address: {{ readConfig('contact_address') }}<br>
-            Phone: {{ readConfig('contact_phone') }}<br>
+            @if(readConfig('is_show_site_invoice'))<strong>Name:{{ readConfig('site_name') }}</strong><br> @endif
+            @if(readConfig('is_show_address_invoice'))Address: {{ readConfig('contact_address') }}<br>@endif
+            @if(readConfig('is_show_phone_invoice'))Phone: {{ readConfig('contact_phone') }}<br>@endif
+            @if(readConfig('is_show_email_invoice'))Email: {{ readConfig('contact_email') }}<br>@endif
           </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-5 invoice-col">
+          @if(readConfig('is_show_customer_invoice'))
           To
           <address>
             <strong>Name: {{$order->customer->name??"N/A"}}</strong><br>
             Address: {{$order->customer->address??"N/A"}}<br>
             Phone: {{$order->customer->phone??"N/A"}}<br>
           </address>
+          @endif
         </div>
         <!-- /.col -->
         <div class="col-sm-3 invoice-col">
@@ -96,7 +99,7 @@
           <!-- <p class="lead">Payment:Cash Paid</p> -->
           <!-- <small class="lead text-small text-bold">Payment:Cash Paid</small> -->
           <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-            {{$order->note??''}}
+            @if(readConfig('is_show_note_invoice')){{ readConfig('note_to_customer_invoice') }}@endif
           </p>
         </div>
         <!-- /.col -->
