@@ -179,9 +179,9 @@ export default function Purchase() {
             0
         );
         const formattedSubTotal = parseFloat(subTotal.toFixed(2));
-        const formattedTax = parseFloat(tax.toFixed(2));
-        const formattedDiscount = parseFloat(discount.toFixed(2));
-        const formattedShipping = parseFloat(shipping.toFixed(2));
+        const formattedTax = parseFloat((tax || 0).toFixed(2));
+        const formattedDiscount = parseFloat((discount || 0).toFixed(2));
+        const formattedShipping = parseFloat((shipping || 0).toFixed(2));
         const grandTotal = parseFloat(
             (
                 formattedSubTotal +
