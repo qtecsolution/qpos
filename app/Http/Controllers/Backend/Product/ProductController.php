@@ -97,8 +97,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = Brand::all();
-        $categories = Category::all();
+        $brands = Brand::whereStatus(true)->get();
+        $categories = Category::whereStatus(true)->get();
         $units = Unit::all();
         return view('backend.products.create', compact('brands', 'categories', 'units'));
     }
@@ -133,8 +133,8 @@ class ProductController extends Controller
     {
 
         $product = Product::findOrFail($id);
-        $brands = Brand::all();
-        $categories = Category::all();
+        $brands = Brand::whereStatus(true)->get();
+        $categories = Category::whereStatus(true)->get();
         $units = Unit::all();
         return view('backend.products.edit', compact('brands', 'categories', 'units','product'));
     }

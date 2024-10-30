@@ -70,9 +70,9 @@
                       <td>{{number_format($order->due,2,'.',',')}}</td>
                       <td>
                         @if ($order->status)
-                        <span class="badge bg-success">Paid</span>
+                        Paid
                         @else
-                        <span class="badge bg-danger">Due</span>
+                        Due
                         @endif
                       </td>
                     </tr>
