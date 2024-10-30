@@ -31,4 +31,12 @@
   'contact_email' => 'admin@qpos.test',
   'working_hour' => 'Sun - Thu 10:30am - 07:00pm',
   'custom_css' => '',
+  'note_to_customer_invoice' => 'Thank You For Shopping With Us . Please Come Again.',
+  'is_show_logo_invoice' => '1',
+  'is_show_site_invoice' => '1',
+  'is_show_phone_invoice' => '1',
+  'is_show_email_invoice' => '1',
+  'is_show_address_invoice' => '1',
+  'is_show_customer_invoice' => '1',
+  'is_show_note_invoice' => '1',
 );

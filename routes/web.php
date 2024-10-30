@@ -117,6 +117,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
                 Route::post('update-custom-css', 'websiteCustomCssUpdate')->name('settings.website.custom.css.update');
                 Route::post('update-notification-settings', 'websiteNotificationSettingsUpdate')->name('settings.website.notification.settings.update');
                 Route::post('update-website-status', 'websiteStatusUpdate')->name('settings.website.status.update');
+
+                Route::post('update-invoice-settings', 'websiteInvoiceUpdate')->name('settings.website.invoice.update');
             });
 
             Route::controller(RoleController::class)->prefix('roles')->group(function () {

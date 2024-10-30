@@ -104,12 +104,22 @@ class WebsiteSettingController extends Controller
         return to_route('backend.admin.settings.website.general', ['active-tab' => 'notification-settings'])
             ->with('success', 'Updated successfully');
     }
+    
 
     public function websiteStatusUpdate(Request $request)
     {
         writeConfig('is_live', $request->is_live);
         Artisan::call('config:clear');
         return to_route('backend.admin.settings.website.general', ['active-tab' => 'website-status'])
+            ->with('success', 'Updated successfully');
+    }
+    public function websiteInvoiceUpdate(Request $request)
+    {
+        foreach ($request->except('_token') as $key => $value) {
+            writeConfig($key, $value);
+        }
+        Artisan::call('config:clear');
+        return to_route('backend.admin.settings.website.general', ['active-tab' => 'invoice-settings'])
             ->with('success', 'Updated successfully');
     }
 }

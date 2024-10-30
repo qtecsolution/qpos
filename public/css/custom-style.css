@@ -103,3 +103,73 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-head
  .select2-container--default .select2-selection--single {
      height: calc(1.5em + 0.75rem + 2px) !important;
  }
+
+
+/* Custom large size for the switch toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    /* Decreased width */
+    height: 20px;
+    /* Decreased height */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    /* Decreased size */
+    width: 16px;
+    /* Decreased size */
+    left: 2px;
+    /* Adjusted position */
+    bottom: 2px;
+    /* Adjusted position */
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #667fe4;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #667fe4;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    /* Adjusted for new size */
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 20px;
+    /* Adjusted for new size */
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
