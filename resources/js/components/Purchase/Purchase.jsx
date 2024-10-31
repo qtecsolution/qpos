@@ -7,7 +7,10 @@ import toast, { Toaster } from "react-hot-toast";
 export default function Purchase() {
     const [searchTerm, setSearchTerm] = useState("");
     const [barcode, setBarcode] = useState("");
-    const [selectedSupplier, setSelectedSupplier] = useState(null);
+    const [selectedSupplier, setSelectedSupplier] = useState({
+        value: 1,
+        label: "Own Supplier",
+    });
     const [purchaseId, setPurchaseId] = useState(null);
     const [date, setDate] = useState(null);
     const [supplierId, setSupplierId] = useState(null);
@@ -284,7 +287,7 @@ export default function Purchase() {
                                 </label>
                                 <Suppliers
                                     setSupplierId={setSupplierId}
-                                    oldSupplier = {selectedSupplier}
+                                    oldSupplier={selectedSupplier}
                                 />
                             </div>
                         </div>
@@ -440,12 +443,12 @@ export default function Purchase() {
                             <div className="mb-3 col-md-4">
                                 <label htmlFor="tax" className="form-label">
                                     Tax
-                                    <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     type="number"
                                     className="form-control"
                                     value={tax}
+                                    min="0"
                                     onChange={(e) =>
                                         setTax(parseFloat(e.target.value) || 0)
                                     }
@@ -460,7 +463,6 @@ export default function Purchase() {
                                     className="form-label"
                                 >
                                     Discount
-                                    <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     type="number"
@@ -483,7 +485,6 @@ export default function Purchase() {
                                     className="form-label"
                                 >
                                     Shipping Charge
-                                    <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     type="number"
