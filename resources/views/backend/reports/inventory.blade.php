@@ -4,12 +4,6 @@
 
 @section('content')
 <div class="card">
-  <div class="mt-n5 mb-3 d-flex justify-content-end">
-    <a href="{{ route('backend.admin.products.create') }}" class="btn bg-gradient-primary">
-      <i class="fas fa-plus-circle"></i>
-      Add New
-    </a>
-  </div>
   <div class="card-body p-2 p-md-4 pt-0">
     <div class="row g-4">
       <div class="col-md-12">
