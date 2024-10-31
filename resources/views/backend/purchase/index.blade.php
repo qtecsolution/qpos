@@ -19,6 +19,7 @@
               <tr>
                 <th data-orderable="false">#</th>
                 <th>Supplier</th>
+                <th>ID</th>
                 <th>Total {{currency()->symbol??''}}</th>
                 <th>Date</th>
                 <th data-orderable="false">
@@ -56,6 +57,11 @@
         {
           data: 'supplier',
           name: 'supplier'
+        },
+
+        {
+          data: 'id',
+          name: 'id'
         },
         {
           data: 'total',

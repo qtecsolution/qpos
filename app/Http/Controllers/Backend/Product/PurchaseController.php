@@ -23,6 +23,9 @@ class PurchaseController extends Controller
             return DataTables::of($purchases)
                 ->addIndexColumn()
                 ->addColumn('supplier', fn($data) => $data->supplier->name)
+                ->addColumn('id', function ($data) {
+                    return '#' . $data->id;
+                })
                 ->addColumn('total', fn($data) => $data->grand_total)
                 ->addColumn('created_at', fn($data) => \Carbon\Carbon::parse($data->date)->format('d M, Y')) // Using Carbon for formatting
                 ->addColumn('action', function ($data) {
@@ -41,7 +44,7 @@ class PurchaseController extends Controller
                     </div>
                   </div>';
                 })
-                ->rawColumns(['supplier','total','created_at', 'action'])
+                ->rawColumns(['supplier','id','total','created_at', 'action'])
                 ->toJson();
         }
 
