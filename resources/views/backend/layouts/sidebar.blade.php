@@ -89,6 +89,13 @@ $route = request()->route()->getName();
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{route('backend.admin.products.import')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.products.import']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Product Bulk Entry</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{route('backend.admin.brands.index')}}"
                             class="nav-link {{ request()->routeIs(['backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>

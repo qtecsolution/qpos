@@ -70,7 +70,8 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('products', ProductController::class);
     Route::resource('units', UnitController::class);
     Route::resource('currencies', CurrencyController::class);
-    Route::get('currencies/default/{id}', [CurrencyController::class,'setDefault'])->name('currencies.setDefault');
+    Route::match(['get', 'post'], 'import/products', [ProductController::class,'import'])->name('products.import');
+    Route::get('currencies/default/{id}', [CurrencyController::class, 'setDefault'])->name('currencies.setDefault');
     Route::get('customers/orders/{id}', [CustomerController::class, 'orders'])->name('customers.orders');
     Route::get('purchase/products/{id}', [PurchaseController::class, 'purchaseProducts'])->name('purchase.products');
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');

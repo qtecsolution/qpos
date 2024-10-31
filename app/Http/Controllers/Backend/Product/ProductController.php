@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Backend\Product;
 
+use App\Exports\DemoProductsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Imports\ProductsImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Trait\FileHandler;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class ProductController extends Controller
@@ -41,7 +44,7 @@ class ProductController extends Controller
                             ? '<br><del>' . $data->price . '</del>'
                             : '')
                 )
-                ->addColumn('quantity', fn($data) => $data->quantity .' '. optional($data->unit)->short_name)
+                ->addColumn('quantity', fn($data) => $data->quantity . ' ' . optional($data->unit)->short_name)
                 ->addColumn('created_at', fn($data) => $data->created_at->format('d M, Y'))
                 ->addColumn('status', fn($data) => $data->status
                     ? '<span class="badge bg-primary">Active</span>'
@@ -62,7 +65,7 @@ class ProductController extends Controller
 <button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure ?\')"><i class="fas fa-trash"></i> Delete</button>
                   </form>
 <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="' . route( 'backend.admin.purchase.create', ['barcode' => $data->sku]) . '">
+  <a class="dropdown-item" href="' . route('backend.admin.purchase.create', ['barcode' => $data->sku]) . '">
                 <i class="fas fa-cart-plus"></i> Purchase
             </a>
                     </div>
@@ -136,7 +139,7 @@ class ProductController extends Controller
         $brands = Brand::whereStatus(true)->get();
         $categories = Category::whereStatus(true)->get();
         $units = Unit::all();
-        return view('backend.products.edit', compact('brands', 'categories', 'units','product'));
+        return view('backend.products.edit', compact('brands', 'categories', 'units', 'product'));
     }
 
     /**
@@ -169,4 +172,14 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->back()->with('success', 'Product Deleted Successfully');
     }
+    public function import(Request $request) {
+        if($request->query('download-demo')){
+            return Excel::download(new DemoProductsExport, 'demo_products.xlsx');
+         }
+        if ($request->isMethod('post') && $request->hasFile('file')) {
+            Excel::import(new ProductsImport, $request->file('file'));
+            return redirect()->back()->with('success', 'Products imported successfully.');
+        }
+        return view('backend.products.import');
+  }
 }
