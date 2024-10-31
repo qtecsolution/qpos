@@ -83,6 +83,7 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
 
     Route::get('/sale/summery', [ReportController::class, 'saleSummery'])->name('sale.summery');
     Route::get('/sale/report', [ReportController::class, 'saleReport'])->name('sale.report');
+    Route::get('/inventory/report', [ReportController::class, 'inventoryReport'])->name('inventory.report');
     //end report
    // start pos
     Route::get('/get/products', [CartController::class, 'getProducts'])->name('getProducts');

@@ -186,6 +186,14 @@ $route = request()->route()->getName();
                             <p>Sales</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('backend.admin.inventory.report')}}"
+                            class="nav-link {{ request()->routeIs(['backend.admin.inventory.report']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Inventory</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
