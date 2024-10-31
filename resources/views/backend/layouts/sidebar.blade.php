@@ -202,6 +202,13 @@ $route = request()->route()->getName();
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('backend.admin.currencies.index') }}"
+                            class="nav-link {{ request()->routeIs([ 'backend.admin.currencies.index', 'backend.admin.currencies.create', 'backend.admin.currencies.edit']) ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Currency</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link d-flex justify-content-between align-items-center">
                             <span>
                                 <i class="fas fa-chevron-circle-right nav-icon"></i>

@@ -43,23 +43,23 @@
                   <table class="table">
                     <tr>
                       <th style="width:50%">Subtotal:</th>
-                      <td class="text-right">{{number_format($sub_total,2)}}</td>
+                      <td class="text-right">{{currency()->symbol??''}} {{number_format($sub_total,2)}}</td>
                     </tr>
                     <tr>
                       <th>Total Discount:</th>
-                      <td class="text-right">{{number_format($discount,2)}}</td>
+                      <td class="text-right">{{currency()->symbol??''}} {{number_format($discount,2)}}</td>
                     </tr>
                     <tr>
                       <th>Total Sold:</th>
-                      <td class="text-right">{{number_format($total,2)}}</td>
+                      <td class="text-right">{{currency()->symbol??''}} {{number_format($total,2)}}</td>
                     </tr>
                     <tr>
                       <th>Customer Paid:</th>
-                      <td class="text-right">{{number_format($paid,2)}}</td>
+                      <td class="text-right">{{currency()->symbol??''}} {{number_format($paid,2)}}</td>
                     </tr>
                     <tr>
                       <th>Customer Due:</th>
-                      <td class="text-right">{{number_format($due,2)}}</td>
+                      <td class="text-right">{{currency()->symbol??''}} {{number_format($due,2)}}</td>
                     </tr>
                   </table>
                 </div>

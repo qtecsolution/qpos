@@ -47,11 +47,11 @@
                       <th>Customer</th>
                       <th>Date</th>
                       <th>Item</th>
-                      <th>Sub Total</th>
-                      <th>Discount</th>
-                      <th>Total</th>
-                      <th>Paid</th>
-                      <th>Due</th>
+                      <th>Sub Total {{currency()->symbol??''}}</th>
+                      <th>Discount {{currency()->symbol??''}}</th>
+                      <th>Total {{currency()->symbol??''}}</th>
+                      <th>Paid {{currency()->symbol??''}}</th>
+                      <th>Due {{currency()->symbol??''}}</th>
                       <th>Status</th>
                     </tr>
                   </thead>

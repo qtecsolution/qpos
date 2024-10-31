@@ -68,8 +68,8 @@
                 <th>SN</th>
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Subtotal</th>
+                <th>Price {{currency()->symbol??''}}</th>
+                <th>Subtotal {{currency()->symbol??''}}</th>
               </tr>
             </thead>
             <tbody>
@@ -79,7 +79,7 @@
                 <td>{{$item->product->name}}</td>
                 <td>{{$item->quantity}} {{optional($item->product->unit)->short_name}}</td>
                 <td>
-                  {{ $item->discounted_price }}
+                  {{$item->discounted_price }}
                   @if ($item->price>$item->discounted_price)
                   <br><del>{{ $item->price }}</del>
                   @endif
@@ -111,23 +111,23 @@
             <table class="table">
               <tr>
                 <th style="width:50%">Subtotal:</th>
-                <td class="text-right">{{number_format($order->sub_total,2,'.',',')}}</td>
+                <td class="text-right">{{currency()->symbol.' '.number_format($order->sub_total,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Discount:</th>
-                <td class="text-right">{{number_format($order->discount,2,'.',',')}}</td>
+                <td class="text-right">{{currency()->symbol.' '.number_format($order->discount,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td class="text-right">{{number_format($order->total,2,'.',',')}}</td>
+                <td class="text-right">{{currency()->symbol.' '.number_format($order->total,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Paid:</th>
-                <td class="text-right">{{number_format($order->paid,2,'.',',')}}</td>
+                <td class="text-right">{{currency()->symbol.' '.number_format($order->paid,2,'.',',')}}</td>
               </tr>
               <tr>
                 <th>Due:</th>
-                <td class="text-right">{{number_format($order->due,2,'.',',')}}</td>
+                <td class="text-right">{{currency()->symbol.' '.number_format($order->due,2,'.',',')}}</td>
               </tr>
             </table>
           </div>

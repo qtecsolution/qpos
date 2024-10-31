@@ -13,7 +13,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Sale SubTotal</span>
                         <span class="info-box-number">
-                            ৳ {{number_format($sub_total,2,'.',',')}}
+                            {{currency()->symbol??''}} {{number_format($sub_total,2,'.',',')}}
                             <small></small>
                         </span>
                     </div>
@@ -28,7 +28,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Sale Discount</span>
-                        <span class="info-box-number">৳ {{number_format($discount,2,'.',',')}}</span>
+                        <span class="info-box-number">{{currency()->symbol??''}} {{number_format($discount,2,'.',',')}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -45,7 +45,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Sale</span>
-                        <span class="info-box-number">৳ {{number_format($total,2,'.',',')}}</span>
+                        <span class="info-box-number">{{currency()->symbol??''}} {{number_format($total,2,'.',',')}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -58,7 +58,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Sale Due </span>
-                        <span class="info-box-number">৳ {{number_format($due,2,'.',',')}}</span>
+                        <span class="info-box-number">{{currency()->symbol??''}} {{number_format($due,2,'.',',')}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

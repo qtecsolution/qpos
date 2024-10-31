@@ -20,7 +20,7 @@
                 <th data-orderable="false">#</th>
                 <th></th>
                 <th>Name</th>
-                <th>Price</th>
+                <th>Price{{currency()->symbol??''}}</th>
                 <th>Stock</th>
                 <th>Created</th>
                 <th>Status</th>

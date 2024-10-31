@@ -13,7 +13,7 @@
               <tr>
                 <th data-orderable="false">#</th>
                 <th>TransactionId</th>
-                <th>Amount</th>
+                <th>Amount {{currency()->symbol??''}}</th>
                 <th>Paid By</th>
                 <th>Created</th>
                 <th></th>

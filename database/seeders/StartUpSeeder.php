@@ -34,6 +34,9 @@ class StartUpSeeder extends Seeder
         ]);
         $role = Role::create(['name' => 'Admin']);
         $user->syncRoles($role);
-        
+        $this->call([
+            UnitSeeder::class,
+            CurrencySeeder::class,
+        ]);
     }
 }

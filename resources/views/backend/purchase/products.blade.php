@@ -21,12 +21,12 @@
               <tr>
                 <th data-orderable="false">#</th>
                 <th>Product</th>
-                <th>Purchase Price</th>
+                <th>Purchase Price{{currency()->symbol??''}}</th>
                 <th>
                   Quantity
                 </th>
                 <th>
-                  Sub Total
+                  Sub Total{{currency()->symbol??''}}
                 </th>
               </tr>
             </thead>

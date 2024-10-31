@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Currency;
 use App\Models\Page;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 
@@ -110,5 +112,13 @@ if (!function_exists('nullImg')) {
     function nullImg()
     {
         return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+    }
+}
+if (!function_exists('currency')) {
+    function currency()
+    {
+        return Cache::remember('default_currency', 60 * 24, function () {
+            return Currency::where('active', true)->first();
+        });
     }
 }

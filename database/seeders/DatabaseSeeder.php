@@ -12,16 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         $this->call([
             StartUpSeeder::class,
-            UnitSeeder::class,
+           // Please comment out the following seeders when running in production for the client
             ProductSeeder::class,
             CustomerSeeder::class,
             SupplierSeeder::class,

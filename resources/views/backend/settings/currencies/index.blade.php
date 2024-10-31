@@ -1,11 +1,11 @@
 @extends('backend.master')
 
-@section('title', 'Purchase')
+@section('title', 'Currency')
 
 @section('content')
 <div class="card">
   <div class="mt-n5 mb-3 d-flex justify-content-end">
-    <a href="{{ route('backend.admin.purchase.create') }}" class="btn bg-gradient-primary">
+    <a href="{{ route('backend.admin.currencies.create') }}" class="btn bg-gradient-primary">
       <i class="fas fa-plus-circle"></i>
       Add New
     </a>
@@ -13,20 +13,19 @@
   <div class="card-body p-2 p-md-4 pt-0">
     <div class="row g-4">
       <div class="col-md-12">
-        <div class="card-body table-responsive p-0" id="table_data">
+        <div class="card-body p-0" id="table_data">
           <table id="datatables" class="table table-hover">
             <thead>
               <tr>
                 <th data-orderable="false">#</th>
-                <th>Supplier</th>
-                <th>Total {{currency()->symbol??''}}</th>
-                <th>Date</th>
-                <th data-orderable="false">
-                  Action
-                </th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Symbol</th>
+                <th data-orderable="false">Action</th>
               </tr>
             </thead>
           </table>
+          <!-- Pagination Links -->
         </div>
       </div>
     </div>
@@ -34,8 +33,8 @@
 </div>
 @endsection
 
-
 @push('script')
+
 <script type="text/javascript">
   $(function() {
     let table = $('#datatables').DataTable({
@@ -46,7 +45,7 @@
         [1, 'asc']
       ],
       ajax: {
-        url: "{{ route('backend.admin.purchase.index') }}"
+        url: "{{ route('backend.admin.currencies.index') }}"
       },
 
       columns: [{
@@ -54,16 +53,16 @@
           name: 'DT_RowIndex'
         },
         {
-          data: 'supplier',
-          name: 'supplier'
+          data: 'name',
+          name: 'name'
         },
         {
-          data: 'total',
-          name: 'total',
+          data: 'code',
+          name: 'code'
         },
         {
-          data: 'created_at',
-          name: 'created_at'
+          data: 'symbol',
+          name: 'symbol'
         },
         {
           data: 'action',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\CurrencyController;
 use App\Http\Controllers\Backend\Pos\CartController;
 use App\Http\Controllers\Backend\Product\ProductController;
 use App\Http\Controllers\Backend\Report\ReportController;
@@ -68,7 +69,9 @@ Route::prefix('admin')->as('backend.admin.')->middleware(['admin'])->group(funct
     Route::resource('customers', CustomerController::class);
     Route::resource('products', ProductController::class);
     Route::resource('units', UnitController::class);
-    Route::get('customers/orders/{id}', [CustomerController::class,'orders'])->name('customers.orders');
+    Route::resource('currencies', CurrencyController::class);
+    Route::get('currencies/default/{id}', [CurrencyController::class,'setDefault'])->name('currencies.setDefault');
+    Route::get('customers/orders/{id}', [CustomerController::class, 'orders'])->name('customers.orders');
     Route::get('purchase/products/{id}', [PurchaseController::class, 'purchaseProducts'])->name('purchase.products');
     Route::get('orders/invoice/{id}', [OrderController::class,'invoice'])->name('orders.invoice');
     Route::get('orders/transactions/{id}', [OrderController::class, 'transactions'])->name('orders.transactions');
