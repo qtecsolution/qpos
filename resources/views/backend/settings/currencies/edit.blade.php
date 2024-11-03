@@ -9,34 +9,39 @@
       enctype="multipart/form-data">
       @csrf
       @method('PUT')
-      <div class="card-body row">
-        <div class="mb-3 col-md-6">
-          <label for="name" class="form-label">
-            Name
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" placeholder="Enter name" name="name"
-            value="{{ old('name',$currency->name) }}" required>
+      <div class="card-body">
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="name" class="form-label">
+              Name
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" placeholder="Enter name" name="name"
+              value="{{ old('name',$currency->name) }}" required>
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="code" class="form-label">
+              Code
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" placeholder="Enter Short cod" name="code"
+              value="{{ old('code',$currency->code) }}" required>
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="symbol" class="form-label">
+              Symbol
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" placeholder="Enter symbol" name="symbol"
+              value="{{ old('symbol',$currency->symbol) }}" required>
+          </div>
         </div>
-        <div class="mb-3 col-md-6">
-          <label for="code" class="form-label">
-            Code
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" placeholder="Enter Short cod" name="code"
-            value="{{ old('code',$currency->code) }}" required>
-        </div>
-        <div class="mb-3 col-md-6">
-          <label for="symbol" class="form-label">
-            Symbol
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" placeholder="Enter symbol" name="symbol"
-            value="{{ old('symbol',$currency->symbol) }}" required>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" class="btn bg-gradient-primary">Update</button>
+          </div>
         </div>
       </div>
-      <!-- /.card-body -->
-      <button type="submit" class="btn btn-block bg-gradient-primary">Update</button>
     </form>
   </div>
 </div>
