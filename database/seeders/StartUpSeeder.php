@@ -37,6 +37,7 @@ class StartUpSeeder extends Seeder
         $this->call([
             UnitSeeder::class,
             CurrencySeeder::class,
+            RolePermissionSeeder::class,
         ]);
     }
 }
