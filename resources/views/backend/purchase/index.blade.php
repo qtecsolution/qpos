@@ -43,9 +43,6 @@
       processing: true,
       serverSide: true,
       ordering: true,
-      order: [
-        [1, 'asc']
-      ],
       ajax: {
         url: "{{ route('backend.admin.purchase.index') }}"
       },

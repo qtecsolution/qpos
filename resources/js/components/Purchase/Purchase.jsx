@@ -18,6 +18,7 @@ export default function Purchase() {
     const [discount, setDiscount] = useState(0);
     const [shipping, setShipping] = useState(0);
     const [products, setProducts] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const barcodeParam = searchParams.get("barcode");
@@ -41,7 +42,6 @@ export default function Purchase() {
         }
     }, [purchaseId]);
     const getPurchaseProducts = useCallback(async () => {
-        
         try {
             const res = await axios.get(`/admin/purchase/${purchaseId}`);
             const purchaseData = res.data;
@@ -256,6 +256,65 @@ export default function Purchase() {
             }
         });
     };
+
+    // product search
+    useEffect(() => {
+        // Define the asynchronous function
+        async function getProducts() {
+            if (!searchTerm.trim()) {
+                setSearchResults([]);
+                return;
+            }
+
+            try {
+                const res = await axios.get("/admin/products", {
+                    params: { search: searchTerm },
+                });
+
+                const productsData = res.data;
+                setSearchResults(productsData?.data || []);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        }
+        // Call the async function inside useEffect
+        getProducts();
+    }, [searchTerm]);
+    // Handle adding selected product to the products list
+    // Handle adding selected product to the products list
+    const handleProductSelect = (product) => {
+        const existingProductIndex = products.findIndex(
+            (p) => p.id === product.id
+        );
+
+        if (existingProductIndex !== -1) {
+            // If product exists, increment quantity
+            setProducts((prevProducts) => {
+                const updatedProducts = [...prevProducts];
+                updatedProducts[existingProductIndex].qty += 1;
+                updatedProducts[existingProductIndex].subTotal =
+                    updatedProducts[existingProductIndex].purchase_price *
+                    updatedProducts[existingProductIndex].qty;
+                return updatedProducts;
+            });
+        } else {
+            // Add new product to the list
+            const newProduct = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                purchase_price: product.purchase_price,
+                stock: product.quantity,
+                qty: 1,
+                subTotal: product.purchase_price,
+            };
+            setProducts((prevProducts) => [...prevProducts, newProduct]);
+        }
+
+        // Clear search term and results
+        setSearchTerm("");
+        setSearchResults([]);
+    };
     return (
         <>
             <div className="container-fluid">
@@ -319,6 +378,34 @@ export default function Purchase() {
                                 </button>
                             </div>
                         </div>
+                        {/* Display search results below the input */}
+                        {searchResults.length > 0 && (
+                            <div className="row mb-2">
+                                <div
+                                    className="col-6"
+                                    style={{
+                                        maxHeight: "200px",
+                                        overflowY: "auto",
+                                    }}
+                                >
+                                    <ul className="list-group">
+                                        {searchResults.map((product) => (
+                                            <li
+                                                key={product.id}
+                                                className="list-group-item"
+                                                onClick={() =>
+                                                    handleProductSelect(product)
+                                                }
+                                                style={{ cursor: "pointer" }}
+                                            >
+                                                {product.name} - $
+                                                {product.price}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
                         <div className="row">
                             <div className="col-12">
                                 <table className="table table-sm table-bordered text-center">
