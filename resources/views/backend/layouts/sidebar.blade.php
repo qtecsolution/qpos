@@ -3,7 +3,8 @@ $route = request()->route()->getName();
 @endphp
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+    <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="{{ auth()->user()->pro_pic }}" class="img-circle elevation-2" style="width: 2.5rem; height: 2.5rem;"
                 alt="User Image">
@@ -13,7 +14,7 @@ $route = request()->route()->getName();
                 {{ auth()->user()->name }}
             </a>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- Sidebar Menu -->
