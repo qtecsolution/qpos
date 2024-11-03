@@ -311,9 +311,12 @@ export default function Pos() {
                                                 disabled={total <= 0}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        const fractionalPart =total % 1;
+                                                        const fractionalPart =
+                                                            total % 1;
                                                         setOrderDiscount(
-                                                            fractionalPart?.toFixed(2)
+                                                            fractionalPart?.toFixed(
+                                                                2
+                                                            )
                                                         );
                                                     } else {
                                                         setOrderDiscount(0);
@@ -424,6 +427,7 @@ export default function Pos() {
                                             }
                                             className="col-sm-6 col-md-4 col-lg-3 mb-3"
                                             key={index}
+                                            style={{ cursor: "pointer" }}
                                         >
                                             <div className="product-item text-center">
                                                 <img
@@ -444,7 +448,9 @@ export default function Pos() {
                                                     </p>
                                                     <p>
                                                         Price:{" "}
-                                                        {product?.discounted_price}
+                                                        {
+                                                            product?.discounted_price
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
