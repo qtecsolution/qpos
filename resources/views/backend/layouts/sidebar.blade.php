@@ -37,8 +37,8 @@ $route = request()->route()->getName();
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.orders.index', 'backend.admin.orders.create', 'backend.admin.orders.edit']) ? 'menu-open' : '' }}">
+            <li class="nav-item {{ request()->routeIs(['backend.admin.customers.index', 'backend.admin.customers.create', 'backend.admin.customers.edit','backend.admin.suppliers.index', 'backend.admin.suppliers.create', 'backend.admin.suppliers.edit']) ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link">
                     <i class="fas fa-chevron-circle-up nav-icon"></i>
                     <p>
                         People
@@ -48,7 +48,7 @@ $route = request()->route()->getName();
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="{{route('backend.admin.customers.index')}}"
-                            class="nav-link {{ request()->routeIs(['backend.admin.customers.index']) ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs(['backend.admin.customers.index','backend.admin.customers.edit','backend.admin.customers.create']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Customer</p>
                         </a>
@@ -57,7 +57,7 @@ $route = request()->route()->getName();
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="{{route('backend.admin.suppliers.index')}}"
-                            class="nav-link {{ request()->routeIs(['backend.admin.suppliers.index']) ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs(['backend.admin.suppliers.index','backend.admin.suppliers.edit','backend.admin.suppliers.create']) ? 'active' : '' }}">
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Supplier</p>
                         </a>

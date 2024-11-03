@@ -36,7 +36,9 @@
           </div>
         </div>
         <div class="row">
-          <button type="submit" class="btn bg-gradient-primary">Update</button>
+          <div class="col-md-6">
+            <button type="submit" class="btn bg-gradient-primary">Update</button>
+          </div>
         </div>
       </div>
       <!-- /.card-body -->
