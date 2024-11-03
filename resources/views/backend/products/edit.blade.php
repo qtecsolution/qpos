@@ -146,8 +146,13 @@
             <label for="expire_date" class="form-label">
               Expire date
             </label>
-            <input type="date" class="form-control"
-              placeholder="Enter product expire date" name="expire_date" value="{{ old('expire_date',$product->expire_date) }}">
+
+            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+              <input type="text" placeholder="Enter product expire date" class="form-control datetimepicker-input" data-target="#reservationdate" name="expire_date" value="{{ old('expire_date',$product->expire_date) }}" />
+              <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+            </div>
           </div>
           <div class="mb-3 col-md-12">
             <div class="form-switch px-4">
@@ -172,4 +177,13 @@
 @endsection
 @push('script')
 <script src="{{ asset('js/image-field.js') }}"></script>
+
+<script>
+  $(function() {
+    //Date picker
+    $('#reservationdate').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+  })
+</script>
 @endpush

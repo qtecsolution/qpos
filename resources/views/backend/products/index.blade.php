@@ -44,9 +44,6 @@
       processing: true,
       serverSide: true,
       ordering: true,
-      order: [
-        [1, 'desc']
-      ],
       ajax: {
         url: "{{ route('backend.admin.products.index') }}"
       },

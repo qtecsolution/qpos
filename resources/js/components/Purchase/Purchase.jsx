@@ -3,6 +3,8 @@ import Suppliers from "./Suppliers";
 import axios from "axios";
 import Swal from "sweetalert2";
 import toast, { Toaster } from "react-hot-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Purchase() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -326,15 +328,23 @@ export default function Purchase() {
                                     Purchase Date
                                     <span className="text-danger">*</span>
                                 </label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    placeholder="Enter date"
-                                    name="date"
-                                    required
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
-                                />
+                                <div>
+                                    <DatePicker
+                                        name="date"
+                                        className="form-control"
+                                        placeholderText="Enter purchase date"
+                                        selected={date}
+                                        dateFormat="yyyy-MM-dd"
+                                        onChange={(date) => {
+                                            const formattedDate = date
+                                                ? date
+                                                      .toISOString()
+                                                      .split("T")[0]
+                                                : null;
+                                            setDate(formattedDate);
+                                        }}
+                                    />
+                                </div>
                             </div>
                             <div className="mb-3 col-md-6">
                                 <label
