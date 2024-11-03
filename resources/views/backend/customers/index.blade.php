@@ -4,12 +4,14 @@
 
 @section('content')
 <div class="card">
+  @can('customer_create')
   <div class="mt-n5 mb-3 d-flex justify-content-end">
     <a href="{{ route('backend.admin.customers.create') }}" class="btn bg-gradient-primary">
       <i class="fas fa-plus-circle"></i>
       Add New
     </a>
   </div>
+  @endcan
   <div class="card-body p-2 p-md-4 pt-0">
     <div class="row g-4">
       <div class="col-md-12">

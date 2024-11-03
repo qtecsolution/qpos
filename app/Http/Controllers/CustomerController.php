@@ -13,6 +13,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('customer_view'), 403);
         if ($request->ajax()) {
             $customers = Customer::latest()->get();
             return DataTables::of($customers)
@@ -22,27 +23,43 @@ class CustomerController extends Controller
                 ->addColumn('address', fn($data) => $data->address)
                 ->addColumn('created_at', fn($data) => $data->created_at->format('d M, Y')) // Using Carbon for formatting
                 ->addColumn('action', function ($data) {
-                    return '<div class="btn-group">
-                    <button type="button" class="btn bg-gradient-primary btn-flat">Action</button>
-                    <button type="button" class="btn bg-gradient-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" role="menu">
-                      <a class="dropdown-item" href="' . route('backend.admin.customers.edit', $data->id) . '" ' . ($data->id == 1 ? 'onclick="event.preventDefault();"' : '') . ' >
-                    <i class="fas fa-edit"></i> Edit
-                </a> <div class="dropdown-divider"></div>
-<form action="' . route('backend.admin.customers.destroy', $data->id) . '"method="POST" style="display:inline;">
-                   ' . csrf_field() . '
-                    ' . method_field("DELETE") . '
-<button type="submit" ' . ($data->id == 1 ? 'disabled' : '') . ' class="dropdown-item" onclick="return confirm(\'Are you sure ?\')"><i class="fas fa-trash"></i> Delete</button>
-                  </form>
-<div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="' . route('backend.admin.customers.orders', $data->id) . '">
-                <i class="fas fa-cart-plus"></i> Sales
-            </a>
-                    </div>
-                  </div>';
+                    $actionHtml = '<div class="btn-group">
+        <button type="button" class="btn bg-gradient-primary btn-flat">Action</button>
+        <button type="button" class="btn bg-gradient-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu" role="menu">';
+
+                    // Check if the user has permission to update customers
+                    if (auth()->user()->can('customer_update')) {
+                        $actionHtml .= '<a class="dropdown-item" href="' . route('backend.admin.customers.edit', $data->id) . '" ' . ($data->id == 1 ? 'onclick="event.preventDefault();"' : '') . '>
+            <i class="fas fa-edit"></i> Edit
+        </a>';
+                        $actionHtml .= '<div class="dropdown-divider"></div>';
+                    }
+
+                    // Check if the user has permission to delete customers
+                    if (auth()->user()->can('customer_delete')) {
+                        $actionHtml .= '<form action="' . route('backend.admin.customers.destroy', $data->id) . '" method="POST" style="display:inline;">
+            ' . csrf_field() . '
+            ' . method_field("DELETE") . '
+            <button type="submit" ' . ($data->id == 1 ? 'disabled' : '') . ' class="dropdown-item" onclick="return confirm(\'Are you sure?\')">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </form>';
+                        $actionHtml .= '<div class="dropdown-divider"></div>';
+                    }
+
+                    if (auth()->user()->can('customer_sales')) {
+                        $actionHtml .= '<a class="dropdown-item" href="' . route('backend.admin.customers.orders', $data->id) . '">
+        <i class="fas fa-cart-plus"></i> Sales
+    </a>';
+                    }
+
+                    $actionHtml .= '</div></div>';
+                    return $actionHtml;
                 })
+
                 ->rawColumns(['name', 'phone', 'address', 'created_at', 'action'])
                 ->toJson();
         }
@@ -56,6 +73,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
+
+        abort_if(!auth()->user()->can('customer_create'), 403);
         return view('backend.customers.create');
     }
 
@@ -64,6 +83,8 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+
+        abort_if(!auth()->user()->can('customer_create'), 403);
 
         if ($request->wantsJson()) {
             $request->validate([
@@ -101,6 +122,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+
+        abort_if(!auth()->user()->can('customer_update'), 403);
         $customer = Customer::findOrFail($id);
         return view('backend.customers.edit', compact('customer'));
     }
@@ -110,6 +133,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        abort_if(!auth()->user()->can('customer_update'), 403);
         $customer = Customer::findOrFail($id);
 
         $request->validate([
@@ -130,6 +155,8 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
+
+        abort_if(!auth()->user()->can('customer_delete'), 403);
         $customer = Customer::findOrFail($id);
         $customer->delete();
         session()->flash('success', 'Customer deleted successfully.');

@@ -32,6 +32,7 @@ class RolePermissionSeeder extends Seeder
             'customer_view',
             'customer_update',
             'customer_delete',
+            'customer_sales',
             //supplier
             'supplier_create',
             'supplier_view',
@@ -42,6 +43,8 @@ class RolePermissionSeeder extends Seeder
             'product_view',
             'product_update',
             'product_delete',
+            'product_import',
+            'product_purchase',
             //brand
             'brand_create',
             'brand_view',
@@ -98,12 +101,5 @@ class RolePermissionSeeder extends Seeder
             $admin->givePermissionTo($permission);
             $permission->assignRole($admin);
         }
-        $data['name'] = "Mr Admin";
-        $data['email'] = "admin@gmail_com";
-        $data['password'] = bcrypt(12345678);
-        $data['username'] = uniqid();
-        $user = User::updateOrCreate(['email' => $data['email']], $data);
-
-        $user->assignRole($admin);
     }
 }
