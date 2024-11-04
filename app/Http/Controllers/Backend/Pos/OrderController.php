@@ -37,6 +37,8 @@ class OrderController extends Controller
                     $buttons = '';
 
                     $buttons .= '<a class="btn btn-success btn-sm" href="' . route('backend.admin.orders.invoice', $data->id) . '"><i class="fas fa-file-invoice"></i> Invoice</a>';
+
+                    $buttons .= '<a class="btn btn-secondary btn-sm" href="' . route('backend.admin.orders.pos-invoice', $data->id) . '"><i class="fas fa-file-invoice"></i> Pos Invoice</a>';
                     if (!$data->status) {
                         $buttons .= '<a class="btn btn-warning btn-sm" href="' . route('backend.admin.due.collection', $data->id) . '"><i class="fas fa-receipt"></i> Due Collection</a>';
                     }
@@ -208,6 +210,12 @@ class OrderController extends Controller
     public function transactions($id)
     {
         $order = Order::with('transactions')->findOrFail($id);
-        return view('backend.orders.collection.index', compact('order',));
+        return view('backend.orderJs.collection.index', compact('order',));
+    }
+
+    public function posInvoice($id)
+    {
+        $order = Order::with(['customer', 'products.product'])->findOrFail($id);
+        return view('backend.orders.pos-invoice', compact('order'));
     }
 }

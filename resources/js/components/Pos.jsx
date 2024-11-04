@@ -211,7 +211,8 @@ export default function Pos() {
                         setCartUpdated(!cartUpdated);
                         setProductUpdated(!productUpdated);
                         toast.success(res?.data?.message);
-                        window.location.href = `orders/invoice/${res?.data?.order?.id}`;
+                        // window.location.href = `orders/invoice/${res?.data?.order?.id}`;
+                        window.location.href = `orders/pos-invoice/${res?.data?.order?.id}`;
                     })
                     .catch((err) => {
                         toast.error(err.response.data.message);

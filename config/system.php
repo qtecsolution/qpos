@@ -28,7 +28,7 @@
   'contact_phone' => '+1 (151) 373-7979',
   'contact_fax' => '+1 (101) 738-7754',
   'contact_mobile' => '+1 (144) 937-1774',
-  'contact_email' => 'admin@qpos.test',
+  'contact_email' => 'qpos@gmail.com',
   'working_hour' => 'Sun - Thu 10:30am - 07:00pm',
   'custom_css' => '',
   'note_to_customer_invoice' => 'Thank You For Shopping With Us.Please Come Again.',
