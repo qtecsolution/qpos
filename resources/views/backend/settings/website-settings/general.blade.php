@@ -7,50 +7,67 @@
 <div class="row">
     <div class="col-4 col-sm-2">
         <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+            @can('website_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'website-info' ? 'active' : '' }}" id="vert-tabs-1"
                 data-toggle="pill" href="#tabs-1" role="tab" aria-controls="tabs-1" aria-selected="true">
                 <i class="fas fa-desktop"></i>
                 &nbsp;Website Info
             </a>
+            @endcan
+            @can('contact_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'contacts' ? 'active' : '' }}" id="vert-tabs-2"
                 data-toggle="pill" href="#tabs-2" role="tab" aria-controls="tabs-2" aria-selected="false">
                 <i class="fas fa-address-book"></i>
                 &nbsp;Contacts
             </a>
+            @endcan
+            @can('socials_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'social-links' ? 'active' : '' }}" id="vert-tabs-3"
                 data-toggle="pill" href="#tabs-3" role="tab" aria-controls="tabs-3" aria-selected="false">
                 <i class="fas fa-share-alt"></i>
                 &nbsp;Social Links
             </a>
+            @endcan
+            @can('style_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'style-settings' ? 'active' : '' }}" id="vert-tabs-4"
                 data-toggle="pill" href="#tabs-4" role="tab" aria-controls="tabs-4" aria-selected="false">
                 <i class="fas fa-swatchbook"></i>
                 &nbsp;Style Settings
             </a>
+            @endcan
+            @can('custom_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'custom-css' ? 'active' : '' }}" id="vert-tabs-5"
                 data-toggle="pill" href="#tabs-5" role="tab" aria-controls="tabs-5" aria-selected="false">
                 <i class="fas fa-code"></i>
                 &nbsp;Custom CSS
             </a>
+            @endcan
+            @can('notification_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'notification-settings' ? 'active' : '' }}" id="vert-tabs-6"
                 data-toggle="pill" href="#tabs-6" role="tab" aria-controls="tabs-6" aria-selected="false">
                 <i class="fas fa-envelope"></i>
                 &nbsp;Notification Settings
             </a>
+            @endcan
+            @can('website_status_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'website-status' ? 'active' : '' }}" id="vert-tabs-7"
                 data-toggle="pill" href="#tabs-7" role="tab" aria-controls="tabs-7" aria-selected="false">
                 <i class="fas fa-power-off"></i>
                 &nbsp;Website Status
             </a>
+            @endcan
+            @can('invoice_settings')
             <a class="nav-link {{ @$_GET['active-tab'] == 'invoice-settings' ? 'active' : '' }}" id="vert-tabs-8"
                 data-toggle="pill" href="#tabs-8" role="tab" aria-controls="tabs-8" aria-selected="false">
                 <i class="fas fa-file-invoice"></i>
                 &nbsp;Invoice Settings
             </a>
+            @endcan
         </div>
     </div>
     <div class="col-8 col-sm-10">
         <div class="tab-content" id="vert-tabs-tabContent">
+            @can('website_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'website-info' ? 'active show' : '' }}" id="tabs-1"
                 role="tabpanel" aria-labelledby="vert-tabs-1">
 
@@ -90,6 +107,8 @@
                 </form>
 
             </div>
+            @endcan
+            @can('contact_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'contacts' ? 'active show' : '' }}" id="tabs-2"
                 role="tabpanel" aria-labelledby="vert-tabs-2">
 
@@ -140,6 +159,8 @@
                 </form>
 
             </div>
+            @endcan
+            @can('socials_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'social-links' ? 'active show' : '' }}"
                 id="tabs-3" role="tabpanel" aria-labelledby="vert-tabs-3">
                 <form action="{{ route('backend.admin.settings.website.social.link.update') }}" method="post">
@@ -238,6 +259,8 @@
                     </div>
                 </form>
             </div>
+            @endcan
+            @can('style_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'style-settings' ? 'active show' : '' }}"
                 id="tabs-4" role="tabpanel" aria-labelledby="vert-tabs-4">
 
@@ -335,6 +358,8 @@
                     </div>
                 </form>
             </div>
+            @endcan
+            @can('custom_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'custom-css' ? 'active show' : '' }}" id="tabs-5"
                 role="tabpanel" aria-labelledby="vert-tabs-5">
                 <form action="{{ route('backend.admin.settings.website.custom.css.update') }}" method="post">
@@ -356,6 +381,8 @@
                     </div>
                 </form>
             </div>
+            @endcan
+            @can('notification_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'notification-settings' ? 'active show' : '' }}"
                 id="tabs-6" role="tabpanel" aria-labelledby="vert-tabs-6">
                 <form action="{{ route('backend.admin.settings.website.notification.settings.update') }}"
@@ -416,6 +443,8 @@
                     </div>
                 </form>
             </div>
+            @endcan
+            @can('website_status_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'website-status' ? 'active show' : '' }}"
                 id="tabs-7" role="tabpanel" aria-labelledby="vert-tabs-7">
                 <form action="{{ route('backend.admin.settings.website.status.update') }}" method="post">
@@ -457,7 +486,8 @@
                     </div>
                 </form>
             </div>
-
+            @endcan
+            @can('invoice_settings')
             <div class="tab-pane fade {{ @$_GET['active-tab'] == 'invoice-settings' ? 'active show' : '' }}"
                 id="tabs-8" role="tabpanel" aria-labelledby="vert-tabs-8">
                 <form action="{{ route('backend.admin.settings.website.invoice.update') }}" method="post">
@@ -528,6 +558,7 @@
                     </div>
 
             </div>
+            @endcan
             </form>
         </div>
     </div>

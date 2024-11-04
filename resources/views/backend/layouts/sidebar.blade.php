@@ -20,6 +20,7 @@ $route = request()->route()->getName();
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            @can('dashboard_view')
             <li class="nav-item">
                 <a href="{{ route('backend.admin.dashboard') }}"
                     class="nav-link {{ $route === 'backend.admin.dashboard' ? 'active' : '' }}">
@@ -29,6 +30,7 @@ $route = request()->route()->getName();
                     </p>
                 </a>
             </li>
+            @endcan
             @can('sale_create')
             <li class="nav-item">
                 <a href="{{ route('backend.admin.cart.index') }}"
@@ -40,6 +42,19 @@ $route = request()->route()->getName();
                 </a>
             </li>
             @endcan
+            @if (auth()->user()->hasAnyPermission([
+            //customer
+            'customer_create',
+            'customer_view',
+            'customer_update',
+            'customer_delete',
+            'customer_sales',
+            //supplier
+            'supplier_create',
+            'supplier_view',
+            'supplier_update',
+            'supplier_delete',
+            ]))
             <li class="nav-item {{ request()->routeIs(['backend.admin.customers.index', 'backend.admin.customers.create', 'backend.admin.customers.edit','backend.admin.suppliers.index', 'backend.admin.suppliers.create', 'backend.admin.suppliers.edit']) ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link">
                     <i class="fas fa-chevron-circle-up nav-icon"></i>
@@ -71,6 +86,15 @@ $route = request()->route()->getName();
                     @endif
                 </ul>
             </li>
+            @endif
+            @if (auth()->user()->hasAnyPermission([
+            'product_create',
+            'product_view',
+            'product_update',
+            'product_delete',
+            'product_import',
+            'product_purchase',
+            ]))
             <li class="nav-item {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.products.index', 'backend.admin.products.create', 'backend.admin.products.edit', 'backend.admin.brands.index', 'backend.admin.brands.create', 'backend.admin.brands.edit', 'backend.admin.categories.index', 'backend.admin.categories.create', 'backend.admin.categories.edit']) ? 'active' : '' }}">
 
@@ -136,7 +160,11 @@ $route = request()->route()->getName();
                     @endif
                 </ul>
             </li>
+            @endif
 
+            @if (auth()->user()->hasAnyPermission([
+            'sale_view'
+            ]))
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.orders.index', 'backend.admin.orders.create', 'backend.admin.orders.edit']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chevron-circle-up nav-icon"></i>
@@ -157,7 +185,13 @@ $route = request()->route()->getName();
                     @endcan
                 </ul>
             </li>
-
+            @endif
+            @if (auth()->user()->hasAnyPermission([
+            'purchase_create',
+            'purchase_view',
+            'purchase_update',
+            'purchase_delete',
+            ]))
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.purchase.index', 'backend.admin.purchase.create', 'backend.admin.purchase.edit']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chevron-circle-up nav-icon"></i>
@@ -187,6 +221,12 @@ $route = request()->route()->getName();
                     @endcan
                 </ul>
             </li>
+            @endif
+            @if (auth()->user()->hasAnyPermission([
+            'reports_summery',
+            'reports_sales',
+            'reports_inventory',
+            ]))
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.sale.report','backend.admin.sale.summery']) ? 'menu-open' : '' }}">
                     <i class="fas fa-chart-bar nav-icon"></i>
@@ -225,8 +265,37 @@ $route = request()->route()->getName();
                     @endcan
                 </ul>
             </li>
-
+            @endif
             {{-- settings --}}
+            @if (auth()->user()->hasAnyPermission([
+            //currency
+            'currency_create',
+            'currency_view',
+            'currency_update',
+            'currency_delete',
+            'currency_set_default',
+            //role
+            'role_create',
+            'role_view',
+            'role_update',
+            'role_delete',
+            'permission_view',
+            //user
+            'user_create',
+            'user_view',
+            'user_update',
+            'user_delete',
+            'user_suspend',
+            //setting
+            'website_settings',
+            'contact_settings',
+            'socials_settings',
+            'style_settings',
+            'custom_settings',
+            'notification_settings',
+            'website_status_settings',
+            'invoice_settings',
+            ]))
             <li class="nav-header">SETTINGS</li>
 
             <li class="nav-item">
@@ -238,6 +307,16 @@ $route = request()->route()->getName();
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    @if (auth()->user()->hasAnyPermission([
+                    'website_settings',
+                    'contact_settings',
+                    'socials_settings',
+                    'style_settings',
+                    'custom_settings',
+                    'notification_settings',
+                    'website_status_settings',
+                    'invoice_settings',
+                    ]))
                     <li class="nav-item">
                         <a href="{{ route('backend.admin.settings.website.general') }}?active-tab=website-info"
                             class="nav-link {{ $route === 'backend.admin.settings.website.general' ? 'active' : '' }}">
@@ -245,7 +324,7 @@ $route = request()->route()->getName();
                             <p>General Settings</p>
                         </a>
                     </li>
-
+                    @endif
                     @if (auth()->user()->hasAnyPermission(['currency_create','currency_view','currency_update','currency_delete']))
                     <li class="nav-item">
                         <a href="{{ route('backend.admin.currencies.index') }}"
@@ -255,6 +334,13 @@ $route = request()->route()->getName();
                         </a>
                     </li>
                     @endif
+                    @if (auth()->user()->hasAnyPermission([
+                    'role_create',
+                    'role_view',
+                    'role_update',
+                    'role_delete',
+                    'permission_view',
+                    ]))
                     <li class="nav-item">
                         <a href="#" class="nav-link d-flex justify-content-between align-items-center">
                             <span>
@@ -266,6 +352,13 @@ $route = request()->route()->getName();
                             </span>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if (auth()->user()->hasAnyPermission([
+                            'role_create',
+                            'role_view',
+                            'role_update',
+                            'role_delete',
+                            'permission_view',
+                            ]))
                             <li class="nav-item">
                                 <a href="{{ route('backend.admin.roles') }}"
                                     class="nav-link {{ $route === 'backend.admin.roles' ? 'active' : '' }}">
@@ -273,6 +366,8 @@ $route = request()->route()->getName();
                                     <p>Roles</p>
                                 </a>
                             </li>
+                            @endif
+                            @can('permission_view')
                             <li class="nav-item">
                                 <a href="{{ route('backend.admin.permissions') }}"
                                     class="nav-link {{ $route === 'backend.admin.permissions' ? 'active' : '' }}">
@@ -280,8 +375,18 @@ $route = request()->route()->getName();
                                     <p>Permissions</p>
                                 </a>
                             </li>
+                            @endcan
                         </ul>
                     </li>
+                    @endif
+                    @if (auth()->user()->hasAnyPermission([
+                    //user
+                    'user_create',
+                    'user_view',
+                    'user_update',
+                    'user_delete',
+                    'user_suspend',
+                    ]))
                     <li class="nav-item">
                         <a href="{{ route('backend.admin.users') }}"
                             class="nav-link {{ $route === 'backend.admin.users' ? 'active' : '' }}">
@@ -289,8 +394,10 @@ $route = request()->route()->getName();
                             <p>User Management</p>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </li>
+            @endif
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -79,7 +79,7 @@ class RolePermissionSeeder extends Seeder
             'currency_view',
             'currency_update',
             'currency_delete',
-            'currency_set-default',
+            'currency_set_default',
             //role
             'role_create',
             'role_view',

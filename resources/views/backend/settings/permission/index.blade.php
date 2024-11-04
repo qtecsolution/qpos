@@ -3,16 +3,19 @@
 @section('title', 'Permissions')
 
 @section('content')
-    <div class="card">
-        <div class="mt-n5 mb-3 d-flex justify-content-end">
-            <a href="{{ route('backend.admin.roles') }}" class="btn bg-gradient-primary">
-                <i class="fas fa-ruler-vertical"></i>
-                Roles
-            </a>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <!-- @if (env('APP_ENV') == 'local')
+<div class="card">
+
+    @can('role_view')
+    <div class="mt-n5 mb-3 d-flex justify-content-end">
+        <a href="{{ route('backend.admin.roles') }}" class="btn bg-gradient-primary">
+            <i class="fas fa-ruler-vertical"></i>
+            Roles
+        </a>
+    </div>
+    @endcan
+    <div class="card-body">
+        <div class="row">
+            <!-- @if (env('APP_ENV') == 'local')
                     <div class="col-md-12">
                         <fieldset>
                             <form action="{{ route('backend.admin.permissions.store') }}" method="post">
@@ -46,25 +49,25 @@
                     </div>
                 @endif -->
 
-                <div class="col-md-12 table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Slug</th>
+            <div class="col-md-12 table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
 
-                                <!-- @if (env('APP_ENV') == 'local')
+                            <!-- @if (env('APP_ENV') == 'local')
                                     <th class="text-center">Actions</th>
                                 @endif -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($permissions as $data)
-                                <tr>
-                                    <td>{{ snakeToTitle($data->name) }}</td>
-                                    <td>{{ $data->name }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($permissions as $data)
+                        <tr>
+                            <td>{{ snakeToTitle($data->name) }}</td>
+                            <td>{{ $data->name }}</td>
 
-                                    <!-- @if (env('APP_ENV') == 'local')
+                            <!-- @if (env('APP_ENV') == 'local')
                                         <td>
                                             <div class="text-center">
                                                 <button title="Edit permission" type="button" class="btn bg-gradient-primary btn-xs"
@@ -114,12 +117,12 @@
                                             </div>
                                         </td>
                                     @endif -->
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 @endsection
