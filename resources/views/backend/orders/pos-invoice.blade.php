@@ -4,7 +4,7 @@
 
 <div class="card">
   <!-- Main content -->
-  <div class="receipt-container mt-3" id="printable-section" style="max-width: 350px; margin: auto; font-size: 14px; font-family: 'Courier New', Courier, monospace;">
+  <div class="receipt-container mt-3" id="printable-section" style="max-width: 300px; margin: auto; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
     <div class="text-center">
       @if(readConfig('is_show_logo_invoice'))
       <img src="{{ assetImage(readconfig('site_logo')) }}" height="50" alt="Logo">
@@ -42,8 +42,9 @@
       <thead>
         <tr>
           <th style="text-align: left;">Product</th>
-          <th style="text-align: right;">Qty</th>
-          <th style="text-align: right;">Price {{ currency()->symbol}}</th>
+          <th style="text-align: right;"></th>
+          <!-- <th style="text-align: right;">Qty</th> -->
+          <!-- <th style="text-align: right;">Price {{ currency()->symbol}}</th> -->
           <th style="text-align: right;">Total {{ currency()->symbol}}</th>
         </tr>
       </thead>
@@ -51,8 +52,8 @@
         @foreach ($order->products as $item)
         <tr>
           <td>{{ $item->product->name }}</td>
-          <td class="text-right">{{ $item->quantity }}</td>
-          <td class="text-right">{{ number_format($item->discounted_price, 2) }}</td>
+          <!-- <td class="text-right">{{ $item->quantity }}</td> -->
+          <td class="text-right">{{ $item->quantity }}*{{ number_format($item->discounted_price, 2) }}</td>
           <td class="text-right">{{ number_format($item->total, 2) }}</td>
         </tr>
         @endforeach
