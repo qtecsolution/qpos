@@ -85,6 +85,7 @@ class RolePermissionSeeder extends Seeder
             'role_view',
             'role_update',
             'role_delete',
+            'permission_view',
             //user
             'user_create',
             'user_view',
@@ -93,6 +94,14 @@ class RolePermissionSeeder extends Seeder
             'user_suspend',
 
             //setting
+            'website_settings',
+            'contact_settings',
+            'socials_settings',
+            'style_settings',
+            'custom_settings',
+            'notification_settings',
+            'website_status_settings',
+            'invoice_settings',
 
         ];
         $admin = Role::where('name', 'Admin')->first();
@@ -101,5 +110,57 @@ class RolePermissionSeeder extends Seeder
             $admin->givePermissionTo($permission);
             $permission->assignRole($admin);
         }
+
+        // Create users and assign roles
+        $cashierUser = User::create([
+            'name' => 'Mr Cashier',
+            'email' => 'cashier@gmail.com',
+            'password' => bcrypt(12345678),
+            'username' => uniqid(),
+        ]);
+        $salesUser = User::create([
+            'name' => 'Mr Sales',
+            'email' => 'sales@gmail.com',
+            'password' => bcrypt(12345678),
+            'username' => uniqid(),
+        ]);
+        // Assign roles to users
+        $cashierRole = Role::where('name', 'cashier')->first();
+        $salesRole = Role::where('name', 'sales_associate')->first();
+
+        $cashierUser->assignRole($cashierRole);
+        $salesUser->assignRole($salesRole);
+
+        // Optionally, assign permissions to the cashier and sales_associate roles
+        // You can customize these permissions as needed
+        $cashierPermissions = [
+            'sale_create',
+            'sale_view',
+            'customer_view',
+            'product_create',
+            'product_view',
+            'product_update',
+            'product_delete',
+            'product_import',
+            'product_purchase',
+        ];
+
+        $salesPermissions = [
+            //sale
+            'sale_create',
+            'sale_view',
+            'sale_edit',
+        ];
+
+        foreach ($cashierPermissions as $permissionName) {
+            $permission = Permission::firstOrCreate(['name' => $permissionName]);
+            $cashierRole->givePermissionTo($permission);
+        }
+
+        foreach ($salesPermissions as $permissionName) {
+            $permission = Permission::firstOrCreate(['name' => $permissionName]);
+            $salesRole->givePermissionTo($permission);
+        }
+
     }
 }

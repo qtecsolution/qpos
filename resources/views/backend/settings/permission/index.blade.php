@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                @if (env('APP_ENV') == 'local')
+                <!-- @if (env('APP_ENV') == 'local')
                     <div class="col-md-12">
                         <fieldset>
                             <form action="{{ route('backend.admin.permissions.store') }}" method="post">
@@ -44,7 +44,7 @@
                         </fieldset>
                         <hr>
                     </div>
-                @endif
+                @endif -->
 
                 <div class="col-md-12 table-responsive">
                     <table class="table table-bordered table-striped table-hover">
@@ -53,9 +53,9 @@
                                 <th>Name</th>
                                 <th>Slug</th>
 
-                                @if (env('APP_ENV') == 'local')
+                                <!-- @if (env('APP_ENV') == 'local')
                                     <th class="text-center">Actions</th>
-                                @endif
+                                @endif -->
                             </tr>
                         </thead>
                         <tbody>
@@ -64,10 +64,9 @@
                                     <td>{{ snakeToTitle($data->name) }}</td>
                                     <td>{{ $data->name }}</td>
 
-                                    @if (env('APP_ENV') == 'local')
+                                    <!-- @if (env('APP_ENV') == 'local')
                                         <td>
                                             <div class="text-center">
-                                                <!-- Button trigger modal -->
                                                 <button title="Edit permission" type="button" class="btn bg-gradient-primary btn-xs"
                                                     data-toggle="modal" data-target="#editpermission-{{ $data->id }}">
                                                     <i class="fas fa-pencil-alt"></i>
@@ -79,8 +78,6 @@
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </div>
-
-                                            <!-- Modal -->
                                             <div class="modal fade" id="editpermission-{{ $data->id }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -116,7 +113,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                    @endif
+                                    @endif -->
                                 </tr>
                             @endforeach
                         </tbody>
