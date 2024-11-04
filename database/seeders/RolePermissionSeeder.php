@@ -34,8 +34,9 @@ class RolePermissionSeeder extends Seeder
             'customer_delete',
             'customer_sales',
             //supplier
-            'supplier_create',
+
             'supplier_view',
+            'supplier_create',
             'supplier_update',
             'supplier_delete',
             //product
@@ -44,7 +45,6 @@ class RolePermissionSeeder extends Seeder
             'product_update',
             'product_delete',
             'product_import',
-            'product_purchase',
             //brand
             'brand_create',
             'brand_view',
@@ -71,7 +71,7 @@ class RolePermissionSeeder extends Seeder
             'purchase_update',
             'purchase_delete',
             //reports
-            'reports_summery',
+            'reports_summary',
             'reports_sales',
             'reports_inventory',
             //currency

@@ -31,6 +31,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+
+        abort_if(!auth()->user()->can('product_view'), 403);
         if ($request->ajax()) {
             $products = Product::latest()->get();
             return DataTables::of($products)
@@ -100,6 +102,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+
+        abort_if(!auth()->user()->can('product_create'), 403);
         $brands = Brand::whereStatus(true)->get();
         $categories = Category::whereStatus(true)->get();
         $units = Unit::all();
@@ -111,6 +115,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+
+        abort_if(!auth()->user()->can('product_create'), 403);
         $validated = $request->validated();
         $product = Product::create($validated);
         if ($request->hasFile("product_image")) {
@@ -135,6 +141,8 @@ class ProductController extends Controller
     public function edit($id)
     {
 
+        abort_if(!auth()->user()->can('product_update'), 403);
+
         $product = Product::findOrFail($id);
         $brands = Brand::whereStatus(true)->get();
         $categories = Category::whereStatus(true)->get();
@@ -147,6 +155,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
+
+        abort_if(!auth()->user()->can('product_update'), 403);
         $validated = $request->validated();
         $product = Product::findOrFail($id);
         $oldImage = $product->image;
@@ -165,6 +175,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+
+        abort_if(!auth()->user()->can('product_delete'), 403);
         $product = Product::findOrFail($id);
         if ($product->image != '') {
             $this->fileHandler->secureUnlink($product->image);
@@ -172,14 +184,15 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->back()->with('success', 'Product Deleted Successfully');
     }
-    public function import(Request $request) {
-        if($request->query('download-demo')){
+    public function import(Request $request)
+    {
+        if ($request->query('download-demo')) {
             return Excel::download(new DemoProductsExport, 'demo_products.xlsx');
-         }
+        }
         if ($request->isMethod('post') && $request->hasFile('file')) {
             Excel::import(new ProductsImport, $request->file('file'));
             return redirect()->back()->with('success', 'Products imported successfully.');
         }
         return view('backend.products.import');
-  }
+    }
 }

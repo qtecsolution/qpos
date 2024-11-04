@@ -13,7 +13,8 @@ class RoleController extends Controller
 {
     // show roles page
     public function index()
-    {
+    { 
+       abort_if(!auth()->user()->can('role_view'), 403);
         $roles = Role::all();
         $permissions = Permission::all();
         return view('backend.settings.role.index', compact('roles', 'permissions'));
@@ -22,6 +23,7 @@ class RoleController extends Controller
     // create new role
     public function store(Request $request)
     {
+        abort_if(!auth()->user()->can('role_create'), 403);
         $request->validate([
             'name' => 'required|unique:roles'
         ]);
@@ -36,6 +38,7 @@ class RoleController extends Controller
     // update a role
     public function update(Request $request, $id)
     {
+       abort_if(!auth()->user()->can('currency_update'), 403);
         $request->validate([
             'name' => "required|unique:roles,name," . $id
         ]);
@@ -62,6 +65,7 @@ class RoleController extends Controller
     // delete a role
     public function destroy($id)
     {
+         abort_if(!auth()->user()->can('role_delete'), 403);
         if ($id != 1) {
             $data = Role::findOrFail($id);
             $data->delete();

@@ -15,6 +15,8 @@ class CurrencyController extends Controller
      */
     public function index(Request $request)
     {
+
+        abort_if(!auth()->user()->can('currency_view'), 403);
         if ($request->ajax()) {
             $currencies = Currency::latest()->get();
             return DataTables::of($currencies)
@@ -22,7 +24,7 @@ class CurrencyController extends Controller
                 ->addColumn('name', fn($data) => $data->name)
                 ->addColumn('code', fn($data) => $data->code)
                 ->addColumn('symbol', fn($data) => $data->symbol
-                . ($data->active ? ' (Default Currency)' : ''))
+                    . ($data->active ? ' (Default Currency)' : ''))
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group">
                     <button type="button" class="btn bg-gradient-primary btn-flat">Action</button>
@@ -43,7 +45,7 @@ class CurrencyController extends Controller
                 </a>
                   </div>';
                 })
-                ->rawColumns(['name', 'code', 'symbol','action'])
+                ->rawColumns(['name', 'code', 'symbol', 'action'])
                 ->toJson();
         }
         return view('backend.settings.currencies.index');
@@ -53,7 +55,9 @@ class CurrencyController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {;
+    {
+
+        abort_if(!auth()->user()->can('currency_create'), 403);
         return view('backend.settings.currencies.create');
     }
 
@@ -62,10 +66,12 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
+
+        abort_if(!auth()->user()->can('currency_create'), 403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:currencies,code',
-            'symbol'=>'required|string'
+            'symbol' => 'required|string'
         ]);
         $currency = Currency::create($request->only(['name', 'code', 'symbol']));
 
@@ -86,6 +92,8 @@ class CurrencyController extends Controller
     public function edit($id)
     {
 
+        abort_if(!auth()->user()->can('currency_update'), 403);
+
         $currency = Currency::findOrFail($id);
         return view('backend.settings.currencies.edit', compact('currency'));
     }
@@ -95,6 +103,8 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        abort_if(!auth()->user()->can('currency_update'), 403);
         $currency = Currency::findOrFail($id);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -111,11 +121,14 @@ class CurrencyController extends Controller
      */
     public function destroy($id)
     {
+
+        abort_if(!auth()->user()->can('currency_delete'), 403);
         $currency = Currency::findOrFail($id);
         $currency->delete();
         return redirect()->back()->with('success', 'Currency Deleted Successfully');
     }
-    public function setDefault($id){
+    public function setDefault($id)
+    {
         Currency::where('active', true)->update(['active' => false]);
         $currency = Currency::findOrFail($id);
         $currency->active = true;

@@ -21,6 +21,8 @@ class UserManagementController extends Controller
 
     public function index(Request $request)
     {
+
+        abort_if(!auth()->user()->can('user_view'), 403);
         if ($request->ajax()) {
             $users = User::with('roles')->latest()->get();
 
@@ -97,6 +99,7 @@ class UserManagementController extends Controller
 
     public function suspend($id, $status)
     {
+        abort_if(!auth()->user()->can('user_suspend'), 403);
         $user = User::findOrFail($id);
 
         if ($user->is_suspended == $status) {
@@ -111,6 +114,8 @@ class UserManagementController extends Controller
 
     public function create(Request $request)
     {
+        abort_if(!auth()->user()->can(
+        'user_create'), 403);
         if ($request->isMethod('post')) {
             $request->validate([
                 'name' => 'required',
@@ -143,6 +148,8 @@ class UserManagementController extends Controller
 
     public function edit(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('user_update'), 403);
+
         $user = User::with('roles')->findOrFail($id);
 
         if ($request->isMethod('post')) {
@@ -191,6 +198,8 @@ class UserManagementController extends Controller
 
     public function delete($id)
     {
+        abort_if(!auth()->user()->can('user_delete'), 403);
+
         if ($id == auth()->id()) {
             return back()->with('error', 'Can not delete your self');
         }

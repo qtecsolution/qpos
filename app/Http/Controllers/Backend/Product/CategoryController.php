@@ -21,6 +21,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('category_view'), 403);
         if ($request->ajax()) {
             $categories = Category::latest()->get();
             return DataTables::of($categories)
@@ -58,6 +59,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        abort_if(!auth()->user()->can('category_create'), 403);
         return view('backend.categories.create');
     }
 
@@ -66,6 +68,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        abort_if(!auth()->user()->can('category_create'), 403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -94,6 +97,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('category_update'), 403);
 
         $category = Category::findOrFail($id);
         return view('backend.categories.edit', compact('category'));
@@ -104,6 +108,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('category_update'), 403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -127,6 +132,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(!auth()->user()->can('category_delete'), 403);
         $category = Category::findOrFail($id);
         if ($category->image != '') {
             $this->fileHandler->secureUnlink($category->image);

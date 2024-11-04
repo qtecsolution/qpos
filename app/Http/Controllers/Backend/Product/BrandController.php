@@ -22,6 +22,7 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('brand_view'), 403);
         if ($request->ajax()) {
             $brands = Brand::latest()->get();
             return DataTables::of($brands)
@@ -61,6 +62,7 @@ class BrandController extends Controller
      */
     public function create()
     {
+        abort_if(!auth()->user()->can('brand_create'), 403);
         return view('backend.brands.create');
     }
 
@@ -69,6 +71,7 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        abort_if(!auth()->user()->can('brand_create'), 403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -97,6 +100,7 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('brand_update'), 403);
 
         $brand = Brand::findOrFail($id);
         return view('backend.brands.edit', compact(  'brand'));
@@ -107,6 +111,7 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('brand_update'), 403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -130,6 +135,7 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(!auth()->user()->can('brand_delete'), 403);
         $brand = Brand::findOrFail($id);
         if ($brand->image != '') {
             $this->fileHandler->secureUnlink($brand->image);

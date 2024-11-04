@@ -223,7 +223,7 @@ $route = request()->route()->getName();
             </li>
             @endif
             @if (auth()->user()->hasAnyPermission([
-            'reports_summery',
+            'reports_summary',
             'reports_sales',
             'reports_inventory',
             ]))
@@ -236,7 +236,7 @@ $route = request()->route()->getName();
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    @can('reports_summery')
+                    @can('reports_summary')
                     <li class="nav-item">
                         <a href="{{route('backend.admin.sale.summery')}}"
                             class="nav-link {{ request()->routeIs(['backend.admin.sale.summery']) ? 'active' : '' }}">
@@ -352,13 +352,7 @@ $route = request()->route()->getName();
                             </span>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (auth()->user()->hasAnyPermission([
-                            'role_create',
-                            'role_view',
-                            'role_update',
-                            'role_delete',
-                            'permission_view',
-                            ]))
+                            @can('role_view')
                             <li class="nav-item">
                                 <a href="{{ route('backend.admin.roles') }}"
                                     class="nav-link {{ $route === 'backend.admin.roles' ? 'active' : '' }}">
@@ -366,7 +360,7 @@ $route = request()->route()->getName();
                                     <p>Roles</p>
                                 </a>
                             </li>
-                            @endif
+                            @endcan
                             @can('permission_view')
                             <li class="nav-item">
                                 <a href="{{ route('backend.admin.permissions') }}"

@@ -18,6 +18,8 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
+
+        abort_if(!auth()->user()->can('purchase_view'), 403);
         if ($request->ajax()) {
             $purchases = Purchase::with('supplier')->latest()->get();
             return DataTables::of($purchases)
@@ -44,7 +46,7 @@ class PurchaseController extends Controller
                     </div>
                   </div>';
                 })
-                ->rawColumns(['supplier','id','total','created_at', 'action'])
+                ->rawColumns(['supplier', 'id', 'total', 'created_at', 'action'])
                 ->toJson();
         }
 
@@ -58,6 +60,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
+
+
+        abort_if(!auth()->user()->can('purchase_create'), 403);
         return view('backend.purchase.create');
     }
 
@@ -67,6 +72,7 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
 
+        abort_if(!auth()->user()->can('purchase_create'), 403);
         if ($request->wantsJson()) {
             // Step 1: Validate the request data
             $validatedData = $request->validate([
@@ -178,13 +184,19 @@ class PurchaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id) {}
+    public function edit($id)
+    {
+
+        abort_if(!auth()->user()->can('purchase_update'), 403);
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Purchase $purchase)
     {
+
+        abort_if(!auth()->user()->can('purchase_update'), 403);
         //
     }
 
@@ -193,6 +205,8 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
+
+        abort_if(!auth()->user()->can('purchase_delete'), 403);
         //
     }
     // purchaseProducts list by Purchase id

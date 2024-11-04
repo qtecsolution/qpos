@@ -11,9 +11,11 @@ use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
 {
-    
+
     public function saleReport(Request $request)
     {
+
+        abort_if(!auth()->user()->can(abilities: 'reports_sales'), 403);
         // Get user input or set default values
         $start_date_input = $request->input('start_date', Carbon::today()->subDays(29)->format('Y-m-d'));
         $end_date_input = $request->input('end_date', Carbon::today()->format('Y-m-d'));
@@ -30,7 +32,7 @@ class ReportController extends Controller
 
         // Calculate totals
         $data = [
-            'orders'=>$orders,
+            'orders' => $orders,
             'sub_total' => $orders->sum('sub_total'),
             'discount' => $orders->sum('discount'),
             'paid' => $orders->sum('paid'),
@@ -44,6 +46,8 @@ class ReportController extends Controller
     }
     public function saleSummery(Request $request)
     {
+
+        abort_if(!auth()->user()->can('reports_summary'), 403);
         // Get user input or set default values
         $start_date_input = $request->input('start_date', Carbon::today()->subDays(29)->format('Y-m-d'));
         $end_date_input = $request->input('end_date', Carbon::today()->format('Y-m-d'));
@@ -71,8 +75,10 @@ class ReportController extends Controller
 
         return view('backend.reports.sale-summery', $data);
     }
-     function inventoryReport(Request $request)
+    function inventoryReport(Request $request)
     {
+
+        abort_if(!auth()->user()->can('reports_inventory'), 403);
         if ($request->ajax()) {
             $products = Product::latest()->active()->get();
             return DataTables::of($products)
@@ -87,9 +93,9 @@ class ReportController extends Controller
                             : '')
                 )
                 ->addColumn('quantity', fn($data) => $data->quantity . ' ' . optional($data->unit)->short_name)
-                ->rawColumns(['name', 'sku','price', 'quantity', 'status'])
+                ->rawColumns(['name', 'sku', 'price', 'quantity', 'status'])
                 ->toJson();
         }
         return view('backend.reports.inventory');
-     }
+    }
 }
