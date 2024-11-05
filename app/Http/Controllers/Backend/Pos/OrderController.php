@@ -101,6 +101,7 @@ class OrderController extends Controller
             $order->products()->create([
                 'quantity' => $cart->quantity,
                 'price' => $cart->product->price,
+                'purchase_price' => $cart->product->purchase_price,
                 'sub_total' => $mainTotal,
                 'discount' => $discount,
                 'total' => $totalAfterDiscount,
@@ -210,7 +211,7 @@ class OrderController extends Controller
     public function transactions($id)
     {
         $order = Order::with('transactions')->findOrFail($id);
-        return view('backend.orderJs.collection.index', compact('order',));
+        return view('backend.orders.collection.index', compact('order',));
     }
 
     public function posInvoice($id)
