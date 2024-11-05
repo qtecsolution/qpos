@@ -139,7 +139,10 @@ class PurchaseController extends Controller
                     ]);
                     // Step 3: Create purchase items
                     foreach ($validatedData['products'] as $product) {
-                        $existingProduct = Product::findOrFail($product['id']);
+                        $existingProduct = Product::findOrFail($product['id']); 
+                        // Find the existing purchase item, if any, and get its quantity or set to 0
+                        $oldPurchaseItem = PurchaseItem::find($product['item_id']??0);
+                        $oldQuantity = $oldPurchaseItem ? $oldPurchaseItem->quantity : 0;
                         PurchaseItem::updateOrCreate(
                             [
                                 'id' => $product['item_id'] ?? null
@@ -153,6 +156,8 @@ class PurchaseController extends Controller
                             ]
                         );
 
+                        // Adjust product stock: first add back the old quantity, then subtract the new
+                        $existingProduct->decrement('quantity', $oldQuantity);
                         $existingProduct->increment('quantity', $product['qty']);
                     }
                     DB::commit();
