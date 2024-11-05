@@ -4,7 +4,7 @@
 
 <div class="card">
   <!-- Main content -->
-  <div class="receipt-container mt-3" id="printable-section" style="max-width: 300px; margin: auto; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
+  <div class="receipt-container mt-0" id="printable-section" style="max-width: 300px; margin: 0; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
     <div class="text-center">
       @if(readConfig('is_show_logo_invoice'))
       <img src="{{ assetImage(readconfig('site_logo')) }}" height="50" alt="Logo">
@@ -126,6 +126,7 @@
   @media print {
     #printable-section {
       padding-bottom: 5px !important;
+     margin-left: 0px !important;
     }
 
     footer {
