@@ -47,7 +47,7 @@
                                 <input type="email" class="form-control" id="email" placeholder="Enter email"
                                     autocomplete="off" name="email" required>
                                 <div class="invalid-feedback">
-                                    enter a valid email address
+                                    Enter a valid email address
                                 </div>
                             </div>
                         </div>

@@ -25,9 +25,20 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="thumbnail">Profile Image</label>
-                        <input type="file" class="form-control" name="profile_image"
+                        <!-- <input type="file" class="form-control" name="profile_image"
                             onchange="previewThumbnail(this)">
-                        <img class="img-fluid thumbnail-preview" src="{{ nullImg() }}" alt="preview-image">
+                        <img class="img-fluid thumbnail-preview" src="{{ nullImg() }}" alt="preview-image"> -->
+                        <div class="image-upload-container" id="imageUploadContainer">
+                            <input type="file" class="form-control" name="profile_image" id="thumbnailInput" accept="image/*" style="display: none;">
+                            <div class="thumb-preview" id="thumbPreviewContainer">
+                                <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Thumbnail Preview"
+                                    class="img-thumbnail" id="thumbnailPreview" onerror="this.onerror=null; this.src='{{ asset('assets/images/no-image.png') }}'">
+                                <div class="upload-text d-none">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Upload Image</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,9 +53,16 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
+                        <label for="new_password" class="form-label">New password</label>
+                        <input type="password" class="form-control" id="new_password" placeholder="New password"
+                            name="new_password">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
                         <label for="confirmPassword" class="form-label">Confirm password</label>
                         <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password"
-                            name="new_password">
+                            name="new_password_confirmation">
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -53,7 +71,12 @@
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 </div>
 @endsection
+
+@push('script')
+<script src="{{ asset('js/image-field.js') }}"></script>
+@endpush

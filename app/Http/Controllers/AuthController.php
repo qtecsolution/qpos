@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Rules\ValidImageType;
 use App\Models\ForgetPassword;
+use App\Trait\FileHandler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -16,6 +17,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public $fileHandler;
+
+    public function __construct(FileHandler $fileHandler)
+    {
+        $this->fileHandler = $fileHandler;
+    }
+
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -232,7 +240,7 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $user = User::find(auth()->id());
-
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
@@ -249,17 +257,13 @@ class AuthController extends Controller
         }
 
         if ($request->hasFile("profile_image")) {
-            $imageController = new ImageHandlerController();
-
-            $imageController->secureUnlink($user->profile_image);
-
-            $user->profile_image = $imageController->uploadImageAndGetPath($request->file("profile_image"), "/public/media/users");
+            $user->profile_image = $this->fileHandler->fileUploadAndGetPath($request->file("profile_image"), "/public/media/users");
         }
 
-        if ($request->current_password || $request->password) {
+        if ($request->current_password || $request->new_password || $request->confirm_password) {
 
             $request->validate([
-                'password' => 'required|min:6|confirmed',
+                'new_password' => 'required|min:6|confirmed',
             ]);
 
             if ($user->is_google_registered) {
@@ -278,7 +282,7 @@ class AuthController extends Controller
                 }
             }
 
-            $user->password = bcrypt($request->password);
+            $user->password = bcrypt($request->new_password);
         }
 
         $user->save();

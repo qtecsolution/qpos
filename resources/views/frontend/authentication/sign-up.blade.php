@@ -192,7 +192,7 @@
                         </div>
 
                         <!-- google sign in  -->
-                        <div class="col-sm-6 col-lg-12 col-xl-6">
+                        <!-- <div class="col-sm-6 col-lg-12 col-xl-6">
                             <div class="form-group">
                                 <a href="{{ route('auth.google') }}" class="google-btn w-100">
                                     <span class="icon">
@@ -226,13 +226,13 @@
                                     <span class="text">Sign up with Google</span>
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </div>
                 </div>
                 <div class="authentication-form-footer">
-                    <p>Already have an acooount ? <a href="{{ route('login') }}">Log in </a></p>
+                    <p>Already have an account ? <a href="{{ route('login') }}">Log in </a></p>
                 </div>
             </form>
 
