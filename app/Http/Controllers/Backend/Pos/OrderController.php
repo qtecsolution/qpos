@@ -211,12 +211,13 @@ class OrderController extends Controller
     public function transactions($id)
     {
         $order = Order::with('transactions')->findOrFail($id);
-        return view('backend.orders.collection.index', compact('order',));
+        return view('backend.orders.collection.index', compact('order'));
     }
 
     public function posInvoice($id)
     {
         $order = Order::with(['customer', 'products.product'])->findOrFail($id);
-        return view('backend.orders.pos-invoice', compact('order'));
+        $maxWidth = '300px';
+        return view('backend.orders.pos-invoice', compact('order', 'maxWidth'));
     }
 }

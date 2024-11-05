@@ -4,14 +4,13 @@
 
 <div class="card">
   <!-- Main content -->
-  <div class="receipt-container mt-0" id="printable-section" style="max-width: 300px; margin: 0; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
+  <div class="receipt-container mt-0" id="printable-section" style="max-width: {{ $maxWidth}}; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
     <div class="text-center">
       @if(readConfig('is_show_logo_invoice'))
-      <img src="{{ assetImage(readconfig('site_logo')) }}" height="50" alt="Logo">
+      <img src="{{ assetImage(readconfig('site_logo')) }}" height="30" width="70" alt="Logo">
       @endif
       @if(readConfig('is_show_site_invoice'))
-      <h3>{{ readConfig('site_name') }}
-      </h3>
+      <h3>{{ readConfig('site_name') }}</h3>
       @endif
       @if(readConfig('is_show_address_invoice')){{ readConfig('contact_address') }}<br>@endif
       @if(readConfig('is_show_phone_invoice')){{ readConfig('contact_phone') }}<br>@endif
@@ -101,7 +100,7 @@
 <style>
   .receipt-container {
     border: 1px dotted #000;
-    padding: 10px;
+    padding: 8px;
   }
 
   hr {
@@ -124,9 +123,10 @@
   }
 
   @media print {
-    #printable-section {
-      padding-bottom: 5px !important;
-     margin-left: 0px !important;
+    @page {
+      margin-top: 5px !important;
+      margin-left: 0px !important;
+      padding-left: 0px !important;
     }
 
     footer {
