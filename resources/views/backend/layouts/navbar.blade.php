@@ -56,7 +56,7 @@
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-               <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="Avatar" width="18" height="18">
+                <i class="fas fa-user-circle"></i>
                 <i class="fas fa-angle-double-down"></i>
             </a>
             <div class="dropdown-menu ">
