@@ -549,12 +549,20 @@
                         </label>
                         <label for="is_show_customer_invoice" class="mx-2">Customer</label>
                     </div>
-                    <div class=" form-group d-flex align-items-center">
+                    <div class="form-group d-flex align-items-center">
                         <label class="switch"><input type="hidden" name="is_show_note_invoice" value="0">
                             <input onclick="updateCheckboxValue(this)" type="checkbox" {{ readConfig('is_show_note_invoice') == 1 ? 'checked' : '' }} name="is_show_note_invoice" id="is_show_note_invoice" value="{{ readConfig('is_show_note_invoice') == 1 ? 1 : '0' }}">
                             <span class="slider round"></span>
                         </label>
                         <label for="is_show_note_invoice" class="mx-2">Note to customer</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="">Pos Invoice Width</label>
+                        <select name="receiptMaxwidth" class="form-control col-6">
+                            <option value="300px" {{ readConfig('receiptMaxwidth') == '300px' ? 'selected' : '' }}>Small</option>
+                            <option value="400px" {{ readConfig('receiptMaxwidth') == '400px' ? 'selected' : '' }}>Medium</option>
+                            <option value="500px" {{ readConfig('receiptMaxwidth') == '500px' ? 'selected' : '' }}>Large</option>
+                        </select>
                     </div>
 
             </div>

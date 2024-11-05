@@ -217,7 +217,7 @@ class OrderController extends Controller
     public function posInvoice($id)
     {
         $order = Order::with(['customer', 'products.product'])->findOrFail($id);
-        $maxWidth = '300px';
+        $maxWidth = readConfig('receiptMaxwidth')??'300px';
         return view('backend.orders.pos-invoice', compact('order', 'maxWidth'));
     }
 }
