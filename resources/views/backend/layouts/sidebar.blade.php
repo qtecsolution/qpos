@@ -57,7 +57,7 @@ $route = request()->route()->getName();
             ]))
             <li class="nav-item {{ request()->routeIs(['backend.admin.customers.index', 'backend.admin.customers.create', 'backend.admin.customers.edit','backend.admin.suppliers.index', 'backend.admin.suppliers.create', 'backend.admin.suppliers.edit']) ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link">
-                    <i class="fas fa-chevron-circle-up nav-icon"></i>
+                    <i class="fas fa-user-circle nav-icon"></i>
                     <p>
                         People
                         <i class="fas fa-angle-left right"></i>
@@ -167,7 +167,7 @@ $route = request()->route()->getName();
             ]))
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.orders.index', 'backend.admin.orders.create', 'backend.admin.orders.edit']) ? 'menu-open' : '' }}">
-                    <i class="fas fa-chevron-circle-up nav-icon"></i>
+                    <i class="fas fa-tags nav-icon"></i>
                     <p>
                         Sale
                         <i class="fas fa-angle-left right"></i>
@@ -194,7 +194,7 @@ $route = request()->route()->getName();
             ]))
             <li class="nav-item">
                 <a href="#" class="nav-link {{ request()->routeIs(['backend.admin.purchase.index', 'backend.admin.purchase.create', 'backend.admin.purchase.edit']) ? 'menu-open' : '' }}">
-                    <i class="fas fa-chevron-circle-up nav-icon"></i>
+                    <i class="fas fa-shopping-bag nav-icon"></i>
                     <p>
                         Purchase
                         <i class="fas fa-angle-left right"></i>
@@ -329,7 +329,7 @@ $route = request()->route()->getName();
                     <li class="nav-item">
                         <a href="{{ route('backend.admin.currencies.index') }}"
                             class="nav-link {{ request()->routeIs([ 'backend.admin.currencies.index', 'backend.admin.currencies.create', 'backend.admin.currencies.edit']) ? 'active' : '' }}">
-                            <i class="fas fa-circle nav-icon"></i>
+                            <i class="fas fa-coins nav-icon"></i>
                             <p>Currency</p>
                         </a>
                     </li>
