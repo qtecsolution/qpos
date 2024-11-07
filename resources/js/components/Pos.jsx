@@ -242,7 +242,7 @@ export default function Pos() {
 
                 <div className="card-body p-2 p-md-4 pt-0">
                     <div className="row">
-                        <div className="col-md-6 col-lg-5">
+                        <div className="col-md-6 col-lg-5 mb-2">
                             <div className="row mb-2">
                                 <div className="col-12">
                                     <CustomerSelect
@@ -370,7 +370,7 @@ export default function Pos() {
                                     <button
                                         onClick={() => cartEmpty()}
                                         type="button"
-                                        className="btn btn-danger btn-block"
+                                        className="btn bg-gradient-danger btn-block text-white text-bold"
                                     >
                                         Clear Cart
                                     </button>
@@ -381,7 +381,7 @@ export default function Pos() {
                                             orderCreate();
                                         }}
                                         type="button"
-                                        className="btn btn-primary btn-block"
+                                        className="btn bg-gradient-primary btn-block text-white text-bold"
                                     >
                                         Checkout
                                     </button>
@@ -426,11 +426,11 @@ export default function Pos() {
                                             onClick={() =>
                                                 addProductToCart(product.id)
                                             }
-                                            className="col-sm-6 col-md-4 col-lg-3 mb-3"
+                                            className="col-6 col-md-4 col-lg-3 mb-3"
                                             key={index}
                                             style={{ cursor: "pointer" }}
                                         >
-                                            <div className="product-item text-center">
+                                            <div className="text-center">
                                                 <img
                                                     src={`${fullDomainWithPort}/storage/${product.image}`}
                                                     alt={product.name}

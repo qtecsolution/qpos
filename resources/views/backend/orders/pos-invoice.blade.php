@@ -63,23 +63,23 @@
       <table style="width: 100%;">
         <tr>
           <td>Subtotal:</td>
-          <td class="text-right">{{ currency()->symbol . ' ' . number_format($order->sub_total, 2) }}</td>
+          <td class="text-right">{{number_format($order->sub_total, 2) }}</td>
         </tr>
         <tr>
           <td>Discount:</td>
-          <td class="text-right">{{ currency()->symbol . ' ' . number_format($order->discount, 2) }}</td>
+          <td class="text-right">{{number_format($order->discount, 2) }}</td>
         </tr>
         <tr>
           <td><strong>Total:</strong></td>
-          <td class="text-right"><strong>{{ currency()->symbol . ' ' . number_format($order->total, 2) }}</strong></td>
+          <td class="text-right"><strong>{{number_format($order->total, 2) }}</strong></td>
         </tr>
         <tr>
           <td>Paid:</td>
-          <td class="text-right">{{ currency()->symbol . ' ' . number_format($order->paid, 2) }}</td>
+          <td class="text-right">{{number_format($order->paid, 2) }}</td>
         </tr>
         <tr>
           <td>Due:</td>
-          <td class="text-right">{{ currency()->symbol . ' ' . number_format($order->due, 2) }}</td>
+          <td class="text-right">{{number_format($order->due, 2) }}</td>
         </tr>
       </table>
     </div>
