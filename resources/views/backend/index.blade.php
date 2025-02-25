@@ -140,8 +140,100 @@
             <!-- ./col -->
         </div>
         <!-- /.row -->
+
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Daily Total Sales <small>{{ $dateRange }}</small></h5>
+                        <div class="input-group w-auto">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" id="reservation" style="width: 180px;">
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <canvas id="dailySaleLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Monthly Total Sales <small>for {{ $currentYear }}</small></h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="barChartYear"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-     @endcan
-<!-- /.container-fluid -->
+    @endcan
+    <!-- /.container-fluid -->
 </section>
 @endsection
+@push('script')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const dailySaleChart = document.getElementById('dailySaleLineChart');
+    const barChartYear = document.getElementById('barChartYear');
+
+    new Chart(dailySaleChart, {
+        type: 'line',
+        data: {
+            labels: @json($dates),
+            datasets: [{
+                label: 'Sales',
+                data: @json($totalAmounts),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    new Chart(barChartYear, {
+        type: 'bar',
+        data: {
+            labels: @json($months),
+            datasets: [{
+                label: 'Sales',
+                data: @json($totalAmountMonth),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+    $(function() {
+        //Date range picker
+        $('#reservation').daterangepicker().on('apply.daterangepicker', function(e, picker) {
+            let selectedDateRange = picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD');
+
+            // Update URL with daterange query parameter
+            let url = new URL(window.location.href);
+            url.searchParams.set('daterange', selectedDateRange);
+            window.location.href = url.toString();
+        });
+
+    })
+</script>
+@endpush
