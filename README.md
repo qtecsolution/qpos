@@ -39,7 +39,8 @@ Here’s a feature list for our POS system with short descriptions:
 -  View and track all sales transactions.
 ### 🛍️ Purchase Management 
 -  Manage purchases and supplier orders.
-### 📊 Reports – Generate reports for sales, inventory, and overall business performance.
+### 📊 Reports 
+- Generate reports for sales, inventory, and overall business performance.
 ### 📉 Inventory Management 
 -  Track stock levels and get alerts for low stock.
 ### 💲 Discount & Pricing Control 
@@ -52,7 +53,7 @@ Here’s a feature list for our POS system with short descriptions:
 Would you like to add any custom features? 🚀
   
 ## 🎥 Demo
-You can browse the live demo of the QPOS at the following link:
+You can browse the live demo of the POS system in Laravel & React at the following link:
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-%230077B5?style=for-the-badge&logo=google-chrome&logoColor=white)](https://qpos.qtecsolution.net/login/)
 
