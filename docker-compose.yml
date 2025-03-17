@@ -1,0 +1,78 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: qpos-app
+        container_name: qpos-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - .:/var/www
+            - ./docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini # PHP config if needed
+        networks:
+            - qpos-network
+        depends_on:
+            - db
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+
+    db:
+        image: mysql:8.0
+        container_name: qpos-db
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: qpos
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+        ports:
+            - "3306:3306"
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            - qpos-network
+
+    nginx:
+        image: nginx:alpine
+        container_name: qpos-nginx
+        restart: unless-stopped
+        ports:
+            - "80:80" # HTTP port
+            # - "443:443" # Uncomment this for HTTPS (SSL) support
+        volumes:
+            - .:/var/www:cached
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+        depends_on:
+            - app
+        networks:
+            - qpos-network
+
+    node:
+        # Optional platform flag for Mac Silicon (M1/M2/M3)
+        platform: linux/amd64
+        build:
+            context: .
+            dockerfile: Dockerfile.node
+        image: qpos-node
+        container_name: qpos-node
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - /var/www/node_modules
+        networks:
+            - qpos-network
+
+networks:
+    qpos-network:
+        driver: bridge
+
+volumes:
+    db-data:
