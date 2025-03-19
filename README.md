@@ -290,8 +290,8 @@ Access the application at [http://localhost](http://localhost).
 ## 🛠️ Additional Information
 
 - **Seeding**: The database seeder is configured to populate initial data. Run `php artisan migrate --seed` to use it. After running the seeder, you can log in as an admin using the following credentials:
-    - **Email**: admin@gmail.com
-    - **Password**: 12345678
+    - **Email**: demo@qtecsolution.net
+    - **Password**: 87654321
 - **Environment Variables**: Ensure all necessary environment variables are set in the `.env` file.
 - **Database Configuration**: The application is configured for MySQL by default. Update the `.env` file as needed for other database connections.
 

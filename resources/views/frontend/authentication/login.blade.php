@@ -112,8 +112,8 @@
                             {{-- <div class="single-row">
                                 <div class="agreebox">
                                     <div class="customcheck ">
-                                        <input type="checkbox" id="agree" class="customcheck-box"
-                                            name="remember" hidden >
+                                        <input type="checkbox" id="agree" class="customcheck-box" name="remember"
+                                            hidden>
                                         <label for="agree" class="customcheck-label">I agree to all the <a
                                                 href="#">Terms </a> and <a href="">Privacy Policy</a>
                                             .</label>
@@ -125,6 +125,10 @@
                         <div class="col-sm-6 col-lg-12 col-xl-6">
                             <div class="form-group">
                                 <button type="submit" class="create-account-btn w-100">Sign In</button>
+                            </div>
+                            <div class="form-group"> <br>
+                            <p><b>User:</b> demo@qtecsolution.net</p>
+                            <p><b>Password:</b> 87654321</p>
                             </div>
                         </div>
 
