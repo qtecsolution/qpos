@@ -15,30 +15,30 @@ docker-up-build:
 	docker compose up -d --build
 
 composer-install:
-	docker exec coaching-app bash -c "composer install"
+	docker exec qpos-app bash -c "composer install"
 
 composer-update:
-	docker exec coaching-app bash -c "composer update"
+	docker exec qpos-app bash -c "composer update"
 
 set-permissions:
-	docker exec coaching-app bash -c "chmod -R 775 /var/www/storage"
-	docker exec coaching-app bash -c "chmod -R 775 /var/www/bootstrap"
+	docker exec qpos-app bash -c "chmod -R 777 /var/www/storage"
+	docker exec qpos-app bash -c "chmod -R 777 /var/www/bootstrap"
 
 setup-env:
-	docker exec coaching-app bash -c "cp .env-docker.example .env"
+	docker exec qpos-app bash -c "cp .env.docker .env"
 
 npm-install-build:
-	docker exec coaching-node bash -c "npm install"
-	docker exec coaching-node bash -c "npm run build:docker"
+	docker exec qpos-node bash -c "npm install"
+	docker exec qpos-node bash -c "npm run build:docker"
 
 npm-run-dev:
-	docker exec coaching-node bash -c "npm run dev:docker"
+	docker exec qpos-node bash -c "npm run dev:docker"
 
 npm-run-build:
-	docker exec coaching-node bash -c "npm run build:docker"
+	docker exec qpos-node bash -c "npm run build:docker"
 
 generate-key:
-	docker exec coaching-app bash -c "php artisan key:generate"
+	docker exec qpos-app bash -c "php artisan key:generate"
 
 migrate-fresh-seed:
-	docker exec coaching-app bash -c "php artisan migrate:fresh --seed"
+	docker exec qpos-app bash -c "php artisan migrate:fresh --seed"
