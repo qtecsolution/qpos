@@ -276,58 +276,12 @@ git clone https://github.com/qtecsolution/qpos.git
 cd qpos
 ```
 
-#### 2. Initialize the Project with Docker Compose
-
-```bash
-docker-compose up -d
-```
-
-#### 3. Initialize the Project with `Make` Command
+#### 2. Initialize the Project with `Make` Command
 
 - **Setup Project**
 
 ```bash
 make setup
-```
-This single command sets up and runs the project.
-
-
-- **Additional Commands**
-
-```bash
-make docker-up-build
-make docker-stop
-```
-
-- Install Dependencies
-
-```bash
-make composer-install
-make composer-update
-```
-
-- Set File Permissions
-
-```bash
-make set-permissions
-```
-
-- Generate Application Key
-
-```bash
-make generate-key
-```
-
-- Run Migrations and Seed the Database
-
-```bash
-make migrate-fresh-seed
-```
-
-- Setup Environment File
-
-```bash
-make setup-env
 ```
 
 Access the application at [http://localhost](http://localhost).
