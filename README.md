@@ -21,8 +21,6 @@ Our POS system streamlines sales and inventory management. It features a **Dashb
 ## ✨ Features  
 
 
-Here’s a feature list for our POS system with short descriptions:
-
  ### 📊 Dashboard
  - Provides an overview of sales, and key metrics and some chart.
 ### 🛒 POS (Point of Sale) 
@@ -50,12 +48,11 @@ Here’s a feature list for our POS system with short descriptions:
 ### ⚙️ Settings 
 - Configure system preferences, tax rates, and other business settings.
 
-Would you like to add any custom features? 🚀
   
 ## 🎥 Demo
 You can browse the live demo of the POS system in Laravel & React at the following link:
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-%230077B5?style=for-the-badge&logo=google-chrome&logoColor=white)](https://qpos.qtecsolution.net/login/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-%230077B5?style=for-the-badge&logo=google-chrome&logoColor=white)](https://qpos.qtecsolution.com/login/)
 
 ### Dashboard:
 
@@ -320,7 +317,7 @@ This is an open source project and contributions are welcome. If you are interes
 
 ## 📝 License
 
-The AI Content Image Generator SaaS project is open source and available under the MIT License. You are free to use, modify, and distribute this codebase in accordance with the terms of the license.
+The POS system in Laravel & React project is open source and available under the MIT License. You are free to use, modify, and distribute this codebase in accordance with the terms of the license.
 
 Please refer to the LICENSE file for more details.
 
