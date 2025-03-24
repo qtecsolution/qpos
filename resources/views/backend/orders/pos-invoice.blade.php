@@ -52,8 +52,8 @@
         <tr>
           <td>{{ $item->product->name }}</td>
           <!-- <td class="text-right">{{ $item->quantity }}</td> -->
-          <td class="text-right">{{ $item->quantity }}*{{ number_format($item->discounted_price, 2) }}</td>
-          <td class="text-right">{{ number_format($item->total, 2) }}</td>
+          <td class="text-right">{{ $item->quantity }}*{{ $item->discounted_price}}</td>
+          <td class="text-right">{{ $item->total }}</td>
         </tr>
         @endforeach
       </tbody>
