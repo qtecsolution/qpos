@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StartUpSeeder::class,
            // Please comment out the following seeders when running in production for the client
-            ProductSeeder::class,
-            CustomerSeeder::class,
-            SupplierSeeder::class,
-            PurchaseSeeder::class,
+            // ProductSeeder::class,
+            // CustomerSeeder::class,
+            // SupplierSeeder::class,
+            // PurchaseSeeder::class,
         ]);
     }
 }

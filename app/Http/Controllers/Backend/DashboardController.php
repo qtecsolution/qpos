@@ -57,10 +57,13 @@ class DashboardController extends Controller
         $currentYear = now()->year;
         $data['currentYear'] = $currentYear;
 
-        $salesData = OrderTransaction::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(amount) as total_amount')
+        $salesData = OrderTransaction::selectRaw("TO_CHAR(created_at, 'YYYY-MM') as month, SUM(amount) as total_amount")
         ->whereYear('created_at', $currentYear)
         ->groupBy('month')
-        ->orderBy('month', 'ASC')->pluck('total_amount', 'month')->toArray();
+        ->orderBy('month', 'ASC')
+        ->pluck('total_amount', 'month')
+        ->toArray();
+        
         $tempMonths = [];
         $tempTotalAmountMonth = [];
         for ($i = 1; $i <= 12; $i++) {
